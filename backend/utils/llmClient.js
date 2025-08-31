@@ -7,8 +7,8 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // Define valid models
 const MODELS = [
-  "gemini-1.5-flash-latest", // lightweight, fast
-  "gemini-1.5-pro-latest"    // more advanced, may hit quotas
+  "gemini-1.5-flash", // lightweight, fast
+  "gemini-1.5-pro"    // more advanced, may hit quotas
 ];
 
 export async function generateChatResponse(context, userQuestion, decade) {

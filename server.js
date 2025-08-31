@@ -1,31 +1,36 @@
 import express from 'express';
 import path from 'path';
-import mongoose from 'mongoose';
-import fs from 'fs/promises';
-import chatbotRoutes from './backend/routes/chatbot.js'
-import { fileURLToPath } from 'url';
-import dotenv from 'dotenv';
 import multer from 'multer';
+import mongoose from 'mongoose';
 import { BlobServiceClient } from '@azure/storage-blob';
+import fs from 'fs/promises';
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+
+// Import chatbot routes
+import chatRoutes from './backend/routes/chatbot.js';
 
 dotenv.config();
-mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log("MongoDB connected"))
-.catch(err => console.log("MongoDB connection error:", err));
 
-
+// Get directory name (ES module equivalent of __dirname)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static('.')); // Serve static files from current directory
+console.log('🚀 Starting Time Capsule Server...');
+console.log('📋 Environment check:');
+console.log('- MongoDB URI:', process.env.MONGO_URI ? '✓ Found' : '❌ Missing');
+console.log('- Azure Storage:', process.env.AZURE_STORAGE_CONNECTION_STRING ? '✓ Found' : '❌ Missing');
+console.log('- Azure Container:', process.env.AZURE_CONTAINER_NAME ? '✓ Found' : '❌ Missing');
 
-// Add CORS headers for development
+// Middleware
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+app.use(express.static(__dirname)); // Serve static files from current directory
+
+// Add CORS headers
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -37,30 +42,46 @@ app.use((req, res, next) => {
     }
 });
 
-// Add request logging
+// Log all incoming requests
 app.use((req, res, next) => {
     console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+    if (req.method === 'POST' && req.path.includes('/api/')) {
+        console.log('Request body keys:', Object.keys(req.body || {}));
+        console.log('Files:', req.files ? Object.keys(req.files) : 'No files');
+    }
     next();
 });
 
-// Configure multer for file uploads (store in memory)
+// Configure multer for file uploads
+const storage = multer.memoryStorage();
 const upload = multer({ 
-    storage: multer.memoryStorage(),
+    storage: storage,
     limits: {
-        fileSize: 50 * 1024 * 1024 // 50MB limit
+        fileSize: 50 * 1024 * 1024, // 50MB limit
+        files: 3 // Max 3 files
     }
 });
 
 // Azure Blob Storage setup
-const blobServiceClient = BlobServiceClient.fromConnectionString(
-    process.env.AZURE_STORAGE_CONNECTION_STRING
-);
-const containerClient = blobServiceClient.getContainerClient(process.env.AZURE_CONTAINER_NAME);
+let containerClient;
+if (process.env.AZURE_STORAGE_CONNECTION_STRING && process.env.AZURE_CONTAINER_NAME) {
+    try {
+        const blobServiceClient = BlobServiceClient.fromConnectionString(
+            process.env.AZURE_STORAGE_CONNECTION_STRING
+        );
+        containerClient = blobServiceClient.getContainerClient(process.env.AZURE_CONTAINER_NAME);
+        console.log('✅ Azure Blob Storage configured');
+    } catch (error) {
+        console.error('❌ Azure Blob Storage configuration failed:', error.message);
+    }
+}
 
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('MongoDB connection error:', err));
+if (process.env.MONGO_URI) {
+    mongoose.connect(process.env.MONGO_URI)
+        .then(() => console.log('✅ Connected to MongoDB'))
+        .catch(err => console.error('❌ MongoDB connection error:', err));
+}
 
 // Time Capsule Schema
 const timeCapsuleSchema = new mongoose.Schema({
@@ -74,31 +95,50 @@ const timeCapsuleSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
+// Create the model
 const TimeCapsule = mongoose.model('TimeCapsule', timeCapsuleSchema);
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-    res.json({ success: true, message: 'Server is running', timestamp: new Date().toISOString() });
-});
+// Mount chatbot routes
+console.log("Mounting chatbot routes...");
+app.use('/', chatRoutes);
+console.log("Chatbot routes mounted successfully");
 
 // Helper function to upload file to Azure Blob Storage
 async function uploadToAzure(file, fileName) {
     try {
-        const blockBlobClient = containerClient.getBlockBlobClient(fileName);
-        const uploadResponse = await blockBlobClient.upload(file.buffer, file.size);
+        if (!containerClient) {
+            throw new Error('Azure Blob Storage not configured');
+        }
         
-        // Return the URL of the uploaded file
+        const blockBlobClient = containerClient.getBlockBlobClient(fileName);
+        const uploadResponse = await blockBlobClient.upload(file.buffer, file.size, {
+            blobHTTPHeaders: {
+                blobContentType: file.mimetype
+            }
+        });
+        
+        console.log(`✅ File uploaded to Azure: ${fileName}`);
         return blockBlobClient.url;
     } catch (error) {
-        console.error('Error uploading to Azure:', error);
+        console.error('❌ Error uploading to Azure:', error);
         throw error;
     }
 }
 
-// Mount chatbot routes with explicit logging
-console.log("Mounting chatbot routes...");
-app.use('/', chatbotRoutes);
-console.log("Chatbot routes mounted successfully");
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+    res.json({ 
+        success: true, 
+        message: 'Time Capsule Server is running', 
+        timestamp: new Date().toISOString(),
+        endpoints: [
+            'GET /api/health',
+            'POST /api/time-capsule',
+            'GET /api/time-capsules',
+            'GET /api/year'
+        ]
+    });
+});
 
 // API endpoint to get year data
 app.get('/api/year', async (req, res) => {
@@ -147,8 +187,6 @@ app.get('/api/year', async (req, res) => {
 
 // Helper functions to generate sample data
 function getEventsForYear(year) {
-    // This would typically come from a database
-    // For demo purposes, we'll just generate some placeholder events
     return [
         `${year}: Major political event happened`,
         `${year}: Popular cultural milestone occurred`,
@@ -158,7 +196,6 @@ function getEventsForYear(year) {
 }
 
 function getTopSongForYear(year) {
-    // Placeholder data - in a real app, this would come from a database
     const songsByDecade = {
         1950: 'Rock Around the Clock',
         1960: 'I Want to Hold Your Hand',
@@ -175,13 +212,30 @@ function getTopSongForYear(year) {
 }
 
 function getFashionImageForDecade(decade) {
-    // In a real app, you would have specific images for each decade
     return `/images/fashion-${decade}.jpg`;
 }
 
 // Serve the main application
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Make the decades directory accessible as static files
+app.use('/decades', express.static(path.join(__dirname, 'decades')));
+
+// Also ensure assets directory is properly accessible
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+
+// Create a specific route to serve decade templates directly
+app.get('/decades/:template', async (req, res) => {
+  const templatePath = path.join(__dirname, 'decades', req.params.template);
+  
+  try {
+    await fs.access(templatePath);
+    res.sendFile(templatePath);
+  } catch (err) {
+    res.status(404).send(`Template '${req.params.template}' not found`);
+  }
 });
 
 // Handle time-explorer with template parameter
@@ -213,33 +267,18 @@ app.get('/time-explorer.html', async (req, res) => {
   res.sendFile(path.join(__dirname, 'time-explorer.html'));
 });
 
-// Make the decades directory accessible as static files
-// This ensures that relative paths like "../assets/images/..." work correctly
-app.use('/decades', express.static(path.join(__dirname, 'decades')));
-
-// Also ensure assets directory is properly accessible
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
-
-// Create a specific route to serve decade templates directly
-app.get('/decades/:template', async (req, res) => {
-  const templatePath = path.join(__dirname, 'decades', req.params.template);
-  
-  try {
-    await fs.access(templatePath);
-    res.sendFile(templatePath);
-  } catch (err) {
-    res.status(404).send(`Template '${req.params.template}' not found`);
-  }
-});
-
 // POST route for time capsule form submission
 app.post('/api/time-capsule', upload.fields([
     { name: 'audioFile', maxCount: 1 },
     { name: 'videoFile', maxCount: 1 },
     { name: 'imageFile', maxCount: 1 }
 ]), async (req, res) => {
-    console.log('Received time capsule submission:', {
-        body: req.body,
+    console.log('📨 Received time capsule submission');
+    console.log('📝 Form data:', {
+        message: req.body.message ? `${req.body.message.substring(0, 50)}...` : 'No message',
+        recipientType: req.body.recipientType,
+        recipientEmail: req.body.recipientEmail,
+        openDate: `${req.body.openDay}/${req.body.openMonth}/${req.body.openYear}`,
         files: req.files ? Object.keys(req.files) : 'No files'
     });
     
@@ -248,14 +287,16 @@ app.post('/api/time-capsule', upload.fields([
         
         // Validate required fields
         if (!message || !recipientType || !openDay || !openMonth || !openYear) {
+            console.log('❌ Missing required fields');
             return res.status(400).json({ 
                 success: false, 
-                message: 'Missing required fields' 
+                message: 'Missing required fields: message, recipientType, and date components are required' 
             });
         }
 
         // Validate recipient email if sending to someone else
         if (recipientType === 'other' && !recipientEmail) {
+            console.log('❌ Missing recipient email');
             return res.status(400).json({ 
                 success: false, 
                 message: 'Recipient email is required when sending to someone else' 
@@ -264,10 +305,12 @@ app.post('/api/time-capsule', upload.fields([
 
         // Create the open date
         const openDate = new Date(parseInt(openYear), parseInt(openMonth) - 1, parseInt(openDay));
+        console.log('📅 Open date:', openDate);
         
         // Validate that the date is at least 1 hour in the future
         const oneHourFromNow = new Date(Date.now() + (60 * 60 * 1000));
         if (openDate <= oneHourFromNow) {
+            console.log('❌ Invalid date - must be in future');
             return res.status(400).json({ 
                 success: false, 
                 message: 'Open date must be at least 1 hour in the future' 
@@ -286,19 +329,19 @@ app.post('/api/time-capsule', upload.fields([
         const files = req.files;
         const timestamp = Date.now();
 
-        if (files.audioFile && files.audioFile[0]) {
+        if (files && files.audioFile && files.audioFile[0]) {
             const audioFile = files.audioFile[0];
             const audioFileName = `audio_${timestamp}_${audioFile.originalname}`;
             timeCapsuleData.audioFileUrl = await uploadToAzure(audioFile, audioFileName);
         }
 
-        if (files.videoFile && files.videoFile[0]) {
+        if (files && files.videoFile && files.videoFile[0]) {
             const videoFile = files.videoFile[0];
             const videoFileName = `video_${timestamp}_${videoFile.originalname}`;
             timeCapsuleData.videoFileUrl = await uploadToAzure(videoFile, videoFileName);
         }
 
-        if (files.imageFile && files.imageFile[0]) {
+        if (files && files.imageFile && files.imageFile[0]) {
             const imageFile = files.imageFile[0];
             const imageFileName = `image_${timestamp}_${imageFile.originalname}`;
             timeCapsuleData.imageFileUrl = await uploadToAzure(imageFile, imageFileName);
@@ -307,6 +350,8 @@ app.post('/api/time-capsule', upload.fields([
         // Save to MongoDB
         const timeCapsule = new TimeCapsule(timeCapsuleData);
         await timeCapsule.save();
+        
+        console.log('✅ Time capsule saved to database');
 
         // Return success response
         res.json({
@@ -323,10 +368,10 @@ app.post('/api/time-capsule', upload.fields([
         });
 
     } catch (error) {
-        console.error('Error creating time capsule:', error);
+        console.error('❌ Error creating time capsule:', error);
         res.status(500).json({ 
             success: false, 
-            message: 'Internal server error' 
+            message: 'Internal server error: ' + error.message 
         });
     }
 });
@@ -344,7 +389,7 @@ app.get('/api/time-capsules', async (req, res) => {
 
 // Global error handler
 app.use((error, req, res, next) => {
-    console.error('Global error handler:', error);
+    console.error('🚨 Global error handler:', error);
     res.status(500).json({ 
         success: false, 
         message: 'Internal server error',
@@ -354,16 +399,20 @@ app.use((error, req, res, next) => {
 
 // 404 handler for API routes
 app.use('/api/*', (req, res) => {
+    console.log('❌ 404 - API endpoint not found:', req.path);
     res.status(404).json({ success: false, message: 'API endpoint not found' });
 });
 
-// Handle 404s
+// Handle general 404s
 app.use((req, res) => {
-  res.status(404).sendFile(path.join(__dirname, '404.html'));
+    res.status(404).sendFile(path.join(__dirname, '404.html'));
 });
 
 // Start server
 app.listen(PORT, () => {
-    console.log(`Time Capsule server running on port ${PORT}`);
-    console.log(`Visit http://localhost:${PORT} to access the Time Capsule`);
+    console.log(`🌟 Time Capsule Server running on port ${PORT}`);
+    console.log(`📱 Frontend: http://localhost:${PORT}/time-explorer.html`);
+    console.log(`🔍 Health check: http://localhost:${PORT}/api/health`);
 });
+
+export default app;

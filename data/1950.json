@@ -21,8 +21,12 @@
   ],
   "currency": [
     {
-      "topic": "cost of living",
-      "text": "A cup of tea cost about 10 paise. Gold was around ₹100 per 10 grams."
+      "name": "Dollar",
+      "value": "A dollar in 1950 had the purchasing power of about $11.60 in 2023 money. The minimum wage was 75 cents per hour. A new car cost around $1,500, while a gallon of gas was about 18 cents."
+    },
+    {
+      "name": "Indian Rupee",
+      "value": "In the 1950s, 1 Indian Rupee was equivalent to about 0.21 US dollars. A movie ticket might cost around 1 Rupee, while a middle-class government employee would earn about 200-300 Rupees per month."
     }
   ],
   "food": [
@@ -35,14 +39,48 @@
     {
       "title": "A morning in 1952",
       "text": "Radha woke up to the rooster crowing. The smell of boiling milk filled the courtyard as her father read the newspaper aloud."
+    },
+    {
+      "title": "Post-War America",
+      "text": "The 1950s in America was a time of unprecedented prosperity after World War II. The GI Bill helped veterans buy homes and attend college, leading to the growth of suburbs and a booming middle class. Families often had one breadwinner, usually the father, while mothers typically stayed home to raise children."
+    },
+    {
+      "title": "Cold War Tensions",
+      "text": "The Cold War between the United States and Soviet Union intensified during the 1950s. Fear of communism led to McCarthyism, where many Americans were accused of being communist sympathizers. Schools conducted duck-and-cover drills to prepare for potential nuclear attacks."
+    },
+    {
+      "title": "Post-War India",
+      "text": "The 1950s in India was a transformative time following independence from British rule in 1947. Under Prime Minister Jawaharlal Nehru, the nation was focused on establishing democratic institutions and economic development through Five-Year Plans. The Constitution of India came into effect in 1950, making India a sovereign democratic republic."
+    },
+    {
+      "title": "Cultural Renaissance",
+      "text": "Indian cinema saw a golden age in the 1950s with filmmakers like Satyajit Ray and Guru Dutt creating timeless classics. The decade also saw the rise of iconic actors like Raj Kapoor and Dilip Kumar, and actresses like Nargis and Madhubala. Traditional arts and crafts received government support through newly established institutions."
     }
   ],
   "phrases": [
     {
-      "text": "Arre bhaiya, mobile kya hota hai? Hum toh chitthiyan likhte hain!"
+      "phrase": "Daddy-O",
+      "meaning": "A friendly term of address"
     },
     {
-      "text": "Bazar se doodh lana mat bhoolna."
+      "phrase": "Hip",
+      "meaning": "Cool or trendy"
+    },
+    {
+      "phrase": "Dig",
+      "meaning": "To understand or appreciate something"
+    },
+    {
+      "phrase": "Accha",
+      "meaning": "Good/okay"
+    },
+    {
+      "phrase": "Namaste",
+      "meaning": "Traditional greeting"
+    },
+    {
+      "phrase": "Jai Hind",
+      "meaning": "Victory to India, a patriotic slogan"
     }
   ]
 }
