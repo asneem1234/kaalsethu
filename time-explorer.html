@@ -549,10 +549,145 @@
         .form-group:last-of-type {
             margin-bottom: 2rem;
         }
+
+        /* Received Capsules Button and Modal Styles */
+        #view-received-btn {
+            position: fixed;
+            right: 16px;
+            top: 16px;
+            z-index: 9999;
+            padding: 0.7rem 1.2rem;
+            background: rgba(155, 89, 182, 0.2);
+            border: 2px solid #9b59b6;
+            border-radius: 30px;
+            color: #e1d4ff;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        #view-received-btn:hover {
+            background: rgba(155, 89, 182, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(155, 89, 182, 0.4);
+        }
+        
+        #received-modal {
+            position: fixed;
+            right: 16px;
+            top: 70px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            background: rgba(26, 11, 46, 0.95);
+            border: 2px solid #9b59b6;
+            border-radius: 16px;
+            padding: 20px;
+            z-index: 9999;
+            overflow-y: auto;
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.4),
+                0 5px 15px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(155, 89, 182, 0.2) inset;
+            transform: translateY(-10px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        #received-modal.visible {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        #received-list {
+            margin-bottom: 20px;
+        }
+        
+        .capsule-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(177, 156, 217, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .capsule-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        #received-close {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: rgba(155, 89, 182, 0.3);
+            border: 1px solid #9b59b6;
+            border-radius: 8px;
+            color: #e1d4ff;
+            font-family: 'JetBrains Mono', monospace;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        #received-close:hover {
+            background: rgba(155, 89, 182, 0.5);
+        }
+        
+        .hidden {
+            display: none;
+        }
+
+        /* Profile button styling */
+        #profile-btn {
+            position: fixed;
+            right: 210px; /* Position to the left of the Received Capsules button */
+            top: 16px;
+            z-index: 9999;
+            padding: 0.7rem 1.2rem;
+            background: rgba(155, 89, 182, 0.2);
+            border: 2px solid #9b59b6;
+            border-radius: 30px;
+            color: #e1d4ff;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        #profile-btn:hover {
+            background: rgba(155, 89, 182, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(155, 89, 182, 0.4);
+        }
     </style>
 </head>
 <body>
     <div class="bg-stars"></div>
+    
+    <!-- Add Profile button before the Received Capsules button -->
+    <button id="profile-btn">
+        Your Profile
+    </button>
+    
+    <!-- Received Capsules Button and Modal -->
+    <button id="view-received-btn">
+        Received Capsules (<span id="received-count">0</span>)
+    </button>
+    
+    <div id="received-modal" role="dialog" aria-hidden="true">
+        <h3 style="margin-top: 0; color: #b19cd9; margin-bottom: 15px;">Your Received Time Capsules</h3>
+        <div id="received-list"></div>
+        <button id="received-close">Close</button>
+    </div>
+
     <div class="container">
         <header>
             <h1>Digital Time Capsule</h1>
@@ -1093,206 +1228,178 @@
                 }
             });
             
-            // Create enhanced star background with more stars and improved twinkling
-            function createStars() {
-                const starField = document.querySelector('.bg-stars');
-                const starCount = 350; // Increased from 100 to 350 stars
-                
-                // Add a subtle galaxy glow
-                const galaxyGlow = document.createElement('div');
-                galaxyGlow.style.cssText = `
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    width: 70%;
-                    height: 60%;
-                    background: radial-gradient(ellipse at center, rgba(155, 89, 182, 0.1) 0%, transparent 70%);
-                    z-index: 0;
-                    border-radius: 50%;
-                `;
-                starField.appendChild(galaxyGlow);
-                
-                // Create stars with varying sizes, colors and animations
-                for (let i = 0; i < starCount; i++) {
-                    const star = document.createElement('div');
-                    star.className = 'star';
-                    
-                    // Random positioning across the entire screen
-                    const left = Math.floor(Math.random() * 100);
-                    const top = Math.floor(Math.random() * 100);
-                    
-                    // Varied star sizes with occasional larger stars
-                    const sizeVariation = Math.random();
-                    const size = sizeVariation > 0.97 ? 3 + Math.random() * 2 : // Occasional larger stars (3%)
-                               sizeVariation > 0.85 ? 1.5 + Math.random() * 1 : // Medium stars (12%)
-                               0.5 + Math.random() * 1; // Small stars (85%)
-                    
-                    // Random opacity
-                    const opacity = 0.4 + Math.random() * 0.6;
-                    
-                    // Slight color variation
-                    const hue = Math.random() > 0.8 ? 
-                                Math.floor(Math.random() * 30) + 240 : // Occasional blue/purple tint
-                                Math.floor(Math.random() * 60) + 200; // White to light purple
-                    const saturation = Math.floor(Math.random() * 30);
-                    const color = `hsl(${hue}, ${saturation}%, 90%)`;
-                    
-                    star.style.cssText = `
-                        position: absolute;
-                        left: ${left}%;
-                        top: ${top}%;
-                        width: ${size}px;
-                        height: ${size}px;
-                        background: ${color};
-                        border-radius: 50%;
-                        opacity: ${opacity};
-                        box-shadow: 0 0 ${size * 3}px ${color.replace('90%', '70%')};
-                        z-index: ${Math.floor(size)};
-                    `;
-                    
-                    // Add staggered animation with random duration and delay
-                    const duration = 3 + Math.random() * 7;
-                    const delay = Math.random() * 5;
-                    star.style.animation = `twinkle ${duration}s infinite ${delay}s ease-in-out`;
-                    
-                    starField.appendChild(star);
+            // Received Capsules Functionality
+            const viewReceivedBtn = document.getElementById('view-received-btn');
+            const receivedModal = document.getElementById('received-modal');
+            const receivedClose = document.getElementById('received-close');
+            const receivedList = document.getElementById('received-list');
+            const receivedCount = document.getElementById('received-count');
+            
+            // Toggle modal visibility
+            viewReceivedBtn.addEventListener('click', () => {
+                receivedModal.classList.toggle('visible');
+                if (receivedModal.classList.contains('visible')) {
+                    fetchReceivedCapsules();
                 }
-                
-                // Add shooting stars that appear occasionally
-                setInterval(() => {
-                    if (Math.random() > 0.7) { // 30% chance of shooting star appearing
-                        createShootingStar(starField);
+            });
+            
+            // Close modal
+            receivedClose.addEventListener('click', () => {
+                receivedModal.classList.remove('visible');
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target !== receivedModal && 
+                    !receivedModal.contains(e.target) && 
+                    e.target !== viewReceivedBtn) {
+                    receivedModal.classList.remove('visible');
+                }
+            });
+            
+            // Fetch received capsules
+            async function fetchReceivedCapsules() {
+                try {
+                    // In a real implementation, the email would come from the authenticated user session
+                    // For now, we'll use a prompt as a placeholder
+                    const userEmail = prompt("Enter your email to check received capsules:");
+                    if (!userEmail) return;
+                    
+                    receivedList.innerHTML = '<p>Loading your capsules...</p>';
+                    
+                    const res = await fetch(`/api/capsules/received?email=${encodeURIComponent(userEmail)}`);
+                    if (res.status === 401) {
+                        receivedList.innerHTML = '<p>You must be logged in to view your capsules.</p>';
+                        return;
                     }
-                }, 8000);
-                
-                // Add keyframes for enhanced twinkling animation
-                const style = document.createElement('style');
-                style.textContent = `
-                    @keyframes twinkle {
-                        0%, 100% { opacity: 0.2; transform: scale(0.8); }
-                        50% { opacity: 0.9; transform: scale(1.1); }
+                    if (!res.ok) {
+                        throw new Error(`Failed to fetch: ${res.status}`);
                     }
                     
-                    @keyframes shooting {
-                        0% { transform: translate(0, 0) rotate(-35deg) scale(0.5); opacity: 0; }
-                        15% { opacity: 1; }
-                        60% { transform: translate(-100vw, 100vh) rotate(-35deg) scale(0.5); opacity: 0; }
-                        100% { transform: translate(-100vw, 100vh) rotate(-35deg) scale(0.5); opacity: 0; }
+                    const data = await res.json();
+                    const capsules = data.capsules || [];
+                    
+                    receivedCount.textContent = capsules.length;
+                    
+                    if (capsules.length === 0) {
+                        receivedList.innerHTML = '<p>No time capsules have been received yet.</p>';
+                        return;
                     }
-                `;
-                document.head.appendChild(style);
+                    
+                    receivedList.innerHTML = capsules.map(c => `
+                        <div class="capsule-item" data-id="${c._id}">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <div>
+                                    <strong>Opened:</strong> ${new Date(c.openDate).toLocaleDateString()}
+                                </div>
+                                <div>
+                                    <small>Created: ${new Date(c.createdAt).toLocaleDateString()}</small>
+                                </div>
+                            </div>
+                            
+                            <p>${(c.message || '').slice(0, 150)}${(c.message && c.message.length > 150) ? '...' : ''}</p>
+                            
+                            <div style="margin-top: 10px;">
+                                ${c.imageFileUrl ? `<a href="${c.imageFileUrl}" target="_blank" style="margin-right: 10px;">View Image</a>` : ''}
+                                ${c.audioFileUrl ? `<a href="${c.audioFileUrl}" target="_blank" style="margin-right: 10px;">Play Audio</a>` : ''}
+                                ${c.videoFileUrl ? `<a href="${c.videoFileUrl}" target="_blank">Watch Video</a>` : ''}
+                            </div>
+                        </div>
+                    `).join('');
+                } catch (err) {
+                    console.error('fetchReceivedCapsules error:', err);
+                    receivedList.innerHTML = '<p>Error loading your capsules. Please try again later.</p>';
+                }
             }
             
-            // Function to create occasional shooting stars
-            function createShootingStar(starField) {
-                const shootingStar = document.createElement('div');
-                
-                // Random position at top-right area
-                const startX = 70 + Math.random() * 30; // 70-100% of screen width
-                const startY = Math.random() * 30; // 0-30% of screen height
-                
-                shootingStar.style.cssText = `
-                    position: fixed;
-                    top: ${startY}vh;
-                    right: ${100 - startX}vw;
-                    width: 100px;
-                    height: 2px;
-                    background: linear-gradient(to right, transparent, #fff, transparent);
-                    border-radius: 50%;
-                    filter: drop-shadow(0 0 6px rgba(255,255,255,0.8));
-                    animation: shooting 3s ease-in-out forwards;
-                    z-index: 1;
-                    pointer-events: none;
-                `;
-                
-                starField.appendChild(shootingStar);
-                
-                // Remove the shooting star element after animation completes
-                setTimeout(() => {
-                    if (starField.contains(shootingStar)) {
-                        starField.removeChild(shootingStar);
+            // Add profile button functionality
+            const profileBtn = document.getElementById('profile-btn');
+            if (profileBtn) {
+                profileBtn.addEventListener('click', () => {
+                    // Use a simple prompt to get email since there's no login system connected
+                    const userEmail = localStorage.getItem('userEmail') || prompt("Enter your email to view your profile:");
+                    if (userEmail) {
+                        localStorage.setItem('userEmail', userEmail);
+                        alert(`Welcome back, ${userEmail}!\n\nYour profile information would appear here.`);
                     }
-                }, 3000);
+                });
             }
-
-            // Add parallax 3D effect based on mouse movement
-            document.addEventListener('mousemove', function(e) {
-                const formContainer = document.querySelector('.time-capsule-form-container');
-                if (!formContainer) return;
-                
-                // Only apply 3D effect if we're hovering over or near the form container
-                const rect = formContainer.getBoundingClientRect();
-                
-                // Skip effect if mouse is far from the form container
-                const padding = 100; // Extra area around the form to consider
-                if (e.clientX < rect.left - padding || e.clientX > rect.right + padding ||
-                    e.clientY < rect.top - padding || e.clientY > rect.bottom + padding) {
-                    return;
-                }
-                
-                // Calculate mouse position relative to the center of the container
-                const containerCenterX = rect.left + rect.width / 2;
-                const containerCenterY = rect.top + rect.height / 2;
-                
-                // Calculate mouse distance from center (normalized to -1 to 1)
-                const mouseX = (e.clientX - containerCenterX) / (rect.width / 2);
-                const mouseY = (e.clientY - containerCenterY) / (rect.height / 2);
-
-                // Apply subtle rotation based on mouse position
-                const maxRotation = 1.5; // degrees
-                const rotateX = -mouseY * maxRotation;
-                const rotateY = mouseX * maxRotation;
-                formContainer.style.transform = `
-                    translateZ(0px)
-                    rotateX(${rotateX}deg)
-                    rotateY(${rotateY}deg)
-                `;
-
-                // Move elements inside the container for parallax effect
-                const elements = {
-                    'h2': 15,
-                    '.media-label': 10,
-                    '.send-capsule-btn': 8,
-                    'input, select, textarea': 5
-                };
-                for (const selector in elements) {
-                    const depth = elements[selector];
-                    const items = formContainer.querySelectorAll(selector);
-                    items.forEach(item => {
-                        const moveX = mouseX * depth * 0.5;
-                        const moveY = mouseY * depth * 0.5;
-                        item.style.transform = `translateX(${moveX}px) translateY(${moveY}px) translateZ(${depth}px)`;
-                    });
-                }
-
-                // Move the cosmic portal in opposite direction for depth effect
-                const portal = document.querySelector('.cosmic-portal');
-                if (portal) {
-                    const portalShift = 20;
-                    portal.style.transform = `
-                        translate(-50%, -50%)
-                        translateZ(-50px)
-                        translate(calc(-50% + ${-mouseX * portalShift}px), calc(-50% + ${-mouseY * portalShift}px))
-                    `;
-                }
-            });
-
-            // Reset transform when mouse leaves the form
-            document.addEventListener('mouseleave', function() {
-                const formContainer = document.querySelector('.time-capsule-form-container');
-                if (formContainer) {
-                    formContainer.style.transform = 'translateZ(0px) rotateX(0deg) rotateY(0deg)';
-                    const elements = formContainer.querySelectorAll('h2, .media-label, .send-capsule-btn, input, select, textarea');
-                    elements.forEach(item => {
-                        item.style.transform = '';
-                    });
-                    const portal = document.querySelector('.cosmic-portal');
-                    if (portal) {
-                        portal.style.transform = 'translate(-50%, -50%) translateZ(-50px)';
+            
+            // Modify the fetchReceivedCapsules function to use localStorage email if available
+            const originalFetchReceivedCapsules = fetchReceivedCapsules;
+            window.fetchReceivedCapsules = async function() {
+                try {
+                    // Try to get email from localStorage first
+                    let userEmail = localStorage.getItem('userEmail');
+                    
+                    // If not found, prompt the user
+                    if (!userEmail) {
+                        userEmail = prompt("Enter your email to check received capsules:");
+                        if (userEmail) {
+                            localStorage.setItem('userEmail', userEmail);
+                        }
                     }
+                    
+                    if (!userEmail) return;
+                    
+                    receivedList.innerHTML = '<p>Loading your capsules...</p>';
+                    
+                    const res = await fetch(`/api/capsules/received?email=${encodeURIComponent(userEmail)}`);
+                    
+                    // Continue with existing code for handling the response
+                    if (res.status === 401) {
+                        receivedList.innerHTML = '<p>You must be logged in to view your capsules.</p>';
+                        return;
+                    }
+                    if (!res.ok) {
+                        throw new Error(`Failed to fetch: ${res.status}`);
+                    }
+                    
+                    const data = await res.json();
+                    const capsules = data.capsules || [];
+                    
+                    receivedCount.textContent = capsules.length;
+                    
+                    if (capsules.length === 0) {
+                        receivedList.innerHTML = '<p>No time capsules have been received yet.</p>';
+                        return;
+                    }
+                    
+                    receivedList.innerHTML = capsules.map(c => `
+                        <div class="capsule-item" data-id="${c._id}">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <div>
+                                    <strong>Opened:</strong> ${new Date(c.openDate).toLocaleDateString()}
+                                </div>
+                                <div>
+                                    <small>Created: ${new Date(c.createdAt).toLocaleDateString()}</small>
+                                </div>
+                            </div>
+                            
+                            <p>${(c.message || '').slice(0, 150)}${(c.message && c.message.length > 150) ? '...' : ''}</p>
+                            
+                            <div style="margin-top: 10px;">
+                                ${c.imageFileUrl ? `<a href="${c.imageFileUrl}" target="_blank" style="margin-right: 10px;">View Image</a>` : ''}
+                                ${c.audioFileUrl ? `<a href="${c.audioFileUrl}" target="_blank" style="margin-right: 10px;">Play Audio</a>` : ''}
+                                ${c.videoFileUrl ? `<a href="${c.videoFileUrl}" target="_blank">Watch Video</a>` : ''}
+                            </div>
+                        </div>
+                    `).join('');
+                } catch (err) {
+                    console.error('fetchReceivedCapsules error:', err);
+                    receivedList.innerHTML = '<p>Error loading your capsules. Please try again later.</p>';
                 }
-            });
+            }
+            
+            // Check for capsules on page load (optional)
+            // Uncomment this if you want to check automatically on page load
+            // window.addEventListener('DOMContentLoaded', fetchReceivedCapsules);
+        });
+
+        // Existing document DOMContentLoaded code
+        document.addEventListener('DOMContentLoaded', () => {
+            // Create stars for background
+            // ...existing code...
         });
     </script>
     <script src="test-server.js"></script>

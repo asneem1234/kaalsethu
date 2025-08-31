@@ -28,7 +28,9 @@ console.log('- Azure Container:', process.env.AZURE_CONTAINER_NAME ? '✓ Found'
 // Middleware
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
-app.use(express.static(__dirname)); // Serve static files from current directory
+
+// IMPORTANT: Moved static middleware after explicit routes to prevent index.html from being served automatically
+// We'll add it back in a more targeted way below
 
 // Add CORS headers
 app.use((req, res, next) => {
@@ -92,7 +94,8 @@ const timeCapsuleSchema = new mongoose.Schema({
     audioFileUrl: { type: String },
     videoFileUrl: { type: String },
     imageFileUrl: { type: String },
-    createdAt: { type: Date, default: Date.now }
+    createdAt: { type: Date, default: Date.now },
+    isSent: { type: Boolean, default: false }
 });
 
 // Create the model
@@ -215,16 +218,43 @@ function getFashionImageForDecade(decade) {
     return `/images/fashion-${decade}.jpg`;
 }
 
-// Serve the main application
+// Serve the main application - with more explicit handling
+// This needs to be BEFORE any static middleware to take precedence
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  console.log('Root route accessed - attempting to serve landing.html');
+  
+  // Add no-cache headers to prevent browser caching
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  res.setHeader('Surrogate-Control', 'no-store');
+  
+  // Check if file exists first
+  const landingPath = path.join(__dirname, 'landing.html');
+  console.log(`Full landing.html path: ${landingPath}`);
+  
+  fs.access(landingPath)
+    .then(() => {
+      console.log('✅ landing.html exists, serving it directly');
+      res.sendFile(landingPath);
+    })
+    .catch((err) => {
+      console.error(`❌ landing.html not found or not accessible: ${err.message}`);
+      res.sendFile(path.join(__dirname, 'index.html'));
+    });
 });
 
-// Make the decades directory accessible as static files
-app.use('/decades', express.static(path.join(__dirname, 'decades')));
-
-// Also ensure assets directory is properly accessible
+// Now add specific static middleware AFTER the root route handler
+// This ensures our explicit routes take precedence
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('/decades', express.static(path.join(__dirname, 'decades')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
+// For other static files that need to be served from root
+// but don't make index.html the default
+app.use(express.static(__dirname, {
+  index: false  // This prevents serving index.html automatically
+}));
 
 // Create a specific route to serve decade templates directly
 app.get('/decades/:template', async (req, res) => {
@@ -376,6 +406,39 @@ app.post('/api/time-capsule', upload.fields([
     }
 });
 
+// API endpoint for received time capsules
+app.get('/api/capsules/received', async (req, res) => {
+    try {
+        // Check if user is authenticated (assuming req.user would be set by auth middleware)
+        // For now, we'll use a query param as a placeholder
+        const userEmail = req.query.email;
+        
+        if (!userEmail) {
+            return res.status(401).json({ success: false, message: 'Not authenticated' });
+        }
+
+        const now = new Date();
+        const query = { 
+            recipientEmail: userEmail, 
+            openDate: { $lte: now } 
+        };
+
+        // If model has isSent, require it to be true
+        const hasIsSent = !!TimeCapsule.schema.path('isSent');
+        if (hasIsSent) query.isSent = true;
+
+        const capsules = await TimeCapsule.find(query)
+            .select('message recipientEmail audioFileUrl videoFileUrl imageFileUrl openDate createdAt')
+            .sort({ openDate: -1 })
+            .lean();
+
+        return res.json({ success: true, capsules });
+    } catch (err) {
+        console.error('Error fetching received capsules:', err);
+        return res.status(500).json({ success: false, message: 'Server error' });
+    }
+});
+
 // Route to get all time capsules (for testing)
 app.get('/api/time-capsules', async (req, res) => {
     try {
@@ -411,8 +474,9 @@ app.use((req, res) => {
 // Start server
 app.listen(PORT, () => {
     console.log(`🌟 Time Capsule Server running on port ${PORT}`);
-    console.log(`📱 Frontend: http://localhost:${PORT}/time-explorer.html`);
+    console.log(`📱 Root URL: http://localhost:${PORT}/`);
     console.log(`🔍 Health check: http://localhost:${PORT}/api/health`);
 });
 
 export default app;
+
