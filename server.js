@@ -1,68 +1,42 @@
 import express from 'express';
-import path from 'path';
-import multer from 'multer';
-import mongoose from 'mongoose';
-import { BlobServiceClient } from '@azure/storage-blob';
-import fs from 'fs/promises';
+import cors from 'cors';
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs/promises';
+import multer from 'multer';
+import { BlobServiceClient } from '@azure/storage-blob';
 
-// Import chatbot routes
-import chatRoutes from './backend/routes/chatbot.js';
+// Import routes - Fix path to point to backend/routes
+import authRoutes from './backend/routes/authRoutes.js';
 
+// Load environment variables
 dotenv.config();
 
-// Get directory name (ES module equivalent of __dirname)
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Get __dirname equivalent for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-console.log('🚀 Starting Time Capsule Server...');
-console.log('📋 Environment check:');
-console.log('- MongoDB URI:', process.env.MONGO_URI ? '✓ Found' : '❌ Missing');
-console.log('- Azure Storage:', process.env.AZURE_STORAGE_CONNECTION_STRING ? '✓ Found' : '❌ Missing');
-console.log('- Azure Container:', process.env.AZURE_CONTAINER_NAME ? '✓ Found' : '❌ Missing');
-
-// Middleware
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
-
-// IMPORTANT: Moved static middleware after explicit routes to prevent index.html from being served automatically
-// We'll add it back in a more targeted way below
-
-// Add CORS headers
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    if (req.method === 'OPTIONS') {
-        res.sendStatus(200);
-    } else {
-        next();
-    }
-});
-
-// Log all incoming requests
-app.use((req, res, next) => {
-    console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
-    if (req.method === 'POST' && req.path.includes('/api/')) {
-        console.log('Request body keys:', Object.keys(req.body || {}));
-        console.log('Files:', req.files ? Object.keys(req.files) : 'No files');
-    }
-    next();
-});
+// Define paths - HTML files are in the same directory as server.js
+const PUBLIC_DIR = __dirname;
 
 // Configure multer for file uploads
 const storage = multer.memoryStorage();
-const upload = multer({ 
-    storage: storage,
+const upload = multer({
+    storage,
     limits: {
         fileSize: 50 * 1024 * 1024, // 50MB limit
         files: 3 // Max 3 files
     }
 });
+
+// Middleware
+app.use(cors());
+app.use(express.json());
 
 // Azure Blob Storage setup
 let containerClient;
@@ -78,12 +52,10 @@ if (process.env.AZURE_STORAGE_CONNECTION_STRING && process.env.AZURE_CONTAINER_N
     }
 }
 
-// MongoDB connection
-if (process.env.MONGO_URI) {
-    mongoose.connect(process.env.MONGO_URI)
-        .then(() => console.log('✅ Connected to MongoDB'))
-        .catch(err => console.error('❌ MongoDB connection error:', err));
-}
+// Database connection
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('✅ Connected to MongoDB'))
+  .catch((err) => console.error('❌ MongoDB connection error:', err));
 
 // Time Capsule Schema
 const timeCapsuleSchema = new mongoose.Schema({
@@ -101,10 +73,71 @@ const timeCapsuleSchema = new mongoose.Schema({
 // Create the model
 const TimeCapsule = mongoose.model('TimeCapsule', timeCapsuleSchema);
 
-// Mount chatbot routes
-console.log("Mounting chatbot routes...");
-app.use('/', chatRoutes);
-console.log("Chatbot routes mounted successfully");
+// API Routes
+app.use('/api/auth', authRoutes);
+
+// Define the root route FIRST to ensure it takes priority
+app.get('/', async (req, res) => {
+    console.log('Root route accessed - attempting to serve landing.html');
+    
+    // Add no-cache headers to prevent browser caching
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.setHeader('Surrogate-Control', 'no-store');
+    
+    // Check if file exists first with detailed error logging
+    const landingPath = path.join(__dirname, 'landing.html');
+    console.log(`Full landing.html path: ${landingPath}`);
+    console.log(`Does the file exist on disk? Checking...`);
+    
+    try {
+        // Check if file exists
+        const stats = await fs.stat(landingPath);
+        console.log(`✅ landing.html found: ${stats.size} bytes, isFile: ${stats.isFile()}`);
+        
+        // List directory contents to verify
+        console.log('Directory contents:');
+        const files = await fs.readdir(__dirname);
+        files.forEach(file => console.log(` - ${file}`));
+        
+        // Serve the file with absolute path to avoid any ambiguity
+        console.log('Serving landing.html directly');
+        return res.sendFile(landingPath, { dotfiles: 'allow' });
+    } catch (err) {
+        console.error(`❌ Error with landing.html: ${err.message}`);
+        console.error(`Error code: ${err.code}`);
+        
+        // Show a clear error instead of falling back to index.html
+        return res.status(404).send(`
+            <h1>Error: landing.html not found</h1>
+            <p>Could not find landing.html at: ${landingPath}</p>
+            <p>Error: ${err.message}</p>
+            <p>Please check the file location and server configuration.</p>
+        `);
+    }
+});
+
+// IMPORTANT: NOW add static middleware AFTER specific routes
+// This ensures your route handlers take precedence over static file serving
+app.use(express.static(PUBLIC_DIR, {
+    index: false  // Disable automatic serving of index.html files
+}));
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+    res.json({ 
+        success: true, 
+        message: 'Time Capsule Server is running', 
+        timestamp: new Date().toISOString(),
+        endpoints: [
+            'GET /api/health',
+            'POST /api/time-capsule',
+            'GET /api/time-capsules',
+            'GET /api/year'
+        ]
+    });
+});
 
 // Helper function to upload file to Azure Blob Storage
 async function uploadToAzure(file, fileName) {
@@ -127,21 +160,6 @@ async function uploadToAzure(file, fileName) {
         throw error;
     }
 }
-
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-    res.json({ 
-        success: true, 
-        message: 'Time Capsule Server is running', 
-        timestamp: new Date().toISOString(),
-        endpoints: [
-            'GET /api/health',
-            'POST /api/time-capsule',
-            'GET /api/time-capsules',
-            'GET /api/year'
-        ]
-    });
-});
 
 // API endpoint to get year data
 app.get('/api/year', async (req, res) => {
@@ -218,83 +236,67 @@ function getFashionImageForDecade(decade) {
     return `/images/fashion-${decade}.jpg`;
 }
 
-// Serve the main application - with more explicit handling
-// This needs to be BEFORE any static middleware to take precedence
-app.get('/', (req, res) => {
-  console.log('Root route accessed - attempting to serve landing.html');
-  
-  // Add no-cache headers to prevent browser caching
-  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-  res.setHeader('Pragma', 'no-cache');
-  res.setHeader('Expires', '0');
-  res.setHeader('Surrogate-Control', 'no-store');
-  
-  // Check if file exists first
-  const landingPath = path.join(__dirname, 'landing.html');
-  console.log(`Full landing.html path: ${landingPath}`);
-  
-  fs.access(landingPath)
-    .then(() => {
-      console.log('✅ landing.html exists, serving it directly');
-      res.sendFile(landingPath);
-    })
-    .catch((err) => {
-      console.error(`❌ landing.html not found or not accessible: ${err.message}`);
-      res.sendFile(path.join(__dirname, 'index.html'));
-    });
+// Test route to verify server operation
+app.get('/test-server', (req, res) => {
+    res.send(`
+        <h1>Server Test Page</h1>
+        <p>The server is running correctly.</p>
+        <p>Server time: ${new Date().toISOString()}</p>
+        <p>Looking for landing.html at: ${path.join(__dirname, 'landing.html')}</p>
+    `);
 });
 
-// Now add specific static middleware AFTER the root route handler
-// This ensures our explicit routes take precedence
+// Now add specific static middleware for assets
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use('/decades', express.static(path.join(__dirname, 'decades')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-// For other static files that need to be served from root
-// but don't make index.html the default
-app.use(express.static(__dirname, {
-  index: false  // This prevents serving index.html automatically
-}));
+// Serve decade pages
+app.get('/decades/:decade/*', (req, res) => {
+    const decade = req.params.decade;
+    const filePath = path.join(__dirname, `decades/${decade}/index.html`);
+    res.sendFile(filePath);
+});
 
 // Create a specific route to serve decade templates directly
 app.get('/decades/:template', async (req, res) => {
-  const templatePath = path.join(__dirname, 'decades', req.params.template);
-  
-  try {
-    await fs.access(templatePath);
-    res.sendFile(templatePath);
-  } catch (err) {
-    res.status(404).send(`Template '${req.params.template}' not found`);
-  }
+    const templatePath = path.join(__dirname, 'decades', req.params.template);
+    
+    try {
+        await fs.access(templatePath);
+        res.sendFile(templatePath);
+    } catch (err) {
+        res.status(404).send(`Template '${req.params.template}' not found`);
+    }
 });
 
 // Handle time-explorer with template parameter
 app.get('/time-explorer.html', async (req, res) => {
-  const { template, year } = req.query;
-  
-  console.log(`Accessing time-explorer with params: year=${year}, template=${template}`);
-  
-  if (template) {
-    try {
-      // Check if the template file exists in the decades directory
-      const templatePath = path.join(__dirname, 'decades', template);
-      console.log(`Looking for template at: ${templatePath}`);
-      
-      // Check if file exists before trying to serve it
-      await fs.access(templatePath);
-      console.log(`Template file found, serving: ${templatePath}`);
-      
-      // If the template exists, serve it directly
-      return res.sendFile(templatePath);
-    } catch (err) {
-      console.error(`Error serving template '${template}': ${err.message}`);
-      // If template doesn't exist, fall back to default time-explorer.html
+    const { template, year } = req.query;
+    
+    console.log(`Accessing time-explorer with params: year=${year}, template=${template}`);
+    
+    if (template) {
+        try {
+            // Check if the template file exists in the decades directory
+            const templatePath = path.join(__dirname, 'decades', template);
+            console.log(`Looking for template at: ${templatePath}`);
+            
+            // Check if file exists before trying to serve it
+            await fs.access(templatePath);
+            console.log(`Template file found, serving: ${templatePath}`);
+            
+            // If the template exists, serve it directly
+            return res.sendFile(templatePath);
+        } catch (err) {
+            console.error(`Error serving template '${template}': ${err.message}`);
+            // If template doesn't exist, fall back to default time-explorer.html
+        }
     }
-  }
-  
-  console.log('Falling back to default time-explorer.html');
-  // Default behavior - serve the regular time-explorer.html
-  res.sendFile(path.join(__dirname, 'time-explorer.html'));
+    
+    console.log('Falling back to default time-explorer.html');
+    // Default behavior - serve the regular time-explorer.html
+    res.sendFile(path.join(__dirname, 'time-explorer.html'));
 });
 
 // POST route for time capsule form submission
@@ -396,7 +398,6 @@ app.post('/api/time-capsule', upload.fields([
                 })
             }
         });
-
     } catch (error) {
         console.error('❌ Error creating time capsule:', error);
         res.status(500).json({ 
@@ -406,11 +407,9 @@ app.post('/api/time-capsule', upload.fields([
     }
 });
 
-// API endpoint for received time capsules
-app.get('/api/capsules/received', async (req, res) => {
+// Route to get all received time capsules for the authenticated user
+app.get('/api/my-received-capsules', async (req, res) => {
     try {
-        // Check if user is authenticated (assuming req.user would be set by auth middleware)
-        // For now, we'll use a query param as a placeholder
         const userEmail = req.query.email;
         
         if (!userEmail) {
@@ -479,4 +478,3 @@ app.listen(PORT, () => {
 });
 
 export default app;
-

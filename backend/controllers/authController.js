@@ -1,10 +1,18 @@
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
-// Generate JWT token
-const generateToken = (userId) => {
-  return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
-    expiresIn: '30d'
+// Update the token generation function to handle missing secret
+const generateToken = (id) => {
+  const secret = process.env.JWT_SECRET;
+  
+  if (!secret) {
+    console.error('JWT_SECRET is not defined in environment variables');
+    throw new Error('Token generation failed: Server configuration error');
+  }
+  
+  return jwt.sign({ id }, secret, {
+    expiresIn: process.env.JWT_EXPIRES_IN || '7d'
   });
 };
 
@@ -66,9 +74,9 @@ export const login = async (req, res, next) => {
     
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ 
+      return res.status(401).json({ 
         success: false, 
-        message: "Account does not exist." 
+        message: "Invalid credentials. Please check your email." 
       });
     }
     
@@ -97,7 +105,11 @@ export const login = async (req, res, next) => {
     });
     
   } catch (error) {
-    next(error);
+    console.error('Login error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Server error during login process' 
+    });
   }
 };
 

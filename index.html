@@ -10,6 +10,7 @@
 
     <style>
         * {
+            
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -151,7 +152,46 @@
         .auth-nav-btn:active {
             transform: translateY(-1px);
         }
+        
+        /* User Navigation */
+        .user-nav {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 100;
+        }
 
+        .cosmic-btn {
+            padding: 0.8rem 1.5rem;
+            background: rgba(26, 11, 46, 0.3);
+            backdrop-filter: blur(10px);
+            border: 2px solid #b19cd9;
+            border-radius: 25px;
+            color: #b19cd9;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-block;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .cosmic-btn:hover {
+            background: rgba(177, 156, 217, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(177, 156, 217, 0.3);
+        }
+
+        .cosmic-btn:active {
+            transform: translateY(-1px);
+        }
+        
         /* Auth Modal Styles */
         .auth-modal {
             position: fixed;
@@ -543,38 +583,6 @@
             transform: rotate(90deg);
         }
 
-        .popup-actions {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        .popup-btn {
-            padding: 0.8rem 1.5rem;
-            background: rgba(177, 156, 217, 0.3);
-            border: 2px solid #b19cd9;
-            border-radius: 30px;
-            color: #e1d4ff;
-            font-weight: 500;
-            font-family: inherit;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .popup-btn:hover {
-            background: rgba(155, 89, 182, 0.5);
-            box-shadow: 0 0 20px rgba(177, 156, 217, 0.5);
-            transform: translateY(-3px);
-        }
-
-        .popup-icon {
-            font-size: 3rem;
-            color: #b19cd9;
-            margin-bottom: 1rem;
-            display: block;
-            text-align: center;
-        }
-
         .year-selector-overlay {
             position: fixed;
             top: 0;
@@ -822,7 +830,152 @@
             opacity: 0;
         }
 
+        /* Inbox Modal Styles */
+        .inbox-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(26, 11, 46, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
 
+        .inbox-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .inbox-modal-content {
+            background: linear-gradient(145deg, rgba(177, 156, 217, 0.25), rgba(155, 89, 182, 0.25));
+            border: 2px solid #b19cd9;
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 90%;
+            width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 50px rgba(177, 156, 217, 0.5);
+            backdrop-filter: blur(15px);
+            transform: translateY(30px) scale(0.95);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        .inbox-modal.active .inbox-modal-content {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .inbox-modal-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 0;
+            padding: 1rem 0;
+            background: rgba(26, 11, 46, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            z-index: 10;
+        }
+
+        .inbox-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 30px;
+            height: 30px;
+            border: 2px solid #b19cd9;
+            border-radius: 50%;
+            background: transparent;
+            color: #b19cd9;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .inbox-modal-close:hover {
+            background: rgba(177, 156, 217, 0.3);
+            transform: rotate(90deg);
+        }
+        
+        .capsule-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .capsule-item {
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(177, 156, 217, 0.3);
+            background: rgba(26, 11, 46, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .capsule-item:hover {
+            background: rgba(26, 11, 46, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(155, 89, 182, 0.2);
+        }
+        
+        .capsule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(177, 156, 217, 0.2);
+        }
+        
+        .capsule-date {
+            font-size: 0.9rem;
+            color: #b19cd9;
+        }
+        
+        .capsule-message {
+            margin: 1rem 0;
+            color: #e1d4ff;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .capsule-media {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .capsule-media img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+        
+        .capsule-media audio, .capsule-media video {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+        
+        .no-capsules {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #b19cd9;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -832,6 +985,13 @@
     <div class="auth-nav">
         <button class="auth-nav-btn" id="loginNavBtn">Login</button>
         <button class="auth-nav-btn" id="signupNavBtn">Sign Up</button>
+    </div>
+
+    <!-- User Navigation - to be shown after login -->
+    <div class="user-nav" style="display: none;">
+        <button class="cosmic-btn" id="viewProfileBtn">View Profile</button>
+        <button class="cosmic-btn" id="inboxBtn">Inbox</button>
+        <button class="cosmic-btn" id="logoutBtn">Logout</button>
     </div>
 
     <!-- Login Modal -->
@@ -919,6 +1079,20 @@
             <div class="year-selector-actions">
                 <button class="year-selector-btn" id="confirmYearBtn">Confirm Year</button>
                 <button class="year-selector-btn" id="closeYearSelectorBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inbox Modal -->
+    <div class="inbox-modal" id="inboxModal">
+        <div class="inbox-modal-content">
+            <button class="inbox-modal-close" id="closeInboxModal">×</button>
+            <div class="inbox-modal-header">
+                <h2>Your Time Capsules</h2>
+            </div>
+            <div class="capsule-list" id="capsuleList">
+                <!-- Capsules will be loaded here -->
+                <div class="no-capsules">Loading your time capsules...</div>
             </div>
         </div>
     </div>
@@ -2191,14 +2365,15 @@
         // Update auth UI after login/signup
         function updateAuthUI(user) {
             const authNav = document.querySelector('.auth-nav');
-            authNav.innerHTML = `
-                <div class="auth-nav-btn" style="cursor: default; background: rgba(177, 156, 217, 0.2);">
-                    Welcome, ${user.name}
-                </div>
-                <button class="auth-nav-btn" id="logoutBtn">Logout</button>
-            `;
+            const userNav = document.querySelector('.user-nav');
             
-            // Add logout functionality
+            // Hide auth nav and show user nav
+            authNav.style.display = 'none';
+            userNav.style.display = 'flex';
+            
+            // Add event listeners for user nav buttons
+            document.getElementById('viewProfileBtn').addEventListener('click', viewProfile);
+            document.getElementById('inboxBtn').addEventListener('click', showInbox);
             document.getElementById('logoutBtn').addEventListener('click', logout);
         }
 
@@ -2207,12 +2382,11 @@
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             
-            // Reset auth UI
+            // Hide user nav and show auth nav
             const authNav = document.querySelector('.auth-nav');
-            authNav.innerHTML = `
-                <button class="auth-nav-btn" id="loginNavBtn">Login</button>
-                <button class="auth-nav-btn" id="signupNavBtn">Sign Up</button>
-            `;
+            const userNav = document.querySelector('.user-nav');
+            authNav.style.display = 'flex';
+            userNav.style.display = 'none';
             
             // Re-add event listeners
             document.getElementById('loginNavBtn').addEventListener('click', () => {
@@ -2246,6 +2420,135 @@
             });
             
             showCosmicMessage('Successfully logged out! 👋', 'success');
+        }
+
+        // View profile function
+        function viewProfile() {
+            // For now, just show a message
+            showCosmicMessage('Profile feature coming soon!', 'success');
+        }
+
+        // Show inbox function
+        function showInbox() {
+            const inboxModal = document.getElementById('inboxModal');
+            inboxModal.classList.add('active');
+            
+            // Animate modal content
+            const modalContent = inboxModal.querySelector('.inbox-modal-content');
+            gsap.fromTo(modalContent,
+                { y: 30, opacity: 0, scale: 0.95 },
+                { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" }
+            );
+            
+            // Load capsules
+            loadReceivedCapsules();
+        }
+
+        // Close inbox modal
+        document.getElementById('closeInboxModal').addEventListener('click', () => {
+            const inboxModal = document.getElementById('inboxModal');
+            const modalContent = inboxModal.querySelector('.inbox-modal-content');
+            
+            // Animate out
+            gsap.to(modalContent, {
+                y: 30,
+                opacity: 0,
+                scale: 0.95,
+                duration: 0.3,
+                onComplete: () => {
+                    inboxModal.classList.remove('active');
+                }
+            });
+        });
+
+        // Load received capsules
+        async function loadReceivedCapsules() {
+            const capsuleList = document.getElementById('capsuleList');
+            capsuleList.innerHTML = '<div class="no-capsules">Loading your time capsules...</div>';
+            
+            try {
+                const user = JSON.parse(localStorage.getItem('user'));
+                const token = localStorage.getItem('token');
+                
+                if (!user || !user.email || !token) {
+                    capsuleList.innerHTML = '<div class="no-capsules">Please log in to view your capsules</div>';
+                    return;
+                }
+                
+                const response = await fetch(`/api/my-received-capsules?email=${encodeURIComponent(user.email)}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.message || 'Failed to load capsules');
+                }
+                
+                if (!data.capsules || data.capsules.length === 0) {
+                    capsuleList.innerHTML = '<div class="no-capsules">No time capsules found. Check back later!</div>';
+                    return;
+                }
+                
+                // Display the capsules
+                let capsulesHTML = '';
+                data.capsules.forEach(capsule => {
+                    const openDate = new Date(capsule.openDate).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                    
+                    const createdDate = new Date(capsule.createdAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                    
+                    let mediaHTML = '';
+                    
+                    if (capsule.imageFileUrl) {
+                        mediaHTML += `<img src="${capsule.imageFileUrl}" alt="Time Capsule Image">`;
+                    }
+                    
+                    if (capsule.audioFileUrl) {
+                        mediaHTML += `
+                            <audio controls>
+                                <source src="${capsule.audioFileUrl}" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        `;
+                    }
+                    
+                    if (capsule.videoFileUrl) {
+                        mediaHTML += `
+                            <video width="320" height="240" controls>
+                                <source src="${capsule.videoFileUrl}" type="video/mp4">
+                                Your browser does not support the video element.
+                            </video>
+                        `;
+                    }
+                    
+                    capsulesHTML += `
+                        <div class="capsule-item">
+                            <div class="capsule-header">
+                                <div class="capsule-date">Opened: ${openDate}</div>
+                                <div class="capsule-date">Created: ${createdDate}</div>
+                            </div>
+                            <div class="capsule-message">${capsule.message}</div>
+                            ${mediaHTML ? `<div class="capsule-media">${mediaHTML}</div>` : ''}
+                        </div>
+                    `;
+                });
+                
+                capsuleList.innerHTML = capsulesHTML;
+                
+            } catch (error) {
+                console.error('Error loading capsules:', error);
+                capsuleList.innerHTML = `<div class="no-capsules">Error: ${error.message || 'Failed to load capsules'}</div>`;
+            }
         }
 
         // Check if user is already logged in
