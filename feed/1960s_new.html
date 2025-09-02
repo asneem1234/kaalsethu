@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1960s India - Time Capsule</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-dark: #2a2720; /* Slightly lighter background */
+            --text-beige: #ece0ca; /* Brighter text color */
+            --text-cream: #fff3e0; /* Brighter cream color */
+            --accent-gold: #f5d78b; /* Brighter gold */
+            --muted-gold: #d9c4a9; /* Lighter muted gold */
+            --dark-brown: #4e412d; /* Slightly lighter brown */
+            --medium-brown: #7a6a4c; /* Lighter medium brown */
+            --border-color: #a99982; /* Lighter border */
+            --subtle-border: #5a5040; /* Lighter subtle border */
+            --dusty-brown: #8e806a; /* Lighter dusty brown */
+            --accent-red: #d35454; /* Brighter red */
+            --accent-orange: #ff9d4a; /* Brighter orange */
+        }
+        
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--background-dark);
+            color: var(--text-beige);
+            position: relative;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Film grain canvas - increased grain for 1960s */
+        #filmGrainCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 102;
+            pointer-events: none;
+            opacity: 0.25; /* Less grain than 1950s */
+            mix-blend-mode: overlay;
+        }
+        
+        /* Vignette canvas */
+        #vignetteCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 103;
+            pointer-events: none;
+            opacity: 0.6; /* Less vignette than 1950s */
+        }
+        
+        /* Film Edge Mark - simulating the film strip edge */
+        .film-edge {
+            position: fixed;
+            top: 0;
+            left: 20%;
+            width: 1px;
+            height: 100%;
+            background-color: rgba(255,255,255,0.5);
+            opacity: 0.15;
+            z-index: 104;
+            pointer-events: none;
+        }
+        
+        /* Body transitions for flicker effect */
+        body {
+            transition: opacity 0.07s ease;
+        }
+
+        /* Color Splash Effect - bold color overlay unique to 60s to represent Technicolor films */
+        .color-splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(
+                circle at 70% 30%,
+                rgba(255, 100, 25, 0.15) 0%, /* More vibrant orange */
+                rgba(255, 0, 0, 0) 65%
+            ), 
+            radial-gradient(
+                circle at 30% 70%,
+                rgba(30, 120, 255, 0.18) 0%, /* Brighter blue */
+                rgba(0, 0, 255, 0) 65%
+            ),
+            radial-gradient(
+                circle at 80% 80%,
+                rgba(255, 240, 30, 0.12) 0%, /* Brighter yellow */
+                rgba(255, 230, 0, 0) 75%
+            ),
+            radial-gradient(
+                circle at 20% 20%,
+                rgba(200, 70, 255, 0.08) 0%, /* Adding purple */
+                rgba(200, 0, 255, 0) 70%
+            );
+            pointer-events: none;
+            z-index: 101;
+            mix-blend-mode: color;
+            opacity: 0.85; /* Slightly more visible */
+        }
+
+        /* Vintage Photo Vignette Effect */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, 
+                            rgba(230, 210, 183, 0) 60%, 
+                            rgba(82, 66, 53, 0.4) 100%);
+            pointer-events: none;
+            z-index: 101;
+            opacity: 0.6;
+        }
+        
+        /* Header styles */
+        header {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .header-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-color: var(--dark-brown);
+            background-size: cover;
+            background-position: center;
+            filter: sepia(0.2) contrast(1.1); /* Less sepia than 1950s */
+        }
+
+        .header-background::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(78, 65, 45, 0.05), rgba(42, 39, 32, 0.6)); /* Lighter gradient */
+        }
+
+        .header-content {
+            text-align: center;
+            z-index: 1;
+            padding: 3rem;
+            max-width: 1000px;
+            background-color: rgba(78, 65, 45, 0.75); /* Lighter background */
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-top: 5px solid var(--accent-orange);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            color: var(--text-cream);
+            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.5rem;
+            color: var(--muted-gold);
+            margin-bottom: 2rem;
+            letter-spacing: 2px;
+        }
+
+        .decade-description {
+            font-size: 1.2rem;
+            color: var(--text-cream);
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .decade-btn {
+            background-color: var(--accent-orange);
+            color: var(--dark-brown);
+            border: none;
+            padding: 1rem 2rem;
+            font-family: 'Roboto Mono', monospace;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 4px;
+            letter-spacing: 1px;
+        }
+
+        .decade-btn:hover {
+            background-color: var(--text-cream);
+            color: var(--dark-brown);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Navigation styles */
+        nav.category-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            background-color: rgba(78, 65, 45, 0.95); /* Lighter background */
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            border-bottom: 1px solid var(--accent-orange); /* Adding border for more pop */
+        }
+
+        .tab {
+            padding: 1.2rem 1.8rem;
+            font-family: 'Roboto Mono', monospace;
+            font-weight: 600;
+            color: var(--text-cream);
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            letter-spacing: 0.5px; /* Better readability */
+        }
+
+        .tab::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background-color: var(--accent-orange);
+            transition: all 0.3s;
+        }
+
+        .tab:hover::after, .tab.active::after {
+            width: 80%;
+        }
+
+        .tab:hover, .tab.active {
+            color: var(--accent-orange);
+        }
+        
+        /* Main content styles */
+        main {
+            position: relative;
+            padding: 4rem 2rem;
+            background-color: var(--background-dark);
+        }
+
+        .section {
+            padding: 3rem 0;
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--accent-orange);
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); /* Add subtle shadow */
+            letter-spacing: 0.5px; /* Better spacing */
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px; /* Slightly wider */
+            height: 3px;
+            background: linear-gradient(to right, var(--accent-orange), var(--accent-gold)); /* Gradient underline */
+            border-radius: 2px; /* Rounded edges */
+        }
+
+        /* Card styles */
+        .card {
+            background: rgba(42, 39, 32, 0.85); /* Lighter, more transparent background */
+            border: 1px solid var(--subtle-border);
+            padding: 25px;
+            margin-bottom: 30px;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.25); /* Softer shadow */
+            border-radius: 8px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--accent-orange);
+            margin-bottom: 15px;
+            border-bottom: 1px dotted var(--subtle-border);
+            padding-bottom: 8px;
+        }
+
+        .card-content {
+            margin-bottom: 15px;
+        }
+
+        .meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--dusty-brown);
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dotted var(--border-color);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(200, 179, 148, 0.2);
+            padding: 3px 10px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            border: 1px solid var(--border-color);
+            font-size: 0.8rem;
+            color: var(--muted-gold);
+        }
+
+        /* Article Grid */
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-gap: 30px;
+        }
+        
+        /* Community Section */
+        .community-form {
+            background: rgba(122, 106, 76, 0.25); /* Lighter background */
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Add subtle shadow for depth */
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-cream);
+            font-weight: 600;
+            letter-spacing: 0.5px; /* Better readability */
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px; /* Slightly larger padding */
+            background: rgba(240, 225, 205, 0.85); /* Brighter background */
+            border: 1px solid var(--border-color);
+            color: var(--dark-brown);
+            font-family: 'Roboto Mono', monospace;
+            border-radius: 4px;
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px; /* Slightly wider */
+            background: var(--accent-orange);
+            color: #2a2008; /* Darker text for better contrast */
+            border: none;
+            font-family: 'Roboto Mono', monospace;
+            font-weight: 600; /* Bolder text */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25); /* More noticeable shadow */
+            border-radius: 4px;
+        }
+
+        .btn:hover {
+            background: var(--accent-gold); /* Brighter gold on hover */
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(255, 157, 74, 0.3); /* Glowing effect */
+        }
+        
+        /* Footer styles */
+        footer {
+            background: linear-gradient(to bottom, var(--dark-brown), #403626); /* Gradient background */
+            color: var(--text-beige);
+            text-align: center;
+            padding: 3rem 0;
+            position: relative;
+            border-top: 3px solid rgba(255, 157, 74, 0.3); /* Subtle accent border */
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-navigation {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-navigation a {
+            color: var(--text-cream);
+            text-decoration: none;
+            margin: 0 1.5rem;
+            transition: color 0.3s;
+        }
+        
+        .footer-navigation a:hover {
+            color: var(--accent-orange);
+        }
+        
+        .social-icons {
+            margin: 1.5rem 0;
+        }
+        
+        .social-icon {
+            font-size: 1.5rem;
+            margin: 0 1rem;
+            color: var(--text-cream);
+            transition: color 0.3s;
+        }
+        
+        .social-icon:hover {
+            color: var(--accent-orange);
+        }
+        
+        .copyright {
+            margin-top: 2rem;
+            color: var(--dusty-brown);
+            font-size: 0.9rem;
+        }
+
+        /* Media Queries */
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                position: fixed;
+                right: -240px;
+                transform: translateX(0);
+            }
+            
+            .sidebar.active {
+                transform: translateX(-240px);
+            }
+            
+            .menu-toggle {
+                display: block;
+                position: fixed;
+                right: 20px;
+                top: 20px;
+                z-index: 100;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 3rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .article-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 40px;
+            height: 40px;
+            background: rgba(67, 57, 38, 0.8);
+            border: 1px solid var(--border-color);
+            color: var(--text-cream);
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer;
+            z-index: 98;
+            display: none;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+        
+        .back-to-top:hover {
+            background: rgba(82, 66, 53, 0.9);
+            transform: translateY(-3px);
+        }
+        
+        /* Special 1960s Elements */
+        .mod-pattern {
+            border: 15px solid transparent;
+            border-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="100" height="100" fill="none" stroke="%23d88e44" stroke-width="8" stroke-dasharray="10 5" /></svg>') 30 round;
+            padding: 20px;
+            margin: 20px 0;
+            background: rgba(229, 211, 185, 0.1);
+        }
+        
+        .vintage-img {
+            width: 100%;
+            height: auto;
+            filter: sepia(0.1) contrast(1.25) brightness(1.15) saturate(1.5); /* More vibrant colors */
+            margin: 20px 0;
+            box-shadow: 8px 8px 0 rgba(255, 157, 74, 0.5); /* Brighter shadow */
+            transition: all 0.3s ease;
+            border: 3px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+        }
+        
+        .vintage-img:hover {
+            filter: sepia(0) contrast(1.3) brightness(1.2) saturate(1.4); /* Even more vibrant on hover */
+            transform: translateY(-5px) scale(1.02); /* Slight zoom effect */
+            box-shadow: 12px 12px 0 rgba(255, 157, 74, 0.6); /* Enhanced shadow */
+            border: 3px solid rgba(255, 255, 255, 0.2); /* More visible border on hover */
+        }
+
+        /* Fade in animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* For triggering animations at different times */
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <!-- Film grain overlays -->
+    <canvas id="filmGrainCanvas"></canvas>
+    <canvas id="vignetteCanvas"></canvas>
+    <div class="film-edge"></div>
+    <div class="color-splash"></div>
+    
+    <!-- Header Section -->
+    <header>
+        <div class="header-background" style="background-image: url('https://images.unsplash.com/photo-1596994699267-3f926e0654c2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');"></div>
+        <div class="header-content">
+            <h1>1960s India</h1>
+            <div class="subtitle">DECADE OF TRANSITION</div>
+            <div class="decade-description">
+                The 1960s marked a decade of significant change for India. Just over a decade into independence, 
+                the nation was balancing tradition with modernity, facing challenges of wars and political shifts, 
+                while experiencing cultural, technological and social transformations.
+            </div>
+            <div class="header-buttons">
+                <button class="decade-btn" onclick="window.location.href='../decades/1960/index.html'">Explore 1960s</button>
+                <button class="decade-btn" onclick="window.location.href='../time-explorer.html'">Time Explorer</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="category-tabs">
+        <div class="tab active" data-target="intro">Introduction</div>
+        <div class="tab" data-target="music">Music</div>
+        <div class="tab" data-target="events">Major Events</div>
+        <div class="tab" data-target="trends">Fashion</div>
+        <div class="tab" data-target="ideologies">Ideologies</div>
+        <div class="tab" data-target="technology">Technology</div>
+        <div class="tab" data-target="blog">Daily Life</div>
+        <div class="tab" data-target="memories">Memories</div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Introduction Section -->
+        <section id="intro" class="section active">
+            <h2 class="section-title">Introduction to 1960s India</h2>
+            <div class="card fade-in delay-1">
+                <h3>The Changing Face of India</h3>
+                <div class="card-content">
+                    <p>The 1960s marked a decade of significant transition for India. Just over a decade into independence, the nation was balancing its newfound identity with growing global connections. This period witnessed the strengthening of democratic institutions alongside major challenges from wars with China (1962) and Pakistan (1965), as well as internal political shifts including the rise of Indira Gandhi to power.</p>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/bc/Indira_Gandhi_1966.jpg" alt="Indira Gandhi becoming Prime Minister" class="vintage-img">
+                    <p>As the world experienced cultural and social revolutions, India too was witnessing gradual transformations in its urban centers. The decade represented a fascinating blend of traditional values and emerging modernity, with cinema, music, and fashion reflecting these changing times. The Green Revolution began transforming agricultural practices, while new industries continued developing under the mixed economy model.</p>
+                </div>
+                <div class="meta">
+                    <div class="tags">
+                        <span class="tag">History</span>
+                        <span class="tag">Politics</span>
+                        <span class="tag">Cultural Change</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card fade-in delay-2">
+                <h3>Political Landscape</h3>
+                <div class="card-content">
+                    <p>The political landscape of India in the 1960s underwent significant transformations. The decade began with Jawaharlal Nehru still at the helm, but his death in 1964 marked the end of an era. Lal Bahadur Shastri became Prime Minister but his tenure was brief, ending with his untimely death in 1966. This paved the way for Indira Gandhi to become India's first female Prime Minister.</p>
+                    <p>This period saw the Congress party's dominance begin to face challenges, with the emergence of regional parties and growing opposition. The decade ended with the Congress party splitting in 1969 into Congress (O) and Congress (R), with the latter led by Indira Gandhi, signaling the beginning of a new political chapter in India's history.</p>
+                </div>
+                <div class="meta">
+                    <div class="tags">
+                        <span class="tag">Politics</span>
+                        <span class="tag">Indira Gandhi</span>
+                        <span class="tag">Congress Party</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mod-pattern fade-in delay-3">
+                <h3 style="text-align: center; color: var(--accent-orange); margin-bottom: 20px;">Key Features of 1960s India</h3>
+                <div class="grid-container">
+                    <div class="card">
+                        <h3>Wars & Defense</h3>
+                        <div class="card-content">
+                            <p>India fought wars with China (1962) and Pakistan (1965), leading to significant changes in defense policies and international relations.</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Green Revolution</h3>
+                        <div class="card-content">
+                            <p>Agricultural reforms introduced high-yielding seeds, modern farming techniques, and irrigation improvements, moving India toward food self-sufficiency.</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Space Program</h3>
+                        <div class="card-content">
+                            <p>INCOSPAR was established in 1962, launching India's first sounding rocket in 1963 and evolving into ISRO by the end of the decade.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Music Section -->
+        <section id="music" class="section">
+            <h2 class="section-title">Music & Cinema</h2>
+            
+            <div class="card fade-in delay-1">
+                <h3>The Golden Age of Film Music</h3>
+                <div class="card-content">
+                    <p>The 1960s are considered the golden age of Hindi film music, with legendary composers like S.D. Burman, Shankar-Jaikishan, and R.D. Burman creating timeless melodies. Mohammad Rafi, Lata Mangeshkar, and Kishore Kumar dominated playback singing.</p>
+                    <p>Songs from films like "Mughal-e-Azam" (1960), "Guide" (1965), and "Aradhana" (1969) continue to enchant listeners decades later, representing the perfect blend of classical Indian music with emerging global influences.</p>
+                </div>
+                <div class="meta">
+                    <div class="tags">
+                        <span class="tag">Bollywood</span>
+                        <span class="tag">Film Music</span>
+                        <span class="tag">R.D. Burman</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="article-grid fade-in delay-2">
+                <div class="card">
+                    <h3>Cinema's New Wave</h3>
+                    <div class="card-content">
+                        <p>While commercial cinema continued to thrive with stars like Raj Kapoor, Dilip Kumar, and Nargis, the 1960s also witnessed the emergence of parallel cinema led by directors like Satyajit Ray, Ritwik Ghatak, and Mrinal Sen.</p>
+                        <img src="https://upload.wikimedia.org/wikipedia/en/5/5a/Charulata_poster.jpg" alt="Charulata Film Poster" class="vintage-img">
+                        <p>Films began exploring more complex social themes and artistic expressions, with Ray's "Charulata" (1964) and "Nayak" (1966) receiving international acclaim and establishing Indian cinema's presence on the global stage.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Satyajit Ray</span>
+                            <span class="tag">Parallel Cinema</span>
+                            <span class="tag">Film Festival</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>The Radio Evolution</h3>
+                    <div class="card-content">
+                        <p>All India Radio continued its expansion, introducing more diverse programming including the immensely popular "Binaca Geetmala" countdown show hosted by Ameen Sayani, which became a national institution.</p>
+                        <p>Radio remained the primary source of entertainment and information for most Indians, particularly in rural areas. The introduction of Vividh Bharati service in 1957 had expanded through the 1960s, offering light entertainment programming.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">All India Radio</span>
+                            <span class="tag">Vividh Bharati</span>
+                            <span class="tag">Binaca Geetmala</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Iconic Playback Singers</h3>
+                    <div class="card-content">
+                        <p>The 1960s solidified the careers of legendary playback singers who became the voices of Indian cinema. Mohammad Rafi was at his peak, while Kishore Kumar transitioned from acting to full-time singing by the end of the decade.</p>
+                        <p>Female playback was dominated by the incomparable Lata Mangeshkar and her sister Asha Bhosle, who between them sang most of the female songs in Hindi films. Their distinctive vocal styles defined the sound of 1960s Indian music.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Mohammad Rafi</span>
+                            <span class="tag">Lata Mangeshkar</span>
+                            <span class="tag">Kishore Kumar</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Events Section -->
+        <section id="events" class="section">
+            <h2 class="section-title">Major Events</h2>
+            
+            <div class="card fade-in delay-1">
+                <h3>Indo-China War (1962)</h3>
+                <div class="card-content">
+                    <p>The brief but impactful border conflict with China came as a shock to India's leadership and citizens alike. The war ended with a unilateral Chinese ceasefire after China claimed victory, leaving India to reassess its defense policies and military preparedness.</p>
+                    <p>This conflict fundamentally altered India's foreign policy outlook and accelerated defense modernization efforts. It also led to closer ties with the Soviet Union in subsequent years as Cold War alignments became more pronounced.</p>
+                </div>
+                <div class="meta">
+                    <div class="tags">
+                        <span class="tag">War</span>
+                        <span class="tag">Foreign Policy</span>
+                        <span class="tag">Defense</span>
+                    </div>
+                    <div class="date">October-November 1962</div>
+                </div>
+            </div>
+            
+            <div class="card fade-in delay-2">
+                <h3>Indo-Pakistan War (1965)</h3>
+                <div class="card-content">
+                    <p>The second major conflict between India and Pakistan since independence began with Operation Gibraltar, Pakistan's infiltration attempt in Kashmir. The war expanded to multiple fronts before a ceasefire was arranged through Soviet mediation.</p>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/76/Indian_army_jawans_and_locals_celebrate_after_the_victory_in_the_1965_war.jpg" alt="Indo-Pakistan War 1965" class="vintage-img">
+                    <p>The subsequent Tashkent Agreement, signed by Indian Prime Minister Lal Bahadur Shastri and Pakistani President Ayub Khan, restored pre-war positions. Tragically, Shastri died in Tashkent shortly after signing the agreement.</p>
+                </div>
+                <div class="meta">
+                    <div class="tags">
+                        <span class="tag">War</span>
+                        <span class="tag">Kashmir</span>
+                        <span class="tag">Tashkent Agreement</span>
+                    </div>
+                    <div class="date">August-September 1965</div>
+                </div>
+            </div>
+            
+            <div class="card fade-in delay-3">
+                <h3>Green Revolution Begins</h3>
+                <div class="card-content">
+                    <p>Under the leadership of M.S. Swaminathan and with support from Norman Borlaug, India initiated agricultural reforms that introduced high-yielding variety seeds, modern farming techniques, irrigation improvements, and fertilizers.</p>
+                    <p>These changes dramatically increased food grain production, particularly wheat and rice, helping India move towards food self-sufficiency by the early 1970s and averting the famine that many international experts had predicted.</p>
+                </div>
+                <div class="meta">
+                    <div class="tags">
+                        <span class="tag">Agriculture</span>
+                        <span class="tag">Food Security</span>
+                        <span class="tag">Rural Development</span>
+                    </div>
+                    <div class="date">1965-1967</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Fashion Section -->
+        <section id="trends" class="section">
+            <h2 class="section-title">Fashion & Lifestyle</h2>
+            
+            <div class="article-grid fade-in delay-1">
+                <div class="card">
+                    <h3>Women's Fashion</h3>
+                    <div class="card-content">
+                        <p>The 1960s saw Indian women's fashion begin to incorporate more global influences. While sarees remained dominant, their styling evolved with more experimental blouse designs and bold patterns. The salwar kameez gained further popularity among young women.</p>
+                        <img src="https://i.pinimg.com/originals/5a/68/24/5a68242fa440a9c1962e7880028a994a.jpg" alt="1960s Indian Women's Fashion" class="vintage-img">
+                        <p>Bollywood actresses like Sadhana popularized the "Sadhana cut" (fringe hairstyle), while Sharmila Tagore's bouffants became fashion statements. In metropolitan areas, some young women began experimenting with Western clothes including A-line dresses and high boots.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Sadhana Cut</span>
+                            <span class="tag">Bouffant</span>
+                            <span class="tag">Saree Styles</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Men's Fashion</h3>
+                    <div class="card-content">
+                        <p>Indian men's fashion in the 1960s showed stronger Western influences. The slim-fit "Beatles suit" gained popularity among urban youth, while bell-bottoms began appearing toward the end of the decade.</p>
+                        <p>The formal Nehru jacket remained popular for official occasions. Film stars like Dev Anand and Shammi Kapoor set trends with their distinctive styles, influencing young men across the country.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Beatles Suit</span>
+                            <span class="tag">Bell Bottoms</span>
+                            <span class="tag">Dev Anand</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Urban Lifestyle</h3>
+                    <div class="card-content">
+                        <p>The 1960s saw increasing urbanization and the emergence of a more visible middle class in cities. Coffee houses and restaurants became social hubs where intellectuals, artists and students gathered for discussions on politics, arts and social change.</p>
+                        <p>The Ambassador car remained a status symbol for the middle class, while scooters offered mobility to many families. Modern appliances like refrigerators and transistor radios began appearing in more urban households.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Coffee Houses</span>
+                            <span class="tag">Ambassador Car</span>
+                            <span class="tag">Appliances</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Ideologies Section -->
+        <section id="ideologies" class="section">
+            <h2 class="section-title">Ideologies & Movements</h2>
+            
+            <div class="card fade-in delay-1">
+                <h3>Growing Socialist Influence</h3>
+                <div class="card-content">
+                    <p>The 1960s saw India's economic policies move toward greater state control and socialist principles. Under Nehru and later Indira Gandhi, major industries were nationalized, with the banking sector's nationalization in 1969 marking a significant shift toward socialist economic policies.</p>
+                    <p>These policies were influenced partly by India's growing ties with the Soviet Union, which became an important ally after the 1962 Indo-China war. The Cold War context shaped many of India's policy decisions during this period.</p>
+                </div>
+                <div class="meta">
+                    <div class="tags">
+                        <span class="tag">Socialism</span>
+                        <span class="tag">Nationalization</span>
+                        <span class="tag">Soviet Influence</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="article-grid fade-in delay-2">
+                <div class="card">
+                    <h3>Student Movements</h3>
+                    <div class="card-content">
+                        <p>University campuses across India became centers of political activism, mirroring global student movements. The All India Students Federation (AISF) and other student organizations gained prominence.</p>
+                        <p>While not as widespread as in Western countries, Indian students began questioning authority and traditional values, particularly in urban centers like Delhi, Mumbai, and Kolkata.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Student Politics</span>
+                            <span class="tag">Youth Movement</span>
+                            <span class="tag">Universities</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Language Movements</h3>
+                    <div class="card-content">
+                        <p>The 1960s witnessed significant language-based political movements, particularly in southern India. The Anti-Hindi agitations in Tamil Nadu (then Madras State) in 1965 were a powerful response to the planned implementation of Hindi as the sole official language.</p>
+                        <p>These protests led to the continuation of the two-language formula and acknowledgment of regional linguistic identities, significantly influencing India's language policy for decades to come.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Anti-Hindi Movement</span>
+                            <span class="tag">Tamil Nadu</span>
+                            <span class="tag">Language Policy</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Naxalite Movement</h3>
+                    <div class="card-content">
+                        <p>The Naxalite movement emerged in 1967 with a peasant uprising in Naxalbari, West Bengal. Inspired by Maoist ideology, it represented a radical leftist approach to addressing rural inequality and land ownership issues.</p>
+                        <p>The movement attracted many intellectuals and students, particularly in West Bengal and parts of Andhra Pradesh, marking the beginning of what would become a long-term conflict between far-left groups and the Indian state.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Naxalbari</span>
+                            <span class="tag">Maoism</span>
+                            <span class="tag">Peasant Uprising</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Technology Section -->
+        <section id="technology" class="section">
+            <h2 class="section-title">Technology & Science</h2>
+            
+            <div class="card fade-in delay-1">
+                <h3>Space Research Begins</h3>
+                <div class="card-content">
+                    <p>The Indian National Committee for Space Research (INCOSPAR) was established in 1962 under the Department of Atomic Energy, with Dr. Vikram Sarabhai as its chairman. This later evolved into ISRO in 1969.</p>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Thumba_launching_station.jpg" alt="Thumba Launching Station" class="vintage-img">
+                    <p>The first sounding rocket was launched from Thumba Equatorial Rocket Launching Station in Kerala in 1963, marking India's entry into space research despite being a developing nation with limited resources.</p>
+                </div>
+                <div class="meta">
+                    <div class="tags">
+                        <span class="tag">ISRO</span>
+                        <span class="tag">Vikram Sarabhai</span>
+                        <span class="tag">Space Research</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="article-grid fade-in delay-2">
+                <div class="card">
+                    <h3>Nuclear Development</h3>
+                    <div class="card-content">
+                        <p>India's nuclear program continued developing under the leadership of Dr. Homi Bhabha until his untimely death in 1966. The Atomic Energy Establishment at Trombay (renamed Bhabha Atomic Research Centre in 1967) expanded its activities.</p>
+                        <p>The Tarapur Atomic Power Station, India's first nuclear power plant, began construction in 1962 and was commissioned in 1969, marking a significant step in India's nuclear energy program.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Nuclear Energy</span>
+                            <span class="tag">Homi Bhabha</span>
+                            <span class="tag">BARC</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Agricultural Technology</h3>
+                    <div class="card-content">
+                        <p>The Green Revolution introduced mechanization including tractors and modern irrigation systems to Indian agriculture, though initially limited to certain regions, particularly Punjab, Haryana, and western Uttar Pradesh.</p>
+                        <p>Scientific research in developing high-yielding varieties of wheat and rice was conducted through collaborations between Indian scientists and international agricultural research institutes.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Green Revolution</span>
+                            <span class="tag">Mechanization</span>
+                            <span class="tag">High-Yield Crops</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Industrial Technology</h3>
+                    <div class="card-content">
+                        <p>The 1960s saw India's industrial base continuing to expand under the Five-Year Plans. Heavy industries established in the previous decade were now producing machine tools, electrical equipment, and other industrial products.</p>
+                        <p>Efforts to develop indigenous technology were promoted through institutions like the Council of Scientific and Industrial Research (CSIR) and the establishment of Indian Institutes of Technology (IITs) which began producing skilled engineers for the growing industrial sector.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Manufacturing</span>
+                            <span class="tag">Five Year Plan</span>
+                            <span class="tag">IIT</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Daily Life Section -->
+        <section id="blog" class="section">
+            <h2 class="section-title">Daily Life</h2>
+            
+            <div class="card fade-in delay-1">
+                <h3>College Life in the 1960s</h3>
+                <div class="card-content">
+                    <p>My grandmother's stories of her college days in Delhi University during the mid-1960s paint a fascinating picture of youth culture in urban India. "Our campus was becoming increasingly political," she recalls. "The world was changing, and we felt we could be part of that change."</p>
+                    <p>She describes how Western music – particularly The Beatles and Bob Dylan – began influencing young Indians. "We would gather in someone's home who owned a record player, and listen to these new sounds while discussing everything from existentialism to socialism."</p>
+                    <p>Yet traditions remained strong. "Dating was still taboo," she laughs. "We had 'friendships' instead. And most of us still lived with our families, following their rules." This balance of embracing new ideas while maintaining cultural continuity defined the experience of many urban youth during this transformative decade.</p>
+                </div>
+                <div class="meta">
+                    <div class="user-info">
+                        <span>Anjali Khanna</span>
+                    </div>
+                    <div class="date">May 18, 2025</div>
+                </div>
+            </div>
+            
+            <div class="card fade-in delay-2">
+                <h3>The 1965 War Through a Child's Eyes</h3>
+                <div class="card-content">
+                    <p>My father was just 9 years old during the 1965 Indo-Pak war, growing up in a small town near Amritsar. He remembers the blackouts most vividly - how every evening all lights had to be covered or turned off so as not to provide targets for enemy aircraft.</p>
+                    <p>"It was both scary and exciting for a child," he told me. "We would huddle together by candlelight, listening to radio updates. The adults spoke in hushed tones, but we children created our own adventures, pretending to be soldiers defending the border."</p>
+                    <p>He recalls how the community came together, with neighbors checking on each other and sharing resources. "Even though there was fear, there was also remarkable unity. People who normally didn't speak to each other because of different religions or backgrounds suddenly became one community."</p>
+                </div>
+                <div class="meta">
+                    <div class="user-info">
+                        <span>Harpreet Singh</span>
+                    </div>
+                    <div class="date">July 5, 2025</div>
+                </div>
+            </div>
+            
+            <div class="card fade-in delay-3">
+                <h3>Memories of 1960s Cinema</h3>
+                <div class="card-content">
+                    <p>My father often recalls how the landscape of Indian cinema transformed during the 1960s. "It wasn't just about escapist entertainment anymore," he would tell me. "Films started reflecting our society's complexities and contradictions."</p>
+                    <p>He vividly remembers watching Satyajit Ray's "Mahanagar" (The Big City) in 1964, which portrayed a woman entering the workforce against social expectations. "The theater was unusually quiet after the film ended," he recalls. "People were actually discussing the themes rather than just humming the songs. Something was changing in how we engaged with cinema."</p>
+                    <p>Equally impactful was Guru Dutt's "Sahib Bibi Aur Ghulam" from the early 60s. "That film showed the decay of the feudal system through such powerful imagery," he would say, "and Meena Kumari's performance as Chhoti Bahu was haunting." These films, alongside the more commercial offerings, marked a significant evolution in Indian storytelling.</p>
+                </div>
+                <div class="meta">
+                    <div class="user-info">
+                        <span>Vikram Mehta</span>
+                    </div>
+                    <div class="date">June 12, 2025</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Memories Section -->
+        <section id="memories" class="section">
+            <h2 class="section-title">Community Memories</h2>
+            
+            <div class="community-form fade-in delay-1">
+                <h3>Share Your Family's 1960s Memories</h3>
+                <form id="storyForm">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Your Email</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="story">Your Story</label>
+                        <textarea id="story" name="story" class="form-control" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Submit Your Story</button>
+                </form>
+            </div>
+            
+            <div class="card fade-in delay-2">
+                <h3>The Green Revolution's Impact</h3>
+                <div class="card-content">
+                    <p>My grandfather was a farmer in Punjab when the Green Revolution transformed agriculture in the late 1960s. He often described the dramatic change from traditional farming methods to the new techniques.</p>
+                    <p>"The government agricultural extension officers would visit our village regularly," he recounted. "They brought these new seeds - we called them miracle seeds - and taught us about chemical fertilizers and pesticides. Many farmers were skeptical at first, including me."</p>
+                    <p>But the results were undeniable. "Our wheat yield nearly tripled within two years. Suddenly, we had surplus to sell. By 1970, I had enough money to buy my first tractor, something I never imagined owning." The prosperity brought new opportunities - my father became the first in our family to attend college, changing our family's trajectory forever.</p>
+                </div>
+                <div class="meta">
+                    <div class="user-info">
+                        <span>Ranveer Gill</span>
+                    </div>
+                    <div class="date">August 23, 2025</div>
+                </div>
+            </div>
+            
+            <div class="card fade-in delay-3">
+                <h3>Life in Newly Built Chandigarh</h3>
+                <div class="card-content">
+                    <p>My grandmother's family moved to Chandigarh in the early 1960s when the city was still being built. She has fascinating stories about living in Le Corbusier's modernist vision while it was taking shape.</p>
+                    <p>"It was like living in two different worlds," she says. "The city sectors were planned with such precision – wide roads, modern buildings, and plenty of green spaces. But just outside the planned city, traditional Indian life continued unchanged for centuries."</p>
+                    <p>She recalls the pride people felt about the city. "We were part of something new and progressive. The geometric Capitol Complex, with its massive concrete structures, seemed futuristic to us. Everyone who visited was amazed at how different it was from other Indian cities. It represented our hopes for modern India."</p>
+                </div>
+                <div class="meta">
+                    <div class="user-info">
+                        <span>Priya Sharma</span>
+                    </div>
+                    <div class="date">September 14, 2025</div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-navigation">
+                <a href="../index.html">Home</a>
+                <a href="../decades/1950/index.html">1950s</a>
+                <a href="../decades/1960/index.html">1960s</a>
+                <a href="../decades/1970/index.html">1970s</a>
+                <a href="../decades/1980/index.html">1980s</a>
+                <a href="../decades/1990/index.html">1990s</a>
+                <a href="../decades/2000/index.html">2000s</a>
+                <a href="../decades/2010/index.html">2010s</a>
+            </div>
+            <div class="social-icons">
+                <a href="#" class="social-icon">𝕏</a>
+                <a href="#" class="social-icon">ƒ</a>
+                <a href="#" class="social-icon">𝕚</a>
+            </div>
+            <div class="copyright">
+                © 2023 Time Capsule Project. All rights reserved.
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Back to top button -->
+    <div class="back-to-top">↑</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize film grain effect
+            initFilmGrainEffect();
+            
+            // Tab navigation
+            const tabs = document.querySelectorAll('.tab');
+            const sections = document.querySelectorAll('.section');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Hide all sections
+                    sections.forEach(section => section.classList.remove('active'));
+                    
+                    // Show corresponding section
+                    const tabId = this.dataset.target;
+                    document.getElementById(tabId).classList.add('active');
+                    
+                    // Reset animations
+                    const fadeElements = document.querySelectorAll('.fade-in');
+                    fadeElements.forEach(elem => {
+                        elem.classList.remove('visible');
+                    });
+                    
+                    // Trigger animations
+                    setTimeout(() => {
+                        checkFade();
+                    }, 100);
+                });
+            });
+            
+            // Film grain and vignette effect implementation
+            function initFilmGrainEffect() {
+                // Setup film grain canvas
+                const grainCanvas = document.getElementById('filmGrainCanvas');
+                const grainCtx = grainCanvas.getContext('2d');
+                
+                // Setup vignette canvas
+                const vignetteCanvas = document.getElementById('vignetteCanvas');
+                const vignetteCtx = vignetteCanvas.getContext('2d');
+                
+                // Function to resize canvases
+                function resizeCanvases() {
+                    grainCanvas.width = window.innerWidth;
+                    grainCanvas.height = window.innerHeight;
+                    
+                    vignetteCanvas.width = window.innerWidth;
+                    vignetteCanvas.height = window.innerHeight;
+                    
+                    // Re-draw vignette effect when resized
+                    createVignetteEffect();
+                }
+                
+                // Call resize initially and on window resize
+                resizeCanvases();
+                window.addEventListener('resize', resizeCanvases);
+                
+                // Create the film grain texture - less intense for 1960s
+                function createFilmGrainTexture() {
+                    grainCtx.clearRect(0, 0, grainCanvas.width, grainCanvas.height);
+                    
+                    // Fill with dark base
+                    grainCtx.fillStyle = '#2a1f1a';
+                    grainCtx.fillRect(0, 0, grainCanvas.width, grainCanvas.height);
+                    
+                    // Add noise - with subtle color variation to simulate early color film
+                    const imageData = grainCtx.getImageData(0, 0, grainCanvas.width, grainCanvas.height);
+                    const data = imageData.data;
+                    
+                    for (let i = 0; i < data.length; i += 4) {
+                        // Random noise value with slight color variation for 60s color film look
+                        const baseValue = Math.floor(Math.random() * 255);
+                        const redVar = Math.random() * 30 - 15; // Red variation
+                        
+                        // Apply colored noise with varying intensity for early color film look
+                        data[i] = Math.min(255, Math.max(0, baseValue + redVar)); // Red with variation
+                        data[i + 1] = Math.min(255, Math.max(0, baseValue - 5)); // Green slightly less
+                        data[i + 2] = Math.min(255, Math.max(0, baseValue - 10)); // Blue even less for warm tone
+                        // Alpha channel - less grain intensity than 1950s
+                        data[i + 3] = Math.random() > 0.97 ? 180 : Math.random() * 20;
+                    }
+                    
+                    grainCtx.putImageData(imageData, 0, 0);
+                    
+                    // Less scratches than 1950s
+                    grainCtx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+                    grainCtx.lineWidth = 0.5;
+                    
+                    // Fewer scratches
+                    for (let i = 0; i < 6; i++) {
+                        const x = Math.random() * grainCanvas.width;
+                        grainCtx.beginPath();
+                        grainCtx.moveTo(x, 0);
+                        grainCtx.lineTo(x, grainCanvas.height * (0.3 + Math.random() * 0.7));
+                        grainCtx.stroke();
+                    }
+                    
+                    // Add horizontal scratches occasionally
+                    for (let i = 0; i < 2; i++) {
+                        const y = Math.random() * grainCanvas.height;
+                        grainCtx.beginPath();
+                        grainCtx.moveTo(0, y);
+                        grainCtx.lineTo(grainCanvas.width * Math.random(), y);
+                        grainCtx.stroke();
+                    }
+                    
+                    // Less dust specks than 1950s
+                    grainCtx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                    for (let i = 0; i < 60; i++) {
+                        const x = Math.random() * grainCanvas.width;
+                        const y = Math.random() * grainCanvas.height;
+                        const size = Math.random() * 1.5 + 0.5;
+                        grainCtx.beginPath();
+                        grainCtx.arc(x, y, size, 0, Math.PI * 2);
+                        grainCtx.fill();
+                    }
+                }
+                
+                // Create vignette effect - lighter for 1960s
+                function createVignetteEffect() {
+                    vignetteCtx.clearRect(0, 0, vignetteCanvas.width, vignetteCanvas.height);
+                    
+                    // Create radial gradient for vignette - wider than 1950s
+                    const gradient = vignetteCtx.createRadialGradient(
+                        vignetteCanvas.width / 2, vignetteCanvas.height / 2, vignetteCanvas.width / 2.5,
+                        vignetteCanvas.width / 2, vignetteCanvas.height / 2, vignetteCanvas.width / 1.1
+                    );
+                    gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
+                    gradient.addColorStop(1, 'rgba(25, 10, 0, 0.6)'); // Lighter, warm-toned vignette
+                    
+                    vignetteCtx.fillStyle = gradient;
+                    vignetteCtx.fillRect(0, 0, vignetteCanvas.width, vignetteCanvas.height);
+                }
+                
+                // Animation loop for film grain
+                function animateFilmGrain() {
+                    createFilmGrainTexture();
+                    requestAnimationFrame(animateFilmGrain);
+                }
+                
+                // Start animations
+                createVignetteEffect();
+                animateFilmGrain();
+                
+                // Create film flickering effect - less frequent for 1960s
+                let lastFlicker = 0;
+                const flickerInterval = 3000;
+                
+                function createFilmFlicker() {
+                    const now = Date.now();
+                    
+                    if (now - lastFlicker > flickerInterval) {
+                        if (Math.random() > 0.9) {
+                            document.body.style.opacity = Math.random() * 0.05 + 0.95;
+                            setTimeout(() => {
+                                document.body.style.opacity = 1;
+                            }, 50 + Math.random() * 30);
+                            lastFlicker = now;
+                        }
+                    }
+                    
+                    requestAnimationFrame(createFilmFlicker);
+                }
+                
+                // Start film flicker
+                createFilmFlicker();
+            }
+            
+            // Back to top button
+            const backToTop = document.querySelector('.back-to-top');
+            if (backToTop) {
+                window.addEventListener('scroll', function() {
+                    if (window.pageYOffset > 300) {
+                        backToTop.style.display = 'block';
+                    } else {
+                        backToTop.style.display = 'none';
+                    }
+                });
+                
+                backToTop.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+            
+            // Form submission
+            const storyForm = document.getElementById('storyForm');
+            if (storyForm) {
+                storyForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // In a real application, this would send data to a server
+                    alert('Thank you for sharing your story! After moderation, it will appear in the community section.');
+                    storyForm.reset();
+                });
+            }
+            
+            // Handle scroll animations
+            const fadeElems = document.querySelectorAll('.fade-in');
+            
+            function checkFade() {
+                fadeElems.forEach(elem => {
+                    const rect = elem.getBoundingClientRect();
+                    const windowHeight = window.innerHeight;
+                    
+                    if (rect.top < windowHeight * 0.9) {
+                        elem.classList.add('visible');
+                    }
+                });
+            }
+            
+            // Initial check
+            setTimeout(checkFade, 300);
+            
+            // Check on scroll
+            window.addEventListener('scroll', checkFade);
+        });
+    </script>
+</body>
+</html>

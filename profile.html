@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Time Capsule</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: #1a0b2e;
+            color: #ffffff;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        #galaxy-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .content-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1rem 0;
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            color: #d8b2ff;
+            text-shadow: 0 0 10px rgba(177, 156, 217, 0.8);
+        }
+
+        /* Navigation */
+        .user-nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .cosmic-btn {
+            padding: 0.8rem 1.5rem;
+            background: rgba(26, 11, 46, 0.3);
+            backdrop-filter: blur(10px);
+            border: 2px solid #b19cd9;
+            border-radius: 25px;
+            color: #b19cd9;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-block;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .cosmic-btn:hover {
+            background: rgba(177, 156, 217, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(177, 156, 217, 0.3);
+        }
+
+        .cosmic-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Main content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            padding: 1rem;
+            background: rgba(26, 11, 46, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(177, 156, 217, 0.3);
+        }
+
+        .page-title {
+            color: #d8b2ff;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            text-shadow: 0 0 15px rgba(177, 156, 217, 0.5);
+        }
+
+        /* Profile Styles */
+        .profile-card {
+            background: rgba(26, 11, 46, 0.5);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(177, 156, 217, 0.3);
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(177, 156, 217, 0.2);
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #9b59b6, #6b37b9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid #b19cd9;
+            box-shadow: 0 0 20px rgba(177, 156, 217, 0.5);
+            overflow: hidden;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-avatar span {
+            font-size: 3rem;
+            color: white;
+        }
+
+        .profile-name {
+            flex-grow: 1;
+        }
+
+        .profile-name h2 {
+            font-size: 2rem;
+            color: #d8b2ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-level {
+            padding: 0.3rem 1rem;
+            background: rgba(155, 89, 182, 0.2);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #d8b2ff;
+            display: inline-block;
+        }
+
+        .profile-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            color: #b19cd9;
+            font-size: 1.2rem;
+            margin-bottom: 1.2rem;
+            border-bottom: 1px solid rgba(177, 156, 217, 0.2);
+            padding-bottom: 0.5rem;
+        }
+
+        .profile-field {
+            margin-bottom: 1.2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(177, 156, 217, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .profile-field:last-child {
+            border-bottom: none;
+        }
+
+        .field-label {
+            font-weight: 500;
+            color: #b19cd9;
+        }
+
+        .field-value {
+            color: #ffffff;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            background: rgba(26, 11, 46, 0.7);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(177, 156, 217, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(155, 89, 182, 0.3);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            color: #d8b2ff;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            color: #b19cd9;
+            font-size: 0.9rem;
+        }
+
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .badge-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(155, 89, 182, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+            border: 2px solid #b19cd9;
+        }
+
+        .badge-name {
+            color: #d8b2ff;
+            font-size: 0.8rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .badge-date {
+            color: #b19cd9;
+            font-size: 0.7rem;
+            opacity: 0.7;
+        }
+
+        .profile-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Back button */
+        .back-btn {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            padding: 0.8rem 1.5rem;
+            background: rgba(26, 11, 46, 0.3);
+            backdrop-filter: blur(10px);
+            border: 2px solid #b19cd9;
+            border-radius: 25px;
+            color: #b19cd9;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            z-index: 100;
+        }
+
+        .back-btn:hover {
+            background: rgba(177, 156, 217, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(177, 156, 217, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="galaxy-canvas"></canvas>
+
+    <div class="content-container">
+        <div class="header">
+            <div class="logo">
+                <h1>KAAL SETHU</h1>
+            </div>
+            <div class="user-nav">
+                <a href="index.html" class="cosmic-btn">Home</a>
+                <a href="inbox.html" class="cosmic-btn">Inbox</a>
+                <button class="cosmic-btn" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <h1 class="page-title">Explorer Profile</h1>
+            
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <span id="profileInitial">T</span>
+                    </div>
+                    <div class="profile-name">
+                        <h2 id="displayName">Time Traveler</h2>
+                        <div class="profile-level">Level: Novice Explorer</div>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h3 class="section-title">Personal Information</h3>
+                    <div class="profile-field">
+                        <span class="field-label">Full Name:</span>
+                        <span class="field-value" id="profileFullName">Loading...</span>
+                    </div>
+                    <div class="profile-field">
+                        <span class="field-label">Email Address:</span>
+                        <span class="field-value" id="profileEmail">Loading...</span>
+                    </div>
+                    <div class="profile-field">
+                        <span class="field-label">Member Since:</span>
+                        <span class="field-value">September 1, 2025</span>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h3 class="section-title">Time Travel Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Capsules Sent</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">8</div>
+                            <div class="stat-label">Capsules Received</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">Decades Explored</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">15</div>
+                            <div class="stat-label">Time Credits</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h3 class="section-title">Earned Badges</h3>
+                    <div class="badge-grid">
+                        <div class="badge">
+                            <div class="badge-icon">🌟</div>
+                            <div class="badge-name">First Journey</div>
+                            <div class="badge-date">Sep 1, 2025</div>
+                        </div>
+                        <div class="badge">
+                            <div class="badge-icon">📜</div>
+                            <div class="badge-name">History Buff</div>
+                            <div class="badge-date">Sep 1, 2025</div>
+                        </div>
+                        <div class="badge">
+                            <div class="badge-icon">🔮</div>
+                            <div class="badge-name">Future Gazer</div>
+                            <div class="badge-date">Sep 1, 2025</div>
+                        </div>
+                        <div class="badge">
+                            <div class="badge-icon">🚀</div>
+                            <div class="badge-name">Space Explorer</div>
+                            <div class="badge-date">Sep 1, 2025</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-actions">
+                    <button class="cosmic-btn" id="editProfileBtn">Edit Profile</button>
+                    <button class="cosmic-btn" id="changePasswordBtn">Change Password</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="index.html" class="back-btn">← Return Home</a>
+
+    <script>
+        // Initialize galaxy background
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, starting script...');
+            
+            // ThreeJS Background
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            
+            const canvas = document.getElementById('galaxy-canvas');
+            const renderer = new THREE.WebGLRenderer({
+                canvas: canvas,
+                antialias: true,
+                alpha: true
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            
+            // Set camera position
+            camera.position.z = 30;
+            
+            // Create stars
+            const starGeometry = new THREE.BufferGeometry();
+            const starMaterial = new THREE.PointsMaterial({
+                size: 0.3,
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.8
+            });
+            
+            const starVertices = [];
+            for (let i = 0; i < 10000; i++) {
+                const x = (Math.random() - 0.5) * 2000;
+                const y = (Math.random() - 0.5) * 2000;
+                const z = -Math.random() * 2000;
+                starVertices.push(x, y, z);
+            }
+            
+            starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+            const stars = new THREE.Points(starGeometry, starMaterial);
+            scene.add(stars);
+            
+            // Animation
+            function animate() {
+                requestAnimationFrame(animate);
+                stars.rotation.x += 0.0001;
+                stars.rotation.y += 0.0002;
+                renderer.render(scene, camera);
+            }
+            animate();
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+            
+            // Load user data from localStorage
+            try {
+                const userData = JSON.parse(localStorage.getItem('user'));
+                if (userData) {
+                    document.getElementById('profileFullName').textContent = userData.name || 'Anonymous Explorer';
+                    document.getElementById('displayName').textContent = userData.name || 'Time Traveler';
+                    document.getElementById('profileEmail').textContent = userData.email || 'Not available';
+                    
+                    // Set profile initial
+                    const initial = userData.name ? userData.name.charAt(0).toUpperCase() : 'T';
+                    document.getElementById('profileInitial').textContent = initial;
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                document.getElementById('profileFullName').textContent = 'Anonymous Explorer';
+                document.getElementById('displayName').textContent = 'Time Traveler';
+                document.getElementById('profileEmail').textContent = 'Not available';
+            }
+            
+            // Button event listeners
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'index.html';
+            });
+            
+            document.getElementById('editProfileBtn').addEventListener('click', function() {
+                alert('Profile editing feature coming soon!');
+            });
+            
+            document.getElementById('changePasswordBtn').addEventListener('click', function() {
+                alert('Password change feature coming soon!');
+            });
+        });
+    </script>
+</body>
+</html>

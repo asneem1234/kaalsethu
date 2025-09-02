@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1950s India - Time Capsule</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Courier+Prime&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-dark: #131211;
+            --text-beige: #d2c0a7;
+            --text-cream: #f0e6d6;
+            --accent-gold: #c9b18c;
+            --muted-gold: #b5a48c;
+            --dark-brown: #3e2e21;
+            --medium-brown: #5a4634;
+            --border-color: #8c7a6a;
+            --subtle-border: #3a3631;
+            --dusty-brown: #6d5c4d;
+        }
+        
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier Prime', monospace;
+            background-color: var(--background-dark); /* Dark background matching reference image */
+            color: var(--text-beige); /* Warm beige text on dark background */
+            position: relative;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Advanced Film Grain Effect - removed CSS implementation in favor of Canvas-based approach */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            pointer-events: none;
+            /* Base styling only - actual grain is added via canvas */
+        }
+        
+        /* Film Edge Mark - simulating the film strip edge */
+        .film-edge {
+            position: fixed;
+            top: 0;
+            left: 20%;
+            width: 1px;
+            height: 100%;
+            background-color: rgba(255,255,255,0.5);
+            opacity: 0.2;
+            z-index: 104;
+            pointer-events: none;
+        }
+        
+        /* Film grain canvas */
+        #filmGrainCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 102;
+            pointer-events: none;
+            opacity: 0.3;
+            mix-blend-mode: overlay;
+        }
+        
+        /* Vignette canvas */
+        #vignetteCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 103;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+        
+        /* Body transitions for flicker effect */
+        body {
+            transition: opacity 0.05s ease;
+        }
+
+        /* Vintage Photo Vignette Effect - replacing CRT effect */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, 
+                            rgba(210, 192, 167, 0) 50%, 
+                            rgba(62, 46, 33, 0.4) 100%);
+            pointer-events: none;
+            z-index: 101;
+            opacity: 0.8; /* Stronger vignette for old photo look */
+        }
+
+        /* Header styles */
+        header {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .header-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-color: var(--dark-brown);
+            background-size: cover;
+            background-position: center;
+            filter: sepia(0.3) contrast(1.05);
+        }
+
+        .header-background::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(62, 46, 33, 0.1), rgba(19, 18, 17, 0.7));
+        }
+
+        .header-content {
+            text-align: center;
+            z-index: 1;
+            padding: 3rem;
+            max-width: 1000px;
+            background-color: rgba(62, 46, 33, 0.85);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-top: 5px solid var(--accent-gold);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            color: var(--text-cream);
+            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-family: 'Courier Prime', monospace;
+            font-size: 1.5rem;
+            color: var(--muted-gold);
+            margin-bottom: 2rem;
+            letter-spacing: 2px;
+        }
+
+        .decade-description {
+            font-size: 1.2rem;
+            color: var(--text-cream);
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .decade-btn {
+            background-color: var(--accent-gold);
+            color: var(--dark-brown);
+            border: none;
+            padding: 1rem 2rem;
+            font-family: 'Courier Prime', monospace;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 4px;
+            letter-spacing: 1px;
+        }
+
+        .decade-btn:hover {
+            background-color: var(--text-cream);
+            color: var(--dark-brown);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Navigation styles */
+        nav.category-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            background-color: var(--dark-brown);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab {
+            padding: 1.2rem 1.8rem;
+            font-family: 'Courier Prime', monospace;
+            font-weight: 600;
+            color: var(--text-cream);
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .tab::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background-color: var(--accent-gold);
+            transition: all 0.3s;
+        }
+
+        .tab:hover::after, .tab.active::after {
+            width: 80%;
+        }
+
+        .tab:hover, .tab.active {
+            color: var(--accent-gold);
+        }
+
+        /* Main content styles */
+        main {
+            position: relative;
+            padding: 4rem 2rem;
+            background-color: var(--background-dark);
+        }
+
+        .section {
+            padding: 3rem 0;
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--accent-gold);
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: var(--medium-brown);
+        }
+
+        /* Card styles */
+        .card {
+            background: rgba(26, 24, 22, 0.95);
+            border: 1px solid var(--subtle-border);
+            padding: 25px;
+            margin-bottom: 30px;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--accent-gold);
+            margin-bottom: 15px;
+            border-bottom: 1px dotted var(--subtle-border);
+            padding-bottom: 8px;
+        }
+
+        .card-content {
+            margin-bottom: 15px;
+        }
+
+        .meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--dusty-brown);
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dotted var(--border-color);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(181, 164, 140, 0.2); /* Muted gold background with transparency */
+            padding: 3px 10px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            border: 1px solid #8c7a6a; /* Soft cream border */
+            font-size: 0.8rem;
+            color: #3e2e21; /* Dark brown text */
+        }
+
+        /* Article Grid */
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-gap: 30px;
+        }
+
+        /* No image placeholders needed */
+
+        /* Community Section */
+        .community-form {
+            background: rgba(210, 192, 167, 0.3); /* Warm beige with transparency */
+            padding: 25px;
+            border: 1px solid #8c7a6a; /* Soft cream border */
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #3e2e21; /* Dark brown text */
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            background: rgba(240, 230, 214, 0.8); /* Soft cream background with transparency */
+            border: 1px solid #8c7a6a; /* Soft cream border */
+            color: #3e2e21; /* Dark brown text */
+            font-family: 'Courier Prime', monospace;
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: rgba(62, 46, 33, 0.8); /* Dark brown background with transparency */
+            color: #f0e6d6; /* Soft cream text */
+            border: none;
+            font-family: 'Courier Prime', monospace;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            box-shadow: 2px 2px 5px rgba(62, 46, 33, 0.2); /* Subtle shadow */
+        }
+
+        .btn:hover {
+            background: rgba(62, 46, 33, 0.9); /* Darker brown on hover */
+            box-shadow: 3px 3px 7px rgba(62, 46, 33, 0.3); /* Enhanced shadow on hover */
+        }
+
+        /* Media Queries */
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                position: fixed;
+                right: -240px;
+                transform: translateX(0);
+            }
+            
+            .sidebar.active {
+                transform: translateX(-240px);
+            }
+            
+            .menu-toggle {
+                display: block;
+                position: fixed;
+                right: 20px;
+                top: 20px;
+                z-index: 100;
+            }
+            
+            .toggle-sidebar {
+                display: none; /* Hide the sidebar toggle on mobile - use menu-toggle instead */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            section h2 {
+                font-size: 1.8rem;
+            }
+            
+            .article-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #e0e0e0;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 260px;
+            width: 40px;
+            height: 40px;
+            background: rgba(62, 46, 33, 0.8); /* Dark brown background with transparency */
+            border: 1px solid #8c7a6a; /* Soft cream border */
+            color: #f0e6d6; /* Soft cream text */
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer;
+            z-index: 98;
+            display: none;
+            transition: all 0.3s ease;
+            box-shadow: 2px 2px 5px rgba(62, 46, 33, 0.2); /* Subtle shadow */
+        }
+        
+        .back-to-top:hover {
+            background: rgba(62, 46, 33, 0.9); /* Darker brown on hover */
+            box-shadow: 3px 3px 7px rgba(62, 46, 33, 0.3); /* Enhanced shadow on hover */
+        }
+        
+        /* Special 1950s Elements */
+        .vintage-border {
+            border: 15px solid transparent;
+            border-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="100" height="100" fill="none" stroke="%235a4634" stroke-width="8" stroke-dasharray="10 5" /></svg>') 30 round;
+            padding: 20px;
+            margin: 20px 0;
+            background: rgba(240, 230, 214, 0.2); /* Soft cream background with high transparency */
+        }
+        
+        .typewriter-text {
+            overflow: hidden;
+            border-right: 2px solid #a0a0a0;
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: 2px;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #a0a0a0; }
+        }
+
+        /* Retro radio style buttons */
+        .retro-radio {
+            margin-bottom: 30px;
+            background: #5a4634; /* Dark brown background */
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #8c7a6a; /* Soft cream border */
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.3), 3px 3px 10px rgba(62, 46, 33, 0.4); /* Double shadow for depth */
+        }
+        
+        .retro-radio-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #f0e6d6; /* Soft cream text */
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* Subtle shadow */
+        }
+        
+        .retro-radio-knobs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+        }
+        
+        .retro-knob {
+            width: 30px;
+            height: 30px;
+            background: #b5a48c; /* Muted gold background */
+            border-radius: 50%;
+            border: 3px solid #3e2e21; /* Dark brown border */
+            position: relative;
+            cursor: pointer;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3); /* Shadow for depth */
+        }
+        
+        .retro-knob:after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 10px;
+            height: 2px;
+            background: #3e2e21; /* Dark brown line */
+            transform: translate(-50%, -50%);
+        }
+        
+        .retro-radio-display {
+            height: 30px;
+            background: #3e2e21; /* Dark brown background */
+            position: relative;
+            border: 1px solid #8c7a6a; /* Soft cream border */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5); /* Inset shadow for depth */
+        }
+        
+        .retro-radio-frequency {
+            color: #c9b18c; /* Brighter muted gold text */
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.9rem;
+            animation: radioFrequency 10s linear infinite;
+            text-shadow: 0 0 5px rgba(201, 177, 140, 0.5); /* Glow effect */
+        }
+        
+        @keyframes radioFrequency {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* User avatar */
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #5a4634; /* Dark brown background */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+            color: #f0e6d6; /* Soft cream text */
+            border: 2px solid #b5a48c; /* Muted gold border */
+            box-shadow: 1px 1px 3px rgba(62, 46, 33, 0.3); /* Subtle shadow */
+        }
+
+        /* Content fade in animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* For triggering animations at different times */
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+        .delay-5 { transition-delay: 0.5s; }
+        
+        /* Blog styles */
+        .blog-section {
+            background-color: var(--dark-brown);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .blog-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/png;base64,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');
+            opacity: 0.02;
+            pointer-events: none;
+            border-radius: 8px;
+        }
+
+        .blog-title {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-gold);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+        }
+
+        .blog-meta {
+            color: var(--muted-gold);
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--subtle-border);
+            padding-bottom: 0.75rem;
+        }
+
+        .blog-content {
+            color: var(--text-cream);
+            line-height: 1.8;
+        }
+
+        .blog-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        
+        /* Memories styles */
+        .memories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .memory-card {
+            background-color: var(--dark-brown);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .memory-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .memory-author {
+            color: var(--accent-gold);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .memory-date {
+            color: var(--muted-gold);
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--subtle-border);
+        }
+        
+        .memory-content {
+            color: var(--text-cream);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+        
+        .memory-location {
+            color: var(--muted-gold);
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+        
+        /* Memory Form Styles */
+        .memory-form-container {
+            margin-top: 4rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            background-color: rgba(62, 46, 33, 0.3);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+        }
+        
+        .memory-form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="100" height="100" fill="none" stroke="%238c7a6a" stroke-width="2" stroke-dasharray="5 5" /></svg>');
+            opacity: 0.1;
+            pointer-events: none;
+            border-radius: 8px;
+            z-index: -1;
+        }
+        
+        .memory-form-title {
+            color: var(--accent-gold);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        
+        .memory-form-intro {
+            color: var(--text-beige);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-style: italic;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .memory-form .form-control {
+            background-color: rgba(240, 230, 214, 0.1);
+            border: 1px solid var(--border-color);
+            color: var(--text-cream);
+            transition: all 0.3s ease;
+        }
+        
+        .memory-form .form-control:focus {
+            background-color: rgba(240, 230, 214, 0.2);
+            border-color: var(--accent-gold);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(201, 177, 140, 0.3);
+        }
+        
+        .memory-form .form-control::placeholder {
+            color: rgba(210, 192, 167, 0.6);
+        }
+        
+        .memory-submit {
+            background-color: var(--medium-brown);
+            color: var(--text-cream);
+            font-family: 'Courier Prime', monospace;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        .memory-submit:hover {
+            background-color: var(--accent-gold);
+            color: var(--dark-brown);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Footer styles */
+        footer {
+            padding: 3rem 2rem;
+            background-color: var(--dark-brown);
+            color: var(--text-cream);
+            text-align: center;
+            position: relative;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background-image: repeating-linear-gradient(to right, 
+                var(--accent-gold), var(--accent-gold) 30px, 
+                var(--muted-gold) 30px, var(--muted-gold) 60px, 
+                var(--medium-brown) 60px, var(--medium-brown) 90px);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-gold);
+        }
+
+        .footer-text {
+            margin-bottom: 2rem;
+            color: var(--text-beige);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--text-cream);
+            font-family: 'Courier Prime', monospace;
+            text-decoration: none;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border: 1px solid transparent;
+        }
+
+        .footer-link:hover {
+            color: var(--accent-gold);
+            border: 1px solid var(--subtle-border);
+            background-color: rgba(62, 46, 33, 0.6);
+        }
+
+        .copyright {
+            font-size: 0.85rem;
+            color: var(--muted-gold);
+            margin-top: 2rem;
+            letter-spacing: 1px;
+            font-family: 'Courier Prime', monospace;
+        }
+        
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .social-icon {
+            font-size: 1.8rem;
+            color: var(--text-cream);
+            text-decoration: none;
+            transition: all 0.3s;
+            background-color: rgba(62, 46, 33, 0.7);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid var(--subtle-border);
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-5px);
+            color: var(--accent-gold);
+            background-color: rgba(62, 46, 33, 0.9);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Film grain overlays -->
+    <canvas id="filmGrainCanvas"></canvas>
+    <canvas id="vignetteCanvas"></canvas>
+    <div class="film-edge"></div>
+    
+    <header>
+        <div class="header-background"></div>
+        <div class="header-content">
+            <h1>1950s India</h1>
+            <p class="subtitle">THE DAWN OF MODERN INDIA</p>
+            <p class="decade-description">
+                Experience the pivotal first decade after independence, when a newly sovereign nation 
+                laid the foundation for its future. From the adoption of the Constitution to the 
+                establishment of democratic institutions, witness the birth of modern India.
+            </p>
+            <div class="header-buttons">
+                <button class="decade-btn">EXPLORE TIMELINE</button>
+                <button class="decade-btn">EXPERIENCE CULTURE</button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="category-tabs">
+        <div class="tab active" data-target="intro">Introduction</div>
+        <div class="tab" data-target="music">Music</div>
+        <div class="tab" data-target="events">Major Events</div>
+        <div class="tab" data-target="trends">Fashion</div>
+        <div class="tab" data-target="ideologies">Ideologies</div>
+        <div class="tab" data-target="technology">Technology</div>
+        <div class="tab" data-target="blog">Daily Life</div>
+        <div class="tab" data-target="memories">Memories</div>
+    </nav>
+
+    <main>
+        <!-- Introduction Section -->
+        <section id="intro" class="section active">
+            <h2 class="section-title">Journey to the Past</h2>
+            <div class="card">
+                <div class="card-content">
+                    <p>The 1950s were a pivotal era in Indian history, marking the first decade after independence from British colonial rule. These formative years saw the birth of a new nation, grappling with the challenges of nation-building while preserving its rich cultural heritage. From the implementation of the first Five-Year Plan to the establishment of democratic institutions, India was laying the foundation for its future.</p>
+                    <p>This was a time of immense hope and optimism, as well as significant challenges. The nation was recovering from the trauma of partition while simultaneously building its identity as a sovereign republic. The Constitution was adopted in 1950, democracy took root, and the groundwork for industrial development was laid.</p>
+                </div>
+                <div class="meta">
+                    <div class="tags">
+                        <span class="tag">History</span>
+                        <span class="tag">Independence</span>
+                        <span class="tag">Nation Building</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Music Section -->
+        <section id="music" class="section">
+            <h2 class="section-title">Music of the Era</h2>
+            <div class="retro-radio">
+                <h3 class="retro-radio-title">All India Radio</h3>
+                <div class="retro-radio-knobs">
+                    <div class="retro-knob"></div>
+                    <div class="retro-knob"></div>
+                    <div class="retro-knob"></div>
+                </div>
+                <div class="retro-radio-display">
+                    <div class="retro-radio-frequency">VIVIDH BHARATI 470.6 kHz</div>
+                </div>
+            </div>
+                
+            <div class="grid-container">
+                <div class="card">
+                    <h3>The Golden Age of Film Music</h3>
+                    <div class="card-content">
+                        <p>The 1950s marked the golden era of Hindi film music, with legendary composers like Naushad, S.D. Burman, and C. Ramchandra creating timeless melodies. Singers like Mohammed Rafi, Lata Mangeshkar, and Asha Bhosle began their journey to becoming household names.</p>
+                        <p>Films like 'Baiju Bawra' (1952) and 'Mother India' (1957) featured songs that continue to resonate with audiences decades later. Classical ragas were skillfully woven into film compositions, creating a unique blend of traditional and modern.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Bollywood</span>
+                            <span class="tag">Classical</span>
+                            <span class="tag">Lata Mangeshkar</span>
+                        </div>
+                        <div class="date">1950-1959</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Folk Traditions</h3>
+                    <div class="card-content">
+                        <p>While film music was gaining popularity, traditional folk forms continued to thrive across rural India. Regional folk traditions like Bhatiali from Bengal, Lavani from Maharashtra, and Rajasthani folk music maintained their cultural importance.</p>
+                        <p>All India Radio played a crucial role in documenting and broadcasting these diverse musical traditions, making them accessible to audiences nationwide.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Folk</span>
+                            <span class="tag">Traditional</span>
+                            <span class="tag">Regional</span>
+                        </div>
+                        <div class="date">1950-1959</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Classical Renaissance</h3>
+                    <div class="card-content">
+                        <p>The 1950s witnessed a revival of interest in classical music, with legends like Pandit Ravi Shankar, Ustad Ali Akbar Khan, and M.S. Subbulakshmi gaining prominence. Classical music conferences became important cultural events in major cities.</p>
+                        <p>The newly formed Sangeet Natak Akademi (1952) began documenting and promoting classical arts, ensuring the preservation of these ancient traditions for future generations.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Classical</span>
+                            <span class="tag">Ravi Shankar</span>
+                            <span class="tag">Carnatic</span>
+                        </div>
+                        <div class="date">1950-1959</div>
+                    </div>
+                </div>
+            </div>
+            </section>
+
+        <!-- Events Section -->
+        <section id="events" class="section">
+            <h2 class="section-title">Major Events</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <h3>Republic Day - January 26, 1950</h3>
+                    <div class="card-content">
+                        <p>India officially became a republic with the adoption of its constitution, marking the final step in the journey to complete self-rule. Dr. Rajendra Prasad was sworn in as the first President of the Republic of India.</p>
+                        <p>The Republic Day celebration on January 26, 1950 marked a historic moment when the nation formally adopted its constitution and declared itself a sovereign democratic republic.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Constitutional</span>
+                            <span class="tag">Republic</span>
+                            <span class="tag">Democracy</span>
+                        </div>
+                        <div class="date">January 26, 1950</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>First Five-Year Plan (1951-1956)</h3>
+                    <div class="card-content">
+                        <p>India adopted its first five-year plan under the leadership of Prime Minister Jawaharlal Nehru, focusing on agriculture and rural development. This marked the beginning of planned economic development in independent India.</p>
+                        <p>The plan emphasized irrigation projects, community development programs, and land reforms to boost agricultural productivity and address rural poverty.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Economy</span>
+                            <span class="tag">Development</span>
+                            <span class="tag">Agriculture</span>
+                        </div>
+                        <div class="date">1951-1956</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>States Reorganization Act, 1956</h3>
+                    <div class="card-content">
+                        <p>This landmark legislation reorganized the states of India along linguistic lines, reshaping the political and administrative map of the country. It was a response to growing demands for states based on language identity.</p>
+                        <p>The act created 14 states and 6 union territories, setting the framework for India's federal structure that largely continues to the present day.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Politics</span>
+                            <span class="tag">Language</span>
+                            <span class="tag">States</span>
+                        </div>
+                        <div class="date">November 1, 1956</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fashion Section -->
+        <section id="trends" class="section">
+            <h2 class="section-title">Fashion & Lifestyle Trends</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <h3>Women's Fashion</h3>
+                    <div class="card-content">
+                        <p>The 1950s saw a unique blend of traditional and Western influences in Indian women's fashion. The elegant silk sarees remained the primary attire for formal occasions, with regional variations in draping styles and designs.</p>
+                        <p>Urban educated women began adopting the salwar kameez for everyday wear, appreciating its comfort and practicality while maintaining modesty. Bollywood actresses like Madhubala and Nargis set fashion trends with their distinctive styles.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Saree</span>
+                            <span class="tag">Salwar</span>
+                            <span class="tag">Traditional</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Men's Fashion</h3>
+                    <div class="card-content">
+                        <p>For men, the influence of Western attire was more pronounced, especially in urban areas. The formal look typically included tailored suits or the 'Nehru jacket' paired with trousers - a style popularized by Prime Minister Nehru himself.</p>
+                        <p>Traditional attire like the dhoti, kurta, and pajama continued to be common in rural areas and for religious occasions. The Gandhi cap, a symbol of the independence movement, remained popular as a political statement.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Nehru Jacket</span>
+                            <span class="tag">Dhoti Kurta</span>
+                            <span class="tag">Gandhi Cap</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Social Life</h3>
+                    <div class="card-content">
+                        <p>Cinema emerged as a major form of entertainment, with theaters becoming social hubs in cities and towns. Radio broadcasts brought news, music, and drama to households across the nation through All India Radio.</p>
+                        <p>Coffee houses in cities became intellectual gathering spots where artists, writers, and political thinkers would engage in discussions about art, literature, and the direction of the newly independent nation.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Cinema</span>
+                            <span class="tag">Radio</span>
+                            <span class="tag">Coffee Houses</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ideologies Section -->
+        <section id="ideologies" class="section">
+            <h2 class="section-title">Ideologies & Thought</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <h3>Nehruvian Socialism</h3>
+                    <div class="card-content">
+                        <p>Prime Minister Nehru championed a mixed economy model that blended socialist principles with democratic values. His vision emphasized state-led industrialization, secularism, and non-alignment in foreign policy.</p>
+                        <p>The establishment of public sector undertakings and "temples of modern India" - large infrastructure projects like dams and steel plants - reflected this ideology of self-reliance and planned development.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Socialism</span>
+                            <span class="tag">Mixed Economy</span>
+                            <span class="tag">Planning</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Cultural Nationalism</h3>
+                    <div class="card-content">
+                        <p>The 1950s saw efforts to define and celebrate India's cultural identity, with state support for classical arts, literature, and heritage conservation. The establishment of institutions like the Sangeet Natak Akademi (1952), Sahitya Akademi (1954), and Lalit Kala Akademi (1954) reflected this commitment.</p>
+                        <p>The idea of "Unity in Diversity" emerged as a guiding principle, acknowledging and celebrating India's pluralistic heritage while fostering national integration.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Cultural Heritage</span>
+                            <span class="tag">Unity in Diversity</span>
+                            <span class="tag">Arts</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Social Reform Movements</h3>
+                    <div class="card-content">
+                        <p>Progressive ideologies shaped social reform movements aimed at addressing caste discrimination, gender inequality, and economic disparities. The Hindu Code Bills of the 1950s sought to reform Hindu personal laws regarding marriage, divorce, inheritance, and adoption.</p>
+                        <p>Grassroots movements led by figures like Vinoba Bhave, who started the Bhoodan Movement in 1951, advocated for voluntary land redistribution to address rural inequality.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Social Reform</span>
+                            <span class="tag">Equality</span>
+                            <span class="tag">Land Rights</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Section -->
+        <section id="technology" class="section">
+            <h2 class="section-title">Technology & Innovation</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <h3>Establishment of Scientific Institutions</h3>
+                    <div class="card-content">
+                        <p>The 1950s saw the establishment of premier scientific and technical institutions like the Indian Institutes of Technology (first IIT in Kharagpur, 1951), laying the foundation for India's future technological advancement.</p>
+                        <p>The Atomic Energy Commission (established in 1948) expanded its activities during this decade under Dr. Homi Bhabha's leadership, marking the beginning of India's nuclear program.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Education</span>
+                            <span class="tag">Science</span>
+                            <span class="tag">Research</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Industrial Development</h3>
+                    <div class="card-content">
+                        <p>Major industrial projects were initiated, including the Bhakra Nangal Dam, Hirakud Dam, and steel plants at Bhilai, Durgapur, and Rourkela with international collaboration.</p>
+                        <p>The Industrial Policy Resolution of 1956 categorized industries based on their strategic importance, with key sectors reserved for the public sector to ensure planned and balanced economic growth.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Industry</span>
+                            <span class="tag">Infrastructure</span>
+                            <span class="tag">Energy</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Communication Networks</h3>
+                    <div class="card-content">
+                        <p>All India Radio expanded its network significantly, bringing news and entertainment to remote parts of the country. The national broadcaster became a crucial tool for education, information dissemination, and cultural integration.</p>
+                        <p>The telephone system, though limited in reach, began expanding in urban centers, while the postal service remained the primary means of written communication across the vast country.</p>
+                    </div>
+                    <div class="meta">
+                        <div class="tags">
+                            <span class="tag">Radio</span>
+                            <span class="tag">Telecommunications</span>
+                            <span class="tag">Postal Service</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Blog Section -->
+        <section id="blog" class="section">
+            <h2 class="section-title">A Day in Delhi, 1955</h2>
+            <div class="blog-section">
+                <h3 class="blog-title">Life in Post-Independence India</h3>
+                <div class="blog-meta">By Historical AI Narrative | September 2, 2023</div>
+                <div class="blog-content">
+                    <p>The morning begins at 5:30 AM in our modest home in Old Delhi. My father is already awake, sitting cross-legged on the veranda with the day's first cup of chai, carefully reading The Hindustan Times. The newspaper is filled with Prime Minister Nehru's speeches about the new Five-Year Plan and nation-building. Independence is still fresh in our collective memory – just eight years have passed since the tricolor was first raised over a free India.</p>
+                    
+                    <p>My mother moves about the kitchen, preparing breakfast of paratha and subzi. The kitchen is simple – a kerosene stove and a few utensils, but the aromas are complex and comforting. Every morning, the milk delivery boy brings fresh buffalo milk in aluminum cans, still warm from the morning milking. Water comes from the community tap at the end of our lane, where women gather not just for water, but for the day's news and gossip.</p>
+                    
+                    <p>My school uniform is meticulously ironed – white kurta pajama with a Gandhi cap. Many of our teachers were freedom fighters, and morning assembly always includes patriotic songs and discussions about building our new nation. Today's special lecture is about the upcoming Republic Day celebrations. The excitement among students is palpable – we've been practicing for weeks for the cultural program.</p>
+                    
+                    <p>Father works as a clerk in a government office. He wears a simple cotton kurta-pajama to work, sometimes with a Nehru jacket for important meetings. His office has just received its first telephone connection – a status symbol that brings neighboring colleagues to make occasional calls. The typewriter clacks echo down the corridors of the colonial-era building, now repurposed for Indian administrators.</p>
+                    
+                    <p>After school, I help my grandfather with his radio. The Murphy radio set is the pride of our home – a wooden box with glowing dials that connects us to All India Radio's news broadcasts and music programs. When Lata Mangeshkar's voice fills our small living room, the neighbors often gather outside our window to listen. Tonight, there will be a special broadcast about the Panchsheel Agreement with China – father says it's important for peace.</p>
+                    
+                    <p>In the evening, our lane transforms into an impromptu cricket pitch. The bat is professional, but our ball is made of tightly wrapped rubber bands, and stones serve as wickets. The game pauses whenever a cycle rickshaw or handcart needs to pass. The rickshaw wallah knows everyone by name and often delivers neighborhood gossip along with his passengers.</p>
+                    
+                    <p>For entertainment, our family occasionally visits the local cinema hall to watch the latest Hindi films. Raj Kapoor's "Shree 420" released this year, and its songs are on everyone's lips. The ticket collector knows my father and sometimes lets us in through the side entrance when seats are available. Inside, the hall is a great equalizer – government officers sit alongside shopkeepers, all temporarily transported by the magic of cinema.</p>
+                    
+                    <p>Dinner is simple but satisfying – rice, dal, and seasonal vegetables. Meat is reserved for special occasions. After dinner, grandfather tells stories of the freedom struggle – his participation in the Quit India Movement and his brief imprisonment. These are not just stories but living history lessons, connecting me to the birth of our nation.</p>
+                    
+                    <p>Electricity is still intermittent in our neighborhood, so kerosene lamps are kept ready. When power cuts occur, families spill out into the communal courtyard where the breeze is cooler. Neighbors share news, children play hide and seek in the moonlight, and the elders discuss politics – from local municipal issues to Nehru's foreign policy.</p>
+                    
+                    <p>Before bed, I look at my prized collection – stamps from the newly independent India, a few foreign coins given by my uncle who works at the diplomatic mission, and a signed photograph of Nehru addressing children, obtained when he visited our school last year. These treasures connect me to both my country and the wider world that India is now engaging with as a sovereign nation.</p>
+                    
+                    <p>As I fall asleep, the sounds of the city fade – the last cycle bells, distant film songs from a neighbor's radio, and the night watchman's periodic calls of "Jaagte raho" (stay awake). Tomorrow will bring another day of school, play, and the continuing story of our young republic finding its place in the world.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Memories Section -->
+        <section id="memories" class="section">
+            <h2 class="section-title">Personal Memories</h2>
+            <div class="memories-grid">
+                <div class="memory-card">
+                    <div class="memory-author">Rajendra Kumar</div>
+                    <div class="memory-date">Remembering 1953</div>
+                    <div class="memory-content">
+                        <p>I was 12 when I attended the first Republic Day parade in New Delhi. The streets were filled with people waving small paper flags. I remember sitting on my father's shoulders to see Nehru and President Rajendra Prasad pass by. The military bands played stirring patriotic tunes that I can still recall note for note.</p>
+                    </div>
+                    <div class="memory-location">New Delhi, India</div>
+                </div>
+                
+                <div class="memory-card">
+                    <div class="memory-author">Kamala Devi</div>
+                    <div class="memory-date">Remembering 1955</div>
+                    <div class="memory-content">
+                        <p>Our family acquired our first radio set in 1955. It was a Murphy radio, and the entire neighborhood would gather in our front room to listen to Binaca Geetmala and news broadcasts. During the cricket commentary, you could hear cheers erupting simultaneously from every house on the street when India performed well.</p>
+                    </div>
+                    <div class="memory-location">Bombay, India</div>
+                </div>
+                
+                <div class="memory-card">
+                    <div class="memory-author">Mohammed Ismail</div>
+                    <div class="memory-date">Remembering 1958</div>
+                    <div class="memory-content">
+                        <p>I worked as an assistant on the set of "Mother India" in 1957. Watching Nargis ji and Sunil Dutt work was like witnessing living legends. The film captured the spirit of our nation - the struggles, the determination, and the hope. Even Nehru ji was moved to tears at a special screening.</p>
+                    </div>
+                    <div class="memory-location">Film City, Bombay</div>
+                </div>
+                
+                <div class="memory-card">
+                    <div class="memory-author">Lakshmi Rao</div>
+                    <div class="memory-date">Remembering 1952</div>
+                    <div class="memory-content">
+                        <p>I was among the first women to vote in independent India's elections in 1952. My grandmother, who had participated in the Salt Satyagraha, walked with me to the polling station. The election officials treated us with such respect. I remember feeling that we were truly building a new India where women's voices mattered.</p>
+                    </div>
+                    <div class="memory-location">Madras, India</div>
+                </div>
+                
+                <div class="memory-card">
+                    <div class="memory-author">Prakash Sharma</div>
+                    <div class="memory-date">Remembering 1956</div>
+                    <div class="memory-content">
+                        <p>As a young engineer, I witnessed the construction of the Bhakra Nangal Dam. Nehru called it the "Temple of Modern India." The scale was unlike anything I had seen before. We worked alongside engineers from the USSR and USA, learning new techniques. There was such optimism about what technology could do for our young nation.</p>
+                    </div>
+                    <div class="memory-location">Punjab, India</div>
+                </div>
+                
+                <div class="memory-card">
+                    <div class="memory-author">Indira Joshi</div>
+                    <div class="memory-date">Remembering 1959</div>
+                    <div class="memory-content">
+                        <p>I was teaching at a village school when we received our first batch of free textbooks from the government. The children's excitement was indescribable. Many were first-generation learners. I still remember a little girl carefully wrapping her Hindi primer in newspaper to protect it, saying it was the most precious thing her family owned.</p>
+                    </div>
+                    <div class="memory-location">Rural Uttar Pradesh</div>
+                </div>
+            </div>
+            
+            <div class="memory-form-container">
+                <h3 class="memory-form-title">Share Your Memory</h3>
+                <p class="memory-form-intro">Do you have memories of India in the 1950s? Share your personal experiences or stories passed down through your family.</p>
+                
+                <form class="memory-form community-form">
+                    <div class="form-group">
+                        <label for="memory-name">Your Name</label>
+                        <input type="text" id="memory-name" class="form-control" placeholder="e.g., Ravi Sharma" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="memory-year">Year of Memory</label>
+                        <select id="memory-year" class="form-control" required>
+                            <option value="" disabled selected>Select a year</option>
+                            <option value="1950">1950</option>
+                            <option value="1951">1951</option>
+                            <option value="1952">1952</option>
+                            <option value="1953">1953</option>
+                            <option value="1954">1954</option>
+                            <option value="1955">1955</option>
+                            <option value="1956">1956</option>
+                            <option value="1957">1957</option>
+                            <option value="1958">1958</option>
+                            <option value="1959">1959</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="memory-location">Location</label>
+                        <input type="text" id="memory-location" class="form-control" placeholder="e.g., Kolkata, West Bengal" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="memory-content">Your Memory</label>
+                        <textarea id="memory-content" class="form-control" placeholder="Share your story or memory here..." rows="5" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn memory-submit">Submit Your Memory</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="footer-pattern"></div>
+        <div class="footer-content">
+            <h3 class="footer-title">Time Capsule: 1950s India</h3>
+            <p class="footer-text">Experience the dawn of a new nation through the stories and sounds of this transformative decade - when India took its first steps as an independent republic.</p>
+            
+            <div class="footer-links">
+                <a href="../decades/1950/index.html" class="footer-link">1950s Home</a>
+                <a href="../decades/1960/index.html" class="footer-link">Explore the 1960s</a>
+                <a href="../index.html" class="footer-link">Return to Main Galaxy</a>
+                <a href="#" class="footer-link">About the Project</a>
+                <a href="#" class="footer-link">Submit a Memory</a>
+            </div>
+            
+            <div class="footer-social">
+                <a href="#" class="social-icon">📻</a>
+                <a href="#" class="social-icon">📰</a>
+                <a href="#" class="social-icon">📽️</a>
+                <a href="#" class="social-icon">📚</a>
+            </div>
+            
+            <p class="copyright">© 2025 Time Capsule Project. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize film grain effect
+            initFilmGrainEffect();
+            
+            // Tab switching functionality
+            const tabs = document.querySelectorAll('.tab');
+            
+            // Function to activate a tab
+            function activateTab(tabElement) {
+                // Update active tab
+                tabs.forEach(t => t.classList.remove('active'));
+                tabElement.classList.add('active');
+                
+                // Show corresponding section
+                const target = tabElement.getAttribute('data-target');
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById(target).classList.add('active');
+                
+                // Scroll to top when switching tabs
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+            
+            // Add click event listeners to all tabs
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    activateTab(tab);
+                });
+            });
+            
+            // Activate the first tab by default
+            if (tabs.length > 0) {
+                activateTab(tabs[0]);
+            }
+            
+            // Film grain and vignette effect implementation
+            function initFilmGrainEffect() {
+                // Setup film grain canvas
+                const grainCanvas = document.getElementById('filmGrainCanvas');
+                const grainCtx = grainCanvas.getContext('2d');
+                
+                // Setup vignette canvas
+                const vignetteCanvas = document.getElementById('vignetteCanvas');
+                const vignetteCtx = vignetteCanvas.getContext('2d');
+                
+                // Function to resize canvases
+                function resizeCanvases() {
+                    grainCanvas.width = window.innerWidth;
+                    grainCanvas.height = window.innerHeight;
+                    
+                    vignetteCanvas.width = window.innerWidth;
+                    vignetteCanvas.height = window.innerHeight;
+                    
+                    // Re-draw vignette effect when resized
+                    createVignetteEffect();
+                }
+                
+                // Call resize initially and on window resize
+                resizeCanvases();
+                window.addEventListener('resize', resizeCanvases);
+                
+                // Create the film grain texture
+                function createFilmGrainTexture() {
+                    grainCtx.clearRect(0, 0, grainCanvas.width, grainCanvas.height);
+                    
+                    // Fill with black base
+                    grainCtx.fillStyle = '#000000';
+                    grainCtx.fillRect(0, 0, grainCanvas.width, grainCanvas.height);
+                    
+                    // Add noise
+                    const imageData = grainCtx.getImageData(0, 0, grainCanvas.width, grainCanvas.height);
+                    const data = imageData.data;
+                    
+                    for (let i = 0; i < data.length; i += 4) {
+                        // Random noise value
+                        const value = Math.floor(Math.random() * 255);
+                        
+                        // Apply noise with varying intensity
+                        data[i] = data[i + 1] = data[i + 2] = value;
+                        // Alpha channel - make it subtle
+                        data[i + 3] = Math.random() > 0.95 ? 255 : Math.random() * 40;
+                    }
+                    
+                    grainCtx.putImageData(imageData, 0, 0);
+                    
+                    // Add scratches
+                    grainCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                    grainCtx.lineWidth = 1;
+                    
+                    // Vertical scratches
+                    for (let i = 0; i < 10; i++) {
+                        const x = Math.random() * grainCanvas.width;
+                        grainCtx.beginPath();
+                        grainCtx.moveTo(x, 0);
+                        grainCtx.lineTo(x, grainCanvas.height);
+                        grainCtx.stroke();
+                    }
+                    
+                    // Add dust specks
+                    grainCtx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                    for (let i = 0; i < 100; i++) {
+                        const x = Math.random() * grainCanvas.width;
+                        const y = Math.random() * grainCanvas.height;
+                        const size = Math.random() * 3 + 1;
+                        grainCtx.beginPath();
+                        grainCtx.arc(x, y, size, 0, Math.PI * 2);
+                        grainCtx.fill();
+                    }
+                }
+                
+                // Create vignette effect
+                function createVignetteEffect() {
+                    vignetteCtx.clearRect(0, 0, vignetteCanvas.width, vignetteCanvas.height);
+                    
+                    // Create radial gradient for vignette
+                    const gradient = vignetteCtx.createRadialGradient(
+                        vignetteCanvas.width / 2, vignetteCanvas.height / 2, vignetteCanvas.width / 4,
+                        vignetteCanvas.width / 2, vignetteCanvas.height / 2, vignetteCanvas.width / 1.5
+                    );
+                    gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
+                    gradient.addColorStop(1, 'rgba(0, 0, 0, 0.85)');
+                    
+                    vignetteCtx.fillStyle = gradient;
+                    vignetteCtx.fillRect(0, 0, vignetteCanvas.width, vignetteCanvas.height);
+                }
+                
+                // Animation loop for film grain
+                function animateFilmGrain() {
+                    createFilmGrainTexture();
+                    requestAnimationFrame(animateFilmGrain);
+                }
+                
+                // Start animations
+                createVignetteEffect();
+                animateFilmGrain();
+                
+                // Create film flickering effect
+                let lastFlicker = 0;
+                const flickerInterval = 500; // milliseconds
+                
+                function createFilmFlicker() {
+                    const now = Date.now();
+                    
+                    if (now - lastFlicker > flickerInterval) {
+                        // Random chance to flicker
+                        if (Math.random() > 0.7) {
+                            document.body.style.opacity = Math.random() * 0.15 + 0.85;
+                            setTimeout(() => {
+                                document.body.style.opacity = 1;
+                            }, 50 + Math.random() * 100);
+                            lastFlicker = now;
+                        }
+                    }
+                    
+                    requestAnimationFrame(createFilmFlicker);
+                }
+                
+                // Start film flicker
+                createFilmFlicker();
+            }
+            
+            // Knob rotation for radio
+            const knobs = document.querySelectorAll('.retro-knob');
+            knobs.forEach(knob => {
+                knob.addEventListener('click', function() {
+                    this.style.transform = `rotate(${Math.floor(Math.random() * 360)}deg)`;
+                    
+                    // Change the "frequency"
+                    const freqDisplay = document.querySelector('.retro-radio-frequency');
+                    if (freqDisplay) {
+                        const randomFreq = (Math.random() * (500 - 88) + 88).toFixed(1);
+                        freqDisplay.textContent = `VIVIDH BHARATI ${randomFreq} kHz`;
+                    }
+                });
+            });
+            
+            // Button functionality
+            const decadeBtns = document.querySelectorAll('.decade-btn');
+            decadeBtns.forEach((btn, index) => {
+                btn.addEventListener('click', () => {
+                    if (index === 0) {
+                        window.location.href = '../decades/1950/explore-timeline.html';
+                    } else {
+                        window.location.href = '../decades/1950/experience-culture.html';
+                    }
+                });
+            });
+            
+            // Memory form submission handler
+            const memoryForm = document.querySelector('.memory-form');
+            memoryForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                const name = document.getElementById('memory-name').value;
+                const year = document.getElementById('memory-year').value;
+                const location = document.getElementById('memory-location').value;
+                const memory = document.getElementById('memory-content').value;
+                
+                // Create a new memory card with the submitted content
+                const newMemory = document.createElement('div');
+                newMemory.className = 'memory-card';
+                newMemory.innerHTML = `
+                    <div class="memory-author">${name}</div>
+                    <div class="memory-date">Remembering ${year}</div>
+                    <div class="memory-content">
+                        <p>${memory}</p>
+                    </div>
+                    <div class="memory-location">${location}</div>
+                `;
+                
+                // Get the memories grid
+                const memoriesGrid = document.querySelector('.memories-grid');
+                
+                // Add the new memory card to the beginning of the grid
+                memoriesGrid.insertBefore(newMemory, memoriesGrid.firstChild);
+                
+                // Apply a highlight effect
+                newMemory.style.backgroundColor = 'rgba(201, 177, 140, 0.2)';
+                setTimeout(() => {
+                    newMemory.style.transition = 'background-color 1s ease';
+                    newMemory.style.backgroundColor = '';
+                }, 100);
+                
+                // Clear the form
+                memoryForm.reset();
+                
+                // Display a thank you message
+                alert('Thank you for sharing your memory! It has been added to the collection.');
+                
+                // Scroll to the newly added memory
+                window.scrollTo({
+                    top: memoriesGrid.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

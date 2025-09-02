@@ -582,6 +582,80 @@
             background: rgba(177, 156, 217, 0.3);
             transform: rotate(90deg);
         }
+        
+        .popup-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .popup-btn {
+            padding: 0.9rem 1.8rem;
+            background: linear-gradient(45deg, rgba(177, 156, 217, 0.2), rgba(155, 89, 182, 0.4));
+            border: 2px solid #b19cd9;
+            border-radius: 30px;
+            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            text-shadow: 0 0 5px rgba(216, 178, 255, 0.8);
+            box-shadow: 0 5px 15px rgba(177, 156, 217, 0.3);
+            letter-spacing: 0.5px;
+        }
+        
+        .popup-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s ease;
+        }
+        
+        .popup-btn:hover {
+            background: linear-gradient(45deg, rgba(177, 156, 217, 0.4), rgba(155, 89, 182, 0.6));
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(177, 156, 217, 0.5);
+            text-shadow: 0 0 10px rgba(216, 178, 255, 1);
+            border-color: #d8b2ff;
+        }
+        
+        .popup-btn:hover:before {
+            left: 100%;
+        }
+        
+        .popup-btn:active {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(177, 156, 217, 0.3);
+        }
+        
+        /* Different styling for each button */
+        #exploreBtn {
+            background: linear-gradient(45deg, rgba(123, 97, 255, 0.3), rgba(87, 65, 217, 0.5));
+            border-color: #7b61ff;
+        }
+        
+        #exploreBtn:hover {
+            background: linear-gradient(45deg, rgba(123, 97, 255, 0.5), rgba(87, 65, 217, 0.7));
+            border-color: #8f7aff;
+        }
+        
+        #createCapsuleBtn {
+            background: linear-gradient(45deg, rgba(216, 84, 192, 0.3), rgba(155, 89, 182, 0.5));
+            border-color: #d854c0;
+        }
+        
+        #createCapsuleBtn:hover {
+            background: linear-gradient(45deg, rgba(216, 84, 192, 0.5), rgba(155, 89, 182, 0.7));
+            border-color: #e672d2;
+        }
 
         .year-selector-overlay {
             position: fixed;
@@ -684,6 +758,75 @@
             margin-top: -1rem;
             margin-bottom: 1rem;
             display: none;
+        }
+        
+        /* Galaxy Core Guide Popup */
+        .core-guide {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -250px);
+            background: rgba(26, 11, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid #b19cd9;
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            color: #ffffff;
+            font-size: 1.1rem;
+            text-align: center;
+            z-index: 100;
+            width: 280px;
+            box-shadow: 0 0 25px rgba(177, 156, 217, 0.5);
+            opacity: 0;
+            animation: pulse 2s infinite, fadeIn 1s forwards 1s;
+        }
+        
+        .core-guide:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #b19cd9;
+        }
+        
+        .core-guide .guide-text {
+            margin-bottom: 10px;
+            color: #d8b2ff;
+            font-weight: 500;
+        }
+        
+        .core-guide .dismiss-btn {
+            background: rgba(177, 156, 217, 0.3);
+            border: 1px solid #b19cd9;
+            color: #ffffff;
+            border-radius: 15px;
+            padding: 5px 15px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .core-guide .dismiss-btn:hover {
+            background: rgba(177, 156, 217, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+        
+        @keyframes pulse {
+            0% {box-shadow: 0 0 25px rgba(177, 156, 217, 0.5);}
+            50% {box-shadow: 0 0 40px rgba(177, 156, 217, 0.8);}
+            100% {box-shadow: 0 0 25px rgba(177, 156, 217, 0.5);}
         }
 
         .milky-way-dust {
@@ -930,6 +1073,48 @@
             box-shadow: 0 5px 20px rgba(155, 89, 182, 0.2);
         }
         
+        /* Profile Styles */
+        .profile-content {
+            padding: 1.5rem;
+        }
+        
+        .profile-info {
+            background: rgba(26, 11, 46, 0.5);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(177, 156, 217, 0.3);
+        }
+        
+        .profile-info h3 {
+            color: #d8b2ff;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .profile-field {
+            margin-bottom: 1.2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(177, 156, 217, 0.2);
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .field-label {
+            font-weight: 500;
+            color: #b19cd9;
+        }
+        
+        .field-value {
+            color: #ffffff;
+        }
+        
+        .profile-actions {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+        
         .capsule-header {
             display: flex;
             justify-content: space-between;
@@ -981,16 +1166,10 @@
 <body>
     <canvas id="galaxy-canvas"></canvas>
 
-    <!-- Auth Navigation -->
-    <div class="auth-nav">
-        <button class="auth-nav-btn" id="loginNavBtn">Login</button>
-        <button class="auth-nav-btn" id="signupNavBtn">Sign Up</button>
-    </div>
-
-    <!-- User Navigation - to be shown after login -->
-    <div class="user-nav" style="display: none;">
-        <button class="cosmic-btn" id="viewProfileBtn">View Profile</button>
-        <button class="cosmic-btn" id="inboxBtn">Inbox</button>
+    <!-- User Navigation with Profile and Inbox buttons -->
+    <div class="user-nav">
+        <a href="profile.html" class="cosmic-btn">Profile</a>
+        <a href="inbox.html" class="cosmic-btn">Inbox</a>
         <button class="cosmic-btn" id="logoutBtn">Logout</button>
     </div>
 
@@ -1083,6 +1262,37 @@
         </div>
     </div>
 
+    <!-- Profile Modal -->
+    <div class="inbox-modal" id="profileModal">
+        <div class="inbox-modal-content">
+            <button class="inbox-modal-close" id="closeProfileModal">×</button>
+            <div class="inbox-modal-header">
+                <h2>Your Profile</h2>
+            </div>
+            <div class="profile-content">
+                <!-- Profile content will be loaded here -->
+                <div class="profile-info">
+                    <h3>Explorer Information</h3>
+                    <div class="profile-field">
+                        <span class="field-label">Name:</span>
+                        <span class="field-value" id="profileName">Loading...</span>
+                    </div>
+                    <div class="profile-field">
+                        <span class="field-label">Email:</span>
+                        <span class="field-value" id="profileEmail">Loading...</span>
+                    </div>
+                    <div class="profile-field">
+                        <span class="field-label">Time Traveler Level:</span>
+                        <span class="field-value">Novice Explorer</span>
+                    </div>
+                    <div class="profile-actions">
+                        <button class="cosmic-btn" id="editProfileBtn">Edit Profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Inbox Modal -->
     <div class="inbox-modal" id="inboxModal">
         <div class="inbox-modal-content">
@@ -1095,6 +1305,12 @@
                 <div class="no-capsules">Loading your time capsules...</div>
             </div>
         </div>
+    </div>
+
+    <!-- Galaxy Core Guide Popup -->
+    <div class="core-guide" id="coreGuide">
+        <div class="guide-text">Click on the galaxy core to discover more!</div>
+        <button class="dismiss-btn" id="dismissGuideBtn">Got it</button>
     </div>
 
     <script>
@@ -1460,6 +1676,26 @@
                     { y: 30, opacity: 0, scale: 0.95 },
                     { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" }
                 );
+                
+                // Hide and disable the core guide popup
+                const coreGuide = document.getElementById('coreGuide');
+                if (coreGuide) {
+                    // Animate out the guide popup
+                    gsap.to(coreGuide, {
+                        opacity: 0,
+                        y: -20,
+                        scale: 0.9,
+                        duration: 0.3,
+                        onComplete: () => {
+                            coreGuide.style.display = 'none';
+                        }
+                    });
+                    
+                    // Save to localStorage so it doesn't show again
+                    localStorage.setItem('hasSeenCoreGuide', 'true');
+                    // Also mark that the user has interacted with the core
+                    localStorage.setItem('hasInteractedWithCore', 'true');
+                }
             }
         });
 
@@ -1660,7 +1896,7 @@
 
         // Create time travel effect
         function createTimeTravelEffect(year) {
-            // Calculate the decade folder name
+            // Calculate the decade folder name and possible file names
             const decade = Math.floor(year / 10) * 10;
             const decadeFolderName = `${decade}`; // Just the decade number, no 's'
             
@@ -1706,18 +1942,64 @@
                     // Create cosmic effects
                     createCosmicEffects(timeJumpOverlay);
                     
-                    // After 3 seconds, redirect to the decade folder
-                    setTimeout(() => {
-                        // Fade out the overlay
-                        gsap.to(timeJumpOverlay, {
-                            opacity: 0,
-                            duration: 1,
-                            onComplete: () => {
-                                // Redirect to the decade folder's index.html
-                                window.location.href = `decades/${decadeFolderName}/index.html`;
-                            }
+                    // Update the loading text to reflect looking for archived content
+                    const loadingText = document.getElementById('loadingText');
+                    loadingText.textContent = `Searching time capsule archives for ${year}`;
+
+                    // Check for files in the feed directory
+                    const exactYearFile = `feed/${year}s.html`;       // For exact year e.g., 1973s.html (if it exists)
+                    const decadeFile = `feed/${decade}s.html`;        // e.g., 1970s.html 
+                    const alternateDecadeFile = `feed/${decade}s_new.html`; // e.g., 1960s_new.html
+                    
+                    // Order matters - we'll check them in priority order
+                    const possibleFiles = [exactYearFile, decadeFile, alternateDecadeFile];
+                    
+                    // Function to check if a file exists
+                    function checkFileExists(url) {
+                        return new Promise((resolve) => {
+                            fetch(url, { method: 'HEAD' })
+                                .then(response => {
+                                    if (response.ok) {
+                                        resolve({ exists: true, url: url });
+                                    } else {
+                                        resolve({ exists: false });
+                                    }
+                                })
+                                .catch(() => resolve({ exists: false }));
                         });
-                    }, 3000);
+                    }
+                    
+                    // Check all possible files and use the first one that exists
+                    Promise.all(possibleFiles.map(file => checkFileExists(file)))
+                        .then(results => {
+                            // Find the first file that exists
+                            const foundFile = results.find(result => result.exists);
+                            
+                            // Update loading message based on result
+                            if (foundFile && foundFile.exists) {
+                                loadingText.textContent = `Time capsule archive found! Preparing ${year}s content...`;
+                            } else {
+                                loadingText.textContent = `Redirecting to decade explorer for ${decade}s...`;
+                            }
+                            
+                            // After 3 seconds, redirect to appropriate page
+                            setTimeout(() => {
+                                // Fade out the overlay
+                                gsap.to(timeJumpOverlay, {
+                                    opacity: 0,
+                                    duration: 1,
+                                    onComplete: () => {
+                                        // If a matching file was found in the feed directory, redirect to it
+                                        if (foundFile && foundFile.exists) {
+                                            window.location.href = foundFile.url;
+                                        } else {
+                                            // Otherwise, redirect to the decade folder's index.html
+                                            window.location.href = `decades/${decadeFolderName}/index.html`;
+                                        }
+                                    }
+                                });
+                            }, 3000);
+                        });
                 }
             });
             
@@ -2424,8 +2706,28 @@
 
         // View profile function
         function viewProfile() {
-            // For now, just show a message
-            showCosmicMessage('Profile feature coming soon!', 'success');
+            const profileModal = document.getElementById('profileModal');
+            profileModal.classList.add('active');
+            
+            // Animate modal content
+            const modalContent = profileModal.querySelector('.inbox-modal-content');
+            gsap.fromTo(modalContent,
+                { y: 30, opacity: 0, scale: 0.95 },
+                { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" }
+            );
+            
+            // Try to load user data from localStorage
+            try {
+                const userData = JSON.parse(localStorage.getItem('user'));
+                if (userData) {
+                    document.getElementById('profileName').textContent = userData.name || 'Anonymous Explorer';
+                    document.getElementById('profileEmail').textContent = userData.email || 'Not available';
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                document.getElementById('profileName').textContent = 'Anonymous Explorer';
+                document.getElementById('profileEmail').textContent = 'Not available';
+            }
         }
 
         // Show inbox function
@@ -2444,6 +2746,23 @@
             loadReceivedCapsules();
         }
 
+        // Close profile modal
+        document.getElementById('closeProfileModal').addEventListener('click', () => {
+            const profileModal = document.getElementById('profileModal');
+            const modalContent = profileModal.querySelector('.inbox-modal-content');
+            
+            // Animate out
+            gsap.to(modalContent, {
+                y: 30,
+                opacity: 0,
+                scale: 0.95,
+                duration: 0.3,
+                onComplete: () => {
+                    profileModal.classList.remove('active');
+                }
+            });
+        });
+        
         // Close inbox modal
         document.getElementById('closeInboxModal').addEventListener('click', () => {
             const inboxModal = document.getElementById('inboxModal');
@@ -2570,6 +2889,41 @@
 
         // Check auth status on page load
         checkAuthStatus();
+        
+        // Handle core guide popup
+        const coreGuide = document.getElementById('coreGuide');
+        const dismissGuideBtn = document.getElementById('dismissGuideBtn');
+        
+        // Check if user has seen the guide or interacted with the core before
+        const hasSeenGuide = localStorage.getItem('hasSeenCoreGuide');
+        const hasInteractedWithCore = localStorage.getItem('hasInteractedWithCore');
+        
+        // Only show the guide if the user hasn't seen it or interacted with the core
+        if (!hasSeenGuide && !hasInteractedWithCore) {
+            // Show the guide if user hasn't seen it
+            setTimeout(() => {
+                coreGuide.style.display = 'block';
+            }, 2000);
+        } else {
+            coreGuide.style.display = 'none';
+        }
+        
+        // Handle dismiss button
+        dismissGuideBtn.addEventListener('click', function() {
+            // Animate the dismissal
+            coreGuide.style.animation = 'none';
+            coreGuide.style.opacity = '0';
+            coreGuide.style.transform = 'translate(-50%, -280px) scale(0.8)';
+            coreGuide.style.transition = 'all 0.3s ease-out';
+            
+            // Hide after animation
+            setTimeout(() => {
+                coreGuide.style.display = 'none';
+            }, 300);
+            
+            // Remember that user has seen the guide
+            localStorage.setItem('hasSeenCoreGuide', 'true');
+        });
         
         }); // Close DOMContentLoaded
     </script>

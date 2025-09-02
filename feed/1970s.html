@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1970s India - Time Capsule</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Courier+Prime&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Film Grain Animation */
+        @keyframes filmGrainAnimation {
+            0% {background-position: 0 0;}
+            10% {background-position: -5% -5%;}
+            20% {background-position: -10% 5%;}
+            30% {background-position: 5% -10%;}
+            40% {background-position: -5% 15%;}
+            50% {background-position: -10% 5%;}
+            60% {background-position: 15% 0%;}
+            70% {background-position: 0% 10%;}
+            80% {background-position: -15% 0%;}
+            90% {background-position: 10% 5%;}
+            100% {background-position: 5% 0%;}
+        }
+        
+        :root {
+            --background-dark: #131211;
+            --seafoam-teal: #7DBEB5;
+            --muted-beige: #D2C4A5;
+            --warm-coral: #E8866C;
+            --cream-white: #F4F1E8;
+            --deep-green: #2B614E;
+            --muted-brown: #876D5B;
+            --faded-pink: #E7B6B0;
+            --text-beige: #d2c0a7;
+            --text-cream: #f0e6d6;
+            --accent-gold: #c9b18c;
+            --dark-brown: #3e2e21;
+            --border-color: #8c7a6a;
+            --subtle-border: #3a3631;
+            --dusty-brown: #6d5c4d;
+        }
+        
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier Prime', monospace;
+            background-color: var(--background-dark); /* Dark background matching reference image */
+            color: var(--cream-white); /* Cream white text for better readability */
+            position: relative;
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+        }
+        
+        /* Additional layer for CSS-based film grain */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99;
+            pointer-events: none;
+            background-image: url('data:image/png;base64,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');
+            opacity: 0.04;
+            animation: filmGrainAnimation 0.5s steps(1) infinite;
+        }
+
+        /* Advanced Film Grain Effect - removed CSS implementation in favor of Canvas-based approach */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            pointer-events: none;
+            /* Base styling only - actual grain is added via canvas */
+        }
+        
+        /* Film Edge Mark - simulating the film strip edge */
+        .film-edge {
+            position: fixed;
+            top: 0;
+            left: 20%;
+            width: 1px;
+            height: 100%;
+            background-color: rgba(255,255,255,0.5);
+            opacity: 0.2;
+            z-index: 104;
+            pointer-events: none;
+        }
+        
+        /* Film sprocket holes - for authentic film reel look */
+        .film-sprocket-holes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 24px;
+            height: 100%;
+            pointer-events: none;
+            z-index: 105;
+            background-image: repeating-linear-gradient(
+                to bottom,
+                transparent,
+                transparent 24px,
+                rgba(0, 0, 0, 0.9) 24px,
+                rgba(0, 0, 0, 0.9) 28px,
+                transparent 28px,
+                transparent 52px
+            );
+            opacity: 0.3;
+        }
+        
+        /* Film grain canvas - enhanced for stronger effect */
+        #filmGrainCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 102;
+            pointer-events: none;
+            opacity: 0.4; /* Increased opacity for more visible grain */
+            mix-blend-mode: multiply; /* Changed blend mode for better contrast */
+        }
+        
+        /* Vignette canvas */
+        #vignetteCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 103;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+        
+        /* Body transitions for flicker effect */
+        body {
+            transition: opacity 0.05s ease;
+        }
+
+        /* Vintage Photo Vignette Effect - replacing CRT effect */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, 
+                            rgba(210, 192, 167, 0) 50%, 
+                            rgba(62, 46, 33, 0.4) 100%);
+            pointer-events: none;
+            z-index: 101;
+            opacity: 0.8; /* Stronger vignette for old photo look */
+        }
+
+        /* Header styles */
+        header {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .header-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-color: var(--seafoam-teal);
+            background-size: cover;
+            background-position: center;
+            filter: sepia(0.2) contrast(1.05);
+        }
+
+        .header-background::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(125, 190, 181, 0.2), rgba(43, 97, 78, 0.7));
+        }
+
+        .header-content {
+            text-align: center;
+            z-index: 1;
+            padding: 3rem;
+            max-width: 1000px;
+            background-color: rgba(135, 109, 91, 0.85);  /* Using muted-brown with transparency */
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-top: 5px solid var(--warm-coral);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            color: var(--cream-white);
+            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-family: 'Courier Prime', monospace;
+            font-size: 1.5rem;
+            color: var(--faded-pink);
+            margin-bottom: 2rem;
+            letter-spacing: 2px;
+        }
+
+        .decade-description {
+            font-size: 1.2rem;
+            color: var(--cream-white);
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .decade-btn {
+            background-color: var(--warm-coral);
+            color: var(--cream-white);
+            border: none;
+            padding: 1rem 2rem;
+            font-family: 'Courier Prime', monospace;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 4px;
+            letter-spacing: 1px;
+        }
+
+        .decade-btn:hover {
+            background-color: var(--seafoam-teal);
+            color: var(--dark-brown);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Navigation styles */
+        nav.category-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            background-color: var(--deep-green);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab {
+            padding: 1.2rem 1.8rem;
+            font-family: 'Courier Prime', monospace;
+            font-weight: 600;
+            color: var(--cream-white);
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .tab::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background-color: var(--warm-coral);
+            transition: all 0.3s;
+        }
+
+        .tab:hover::after, .tab.active::after {
+            width: 80%;
+        }
+
+        .tab:hover, .tab.active {
+            color: var(--warm-coral);
+        }
+
+        /* Main content styles */
+        main {
+            position: relative;
+            padding: 4rem 2rem;
+            background-color: var(--background-dark);
+        }
+
+        .section {
+            padding: 3rem 0;
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--seafoam-teal);
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: var(--warm-coral);
+        }
+
+        /* Card styles */
+        .card {
+            background: rgba(43, 97, 78, 0.85);  /* Using deep-green with transparency */
+            border: 1px solid var(--muted-beige);
+            padding: 25px;
+            margin-bottom: 30px;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--faded-pink);
+            margin-bottom: 15px;
+            border-bottom: 1px dotted var(--muted-beige);
+            padding-bottom: 8px;
+        }
+
+        .card-content {
+            margin-bottom: 15px;
+        }
+
+        .meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--dusty-brown);
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dotted var(--border-color);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(125, 190, 181, 0.2); /* Seafoam teal background with transparency */
+            padding: 3px 10px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            border: 1px solid var(--seafoam-teal); /* Seafoam teal border */
+            font-size: 0.8rem;
+            color: var(--cream-white); /* Cream white text */
+        }
+
+        /* Article Grid */
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-gap: 30px;
+        }
+
+        /* Community Section */
+        .community-form {
+            background: rgba(210, 196, 165, 0.3); /* Muted beige with transparency */
+            padding: 25px;
+            border: 1px solid var(--seafoam-teal); /* Seafoam teal border */
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--cream-white); /* Cream white text */
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            background: rgba(125, 190, 181, 0.2); /* Seafoam teal background with transparency */
+            border: 1px solid var(--muted-beige); /* Muted beige border */
+            color: var(--cream-white); /* Cream white text */
+            font-family: 'Courier Prime', monospace;
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: var(--warm-coral); /* Warm coral background */
+            color: var(--cream-white); /* Cream white text */
+            border: none;
+            font-family: 'Courier Prime', monospace;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            box-shadow: 2px 2px 5px rgba(232, 134, 108, 0.2); /* Subtle warm coral shadow */
+        }
+
+        .btn:hover {
+            background: var(--seafoam-teal); /* Seafoam teal on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Memory Card */
+        .memory-card {
+            background: rgba(135, 109, 91, 0.85);  /* Muted brown with transparency */
+            border: 1px solid var(--seafoam-teal);
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .memory-author {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--seafoam-teal);
+            margin-bottom: 5px;
+        }
+
+        .memory-date {
+            font-style: italic;
+            font-size: 0.9rem;
+            color: var(--faded-pink);
+            margin-bottom: 15px;
+        }
+
+        .memory-content {
+            margin-bottom: 15px;
+        }
+
+        .memory-location {
+            text-align: right;
+            font-size: 0.9rem;
+            color: var(--dusty-brown);
+            font-style: italic;
+        }
+
+        .memories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Retro Radio */
+        .retro-radio {
+            background: linear-gradient(to bottom, var(--seafoam-teal), var(--deep-green));
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 400px;
+            margin: 0 auto 40px;
+            border: 3px solid var(--warm-coral);
+        }
+
+        .radio-display {
+            background: rgba(244, 241, 232, 0.8); /* Cream white with transparency */
+            border-radius: 5px;
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 15px;
+            text-align: center;
+            color: var(--muted-brown);
+            font-weight: bold;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .radio-controls {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .retro-knob {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: radial-gradient(var(--cream-white), var(--muted-beige));
+            border: 3px solid var(--warm-coral);
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .retro-knob::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            width: 50%;
+            height: 3px;
+            background: var(--deep-green);
+            transform: translateY(-50%);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .decade-description {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Film grain & vignette elements -->
+    <canvas id="filmGrainCanvas"></canvas>
+    <canvas id="vignetteCanvas"></canvas>
+    <div class="film-edge"></div>
+    <div class="film-edge" style="left: 80%;"></div>
+    <div class="film-sprocket-holes"></div>
+    <div class="film-sprocket-holes" style="right: 0; left: auto;"></div>
+    
+    <header>
+        <div class="header-background"></div>
+        <div class="header-content">
+            <h1>1970s India</h1>
+            <div class="subtitle">THE DECADE OF POLITICAL CHANGE & CULTURAL AWAKENING</div>
+            <div class="decade-description">
+                The 1970s was a transformative decade for India, marked by political upheaval, including the Emergency period, significant socio-economic changes, and a vibrant cultural renaissance in cinema and music. It was a time when India witnessed developments in technology, fashion influenced by global trends, and pivotal moments that would shape the nation's future.
+            </div>
+            <div class="header-buttons">
+                <button class="decade-btn">Explore Timeline</button>
+                <button class="decade-btn">Experience Culture</button>
+            </div>
+        </div>
+    </header>
+    
+    <nav class="category-tabs">
+        <div class="tab active" data-tab="news">News & Events</div>
+        <div class="tab" data-tab="culture">Culture & Entertainment</div>
+        <div class="tab" data-tab="tech">Technology & Innovation</div>
+        <div class="tab" data-tab="lifestyle">Lifestyle & Fashion</div>
+        <div class="tab" data-tab="memories">Community Memories</div>
+    </nav>
+    
+    <main>
+        <!-- News & Events Section -->
+        <section id="news" class="section active">
+            <h2 class="section-title">Major News & Events</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <h3>The Emergency Period (1975-77)</h3>
+                    <div class="card-content">
+                        <p>Prime Minister Indira Gandhi declared a state of Emergency across India, suspending civil liberties and fundamentally altering the democratic fabric of the nation. The 21-month period saw widespread arrests of opposition leaders and strict media censorship.</p>
+                    </div>
+                    <div class="meta">
+                        <span>June 25, 1975</span>
+                        <span>National</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>India's First Nuclear Test</h3>
+                    <div class="card-content">
+                        <p>India conducted its first peaceful nuclear explosion test, codenamed "Smiling Buddha," at Pokhran in Rajasthan. This marked India's entry into the nuclear club and demonstrated its scientific capabilities on the world stage.</p>
+                    </div>
+                    <div class="meta">
+                        <span>May 18, 1974</span>
+                        <span>Science & Defense</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Janata Party Victory</h3>
+                    <div class="card-content">
+                        <p>Following the end of the Emergency, the Janata Party, a coalition of opposition parties, won a historic victory in the 1977 general elections. Morarji Desai became India's first non-Congress Prime Minister, marking a significant shift in Indian politics.</p>
+                    </div>
+                    <div class="meta">
+                        <span>March 1977</span>
+                        <span>Politics</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Bangladesh Liberation War</h3>
+                    <div class="card-content">
+                        <p>India supported East Pakistan (now Bangladesh) in its war for independence against West Pakistan, leading to the creation of Bangladesh as a sovereign nation. The conflict led to massive refugee influx into India and reshaped South Asian geopolitics.</p>
+                    </div>
+                    <div class="meta">
+                        <span>1971</span>
+                        <span>International Relations</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Culture & Entertainment Section -->
+        <section id="culture" class="section">
+            <h2 class="section-title">Culture & Entertainment</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <h3>The Rise of Amitabh Bachchan</h3>
+                    <div class="card-content">
+                        <p>Amitabh Bachchan emerged as Bollywood's "Angry Young Man" with iconic films like Zanjeer (1973), Deewar (1975), and Sholay (1975). His portrayal of anti-establishment characters resonated with the social discontent of the time.</p>
+                    </div>
+                    <div class="meta">
+                        <span>1970-1979</span>
+                        <span>Cinema</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Parallel Cinema Movement</h3>
+                    <div class="card-content">
+                        <p>The 1970s saw the flourishing of India's parallel cinema movement with filmmakers like Shyam Benegal, Mrinal Sen, and Adoor Gopalakrishnan creating socially conscious films that provided an alternative to mainstream Bollywood.</p>
+                    </div>
+                    <div class="meta">
+                        <span>1970s</span>
+                        <span>Cinema</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>R.D. Burman's Musical Revolution</h3>
+                    <div class="card-content">
+                        <p>Music composer R.D. Burman revolutionized Bollywood music by blending Western instruments with Indian classical elements, creating a distinctive sound that defined the decade with hits in films like Hare Rama Hare Krishna, Caravan, and Amar Prem.</p>
+                    </div>
+                    <div class="meta">
+                        <span>1970s</span>
+                        <span>Music</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Doordarshan's Cultural Impact</h3>
+                    <div class="card-content">
+                        <p>Television network Doordarshan expanded across India during the 1970s, bringing entertainment and news to Indian homes and creating a shared cultural experience through programs like Krishi Darshan and news broadcasts.</p>
+                    </div>
+                    <div class="meta">
+                        <span>1970s</span>
+                        <span>Television</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Technology Section -->
+        <section id="tech" class="section">
+            <h2 class="section-title">Technology & Innovation</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <h3>ISRO's Growth</h3>
+                    <div class="card-content">
+                        <p>The Indian Space Research Organisation (ISRO) made significant strides in the 1970s, including the launch of India's first satellite, Aryabhata, in 1975, marking the beginning of India's space program development.</p>
+                    </div>
+                    <div class="meta">
+                        <span>1975</span>
+                        <span>Space Technology</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Green Revolution Expansion</h3>
+                    <div class="card-content">
+                        <p>Building on its beginnings in the 1960s, the Green Revolution expanded throughout India in the 1970s, with high-yielding seed varieties, modern farming techniques, and improved irrigation transforming Indian agriculture and food security.</p>
+                    </div>
+                    <div class="meta">
+                        <span>1970s</span>
+                        <span>Agricultural Technology</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Tata Institute's Computer Systems</h3>
+                    <div class="card-content">
+                        <p>The Tata Institute of Fundamental Research (TIFR) developed indigenous computer systems, including the TIFR-CDC 3600 computer, laying the groundwork for India's future IT industry.</p>
+                    </div>
+                    <div class="meta">
+                        <span>1970s</span>
+                        <span>Computing</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Early Telecommunications Growth</h3>
+                    <div class="card-content">
+                        <p>The decade saw significant expansion of India's telecommunications network, with the establishment of more telephone exchanges and the beginning of modernization efforts in the sector.</p>
+                    </div>
+                    <div class="meta">
+                        <span>1970s</span>
+                        <span>Telecommunications</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Lifestyle & Fashion Section -->
+        <section id="lifestyle" class="section">
+            <h2 class="section-title">Lifestyle & Fashion</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <h3>Bell-Bottoms & Platform Shoes</h3>
+                    <div class="card-content">
+                        <p>Urban India embraced the global trend of bell-bottom pants and platform shoes, influenced by Western fashion and Bollywood stars. These styles became iconic symbols of 1970s fashion in India.</p>
+                    </div>
+                    <div class="meta">
+                        <span>1970s</span>
+                        <span>Fashion</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>The Hippie Influence</h3>
+                    <div class="card-content">
+                        <p>Western hippie culture influenced young urban Indians, with flower power, peace symbols, and psychedelic prints appearing in fashion and lifestyle choices. Goa became a hippie haven, creating a unique cultural blend.</p>
+                    </div>
+                    <div class="meta">
+                        <span>1970s</span>
+                        <span>Culture</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Scooter Revolution</h3>
+                    <div class="card-content">
+                        <p>The Bajaj Chetak scooter became a symbol of middle-class aspiration and mobility in urban India, with families often waiting years on a waitlist to purchase one. It revolutionized personal transportation for the Indian middle class.</p>
+                    </div>
+                    <div class="meta">
+                        <span>1970s</span>
+                        <span>Transportation</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Evolving Food Culture</h3>
+                    <div class="card-content">
+                        <p>Restaurant culture began to emerge in urban centers, with Chinese cuisine becoming particularly popular. The decade also saw the beginnings of India's fast-food culture with the establishment of early chains.</p>
+                    </div>
+                    <div class="meta">
+                        <span>1970s</span>
+                        <span>Food</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Community Memories Section -->
+        <section id="memories" class="section">
+            <h2 class="section-title">Community Memories</h2>
+            
+            <div class="retro-radio">
+                <div class="radio-display retro-radio-frequency">RADIO INDIA 102.6 kHz</div>
+                <div class="radio-controls">
+                    <div class="retro-knob"></div>
+                    <div class="retro-knob"></div>
+                </div>
+            </div>
+            
+            <div class="community-form memory-form">
+                <h3>Share Your 1970s Memory</h3>
+                <div class="form-group">
+                    <label for="memory-name">Your Name:</label>
+                    <input type="text" id="memory-name" class="form-control" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="memory-year">Year (1970-1979):</label>
+                    <input type="number" id="memory-year" min="1970" max="1979" class="form-control" placeholder="Which year is this memory from?">
+                </div>
+                <div class="form-group">
+                    <label for="memory-location">Location:</label>
+                    <input type="text" id="memory-location" class="form-control" placeholder="Where did this memory take place?">
+                </div>
+                <div class="form-group">
+                    <label for="memory-content">Your Memory:</label>
+                    <textarea id="memory-content" class="form-control" placeholder="Share your story from the 1970s..."></textarea>
+                </div>
+                <button type="submit" class="btn">Share Memory</button>
+            </div>
+            
+            <div class="memories-grid">
+                <div class="memory-card">
+                    <div class="memory-author">Rajesh Kumar</div>
+                    <div class="memory-date">Remembering 1975</div>
+                    <div class="memory-content">
+                        <p>I was a college student during the Emergency. I remember how the atmosphere in Delhi University changed overnight. Student politics came to a standstill, and there was this eerie silence in places that were usually bustling with debates. Many of my friends who were politically active suddenly disappeared - arrested without warrants. The newspaper would arrive with entire columns blacked out.</p>
+                    </div>
+                    <div class="memory-location">Delhi</div>
+                </div>
+                
+                <div class="memory-card">
+                    <div class="memory-author">Priya Sharma</div>
+                    <div class="memory-date">Remembering 1977</div>
+                    <div class="memory-content">
+                        <p>My strongest memory is of watching 'Sholay' for the first time in Minerva Theatre in Mumbai. The lines went around the block! Everyone was talking about Gabbar Singh. For months afterward, my brothers and cousins would repeat "Kitne aadmi the?" in that menacing tone. It wasn't just a film; it was a cultural phenomenon that united people across all backgrounds.</p>
+                    </div>
+                    <div class="memory-location">Mumbai</div>
+                </div>
+                
+                <div class="memory-card">
+                    <div class="memory-author">Mohan Verma</div>
+                    <div class="memory-date">Remembering 1974</div>
+                    <div class="memory-content">
+                        <p>When India conducted its first nuclear test, there was immense pride across the country. I was working as a junior engineer at the time, and I remember how everyone in our office gathered around the single radio we had, listening to the news. There was a feeling that India was now being taken seriously on the world stage. It was a moment of scientific achievement that made every Indian proud.</p>
+                    </div>
+                    <div class="memory-location">Jaipur</div>
+                </div>
+                
+                <div class="memory-card">
+                    <div class="memory-author">Lakshmi Rao</div>
+                    <div class="memory-date">Remembering 1978</div>
+                    <div class="memory-content">
+                        <p>Bell-bottoms were everything! I saved up for months to buy my first pair of bell-bottom pants and a matching psychedelic print shirt. My father was scandalized but my mother secretly helped me alter them to make the flare even wider. Wearing them to college made me feel like I was part of something bigger, more global. Everyone was trying to look like Zeenat Aman or Shashi Kapoor.</p>
+                    </div>
+                    <div class="memory-location">Bangalore</div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tab switching functionality
+            const tabs = document.querySelectorAll('.tab');
+            const sections = document.querySelectorAll('.section');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const targetTab = tab.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Show corresponding section
+                    sections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === targetTab) {
+                            section.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Film grain and vignette effects
+            const filmGrainCanvas = document.getElementById('filmGrainCanvas');
+            const vignetteCanvas = document.getElementById('vignetteCanvas');
+            const grainCtx = filmGrainCanvas.getContext('2d');
+            const vignetteCtx = vignetteCanvas.getContext('2d');
+            
+            // Set canvas size to match window
+            function resizeCanvas() {
+                filmGrainCanvas.width = window.innerWidth;
+                filmGrainCanvas.height = window.innerHeight;
+                vignetteCanvas.width = window.innerWidth;
+                vignetteCanvas.height = window.innerHeight;
+                
+                createVignetteEffect();
+            }
+            
+            // Initialize canvas size
+            resizeCanvas();
+            
+            // Update canvas size on window resize
+            window.addEventListener('resize', resizeCanvas);
+            
+            // Create dust particles for authentic film look
+            function addDustParticles() {
+                // Create dust particle layer
+                const dustCanvas = document.createElement('canvas');
+                dustCanvas.width = window.innerWidth;
+                dustCanvas.height = window.innerHeight;
+                dustCanvas.style.position = 'fixed';
+                dustCanvas.style.top = '0';
+                dustCanvas.style.left = '0';
+                dustCanvas.style.width = '100%';
+                dustCanvas.style.height = '100%';
+                dustCanvas.style.zIndex = '104';
+                dustCanvas.style.pointerEvents = 'none';
+                dustCanvas.style.opacity = '0.25';
+                dustCanvas.style.mixBlendMode = 'screen';
+                document.body.appendChild(dustCanvas);
+                
+                const dustCtx = dustCanvas.getContext('2d');
+                
+                // Create dust particles
+                function createDust() {
+                    dustCtx.clearRect(0, 0, dustCanvas.width, dustCanvas.height);
+                    dustCtx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                    
+                    // Create different sized dust particles
+                    for (let i = 0; i < 100; i++) {
+                        const x = Math.random() * dustCanvas.width;
+                        const y = Math.random() * dustCanvas.height;
+                        const size = Math.random() * 2 + 0.5;
+                        
+                        dustCtx.beginPath();
+                        dustCtx.arc(x, y, size, 0, Math.PI * 2);
+                        dustCtx.fill();
+                    }
+                }
+                
+                // Animate dust movement - make dust appear/disappear randomly
+                function animateDust() {
+                    if (Math.random() > 0.7) {
+                        createDust();
+                    }
+                    requestAnimationFrame(animateDust);
+                }
+                
+                createDust();
+                animateDust();
+                
+                // Update dust canvas on resize
+                window.addEventListener('resize', () => {
+                    dustCanvas.width = window.innerWidth;
+                    dustCanvas.height = window.innerHeight;
+                    createDust();
+                });
+            }
+            
+            // Initialize dust particles
+            addDustParticles();
+            
+            // Enhanced film grain texture for more pronounced 1970s effect
+            function createFilmGrainTexture() {
+                grainCtx.clearRect(0, 0, filmGrainCanvas.width, filmGrainCanvas.height);
+                
+                // Create a more dynamic grain pattern
+                const imageData = grainCtx.createImageData(filmGrainCanvas.width, filmGrainCanvas.height);
+                const data = imageData.data;
+                
+                for (let i = 0; i < data.length; i += 4) {
+                    // Random noise with higher contrast for more visible grain
+                    const grainValue = Math.random() * 255;
+                    const noiseIntensity = Math.random() > 0.5 ? 0.25 : 0.15; // Variable intensity
+                    
+                    // Apply grain with varying intensity
+                    data[i] = 0; // R
+                    data[i + 1] = 0; // G
+                    data[i + 2] = 0; // B
+                    data[i + 3] = grainValue * noiseIntensity; // Alpha (opacity)
+                }
+                
+                grainCtx.putImageData(imageData, 0, 0);
+                
+                // Add some larger grain particles on top for more character
+                grainCtx.fillStyle = '#000000';
+                for (let i = 0; i < 2000; i++) {
+                    const x = Math.random() * filmGrainCanvas.width;
+                    const y = Math.random() * filmGrainCanvas.height;
+                    const size = Math.random() * 3 + 1; // Larger grain specks
+                    const opacity = Math.random() * 0.2 + 0.1; // Higher opacity
+                    
+                    grainCtx.globalAlpha = opacity;
+                    grainCtx.beginPath();
+                    grainCtx.arc(x, y, size, 0, Math.PI * 2);
+                    grainCtx.fill();
+                }
+            }
+            
+                // Create vignette effect with seafoam green / teal tint
+                function createVignetteEffect() {
+                    vignetteCtx.clearRect(0, 0, vignetteCanvas.width, vignetteCanvas.height);
+                    
+                    // Apply a seafoam teal color overlay first
+                    vignetteCtx.fillStyle = 'rgba(125, 190, 181, 0.15)';  // Seafoam teal with transparency
+                    vignetteCtx.fillRect(0, 0, vignetteCanvas.width, vignetteCanvas.height);
+                    
+                    // Create radial gradient for vignette
+                    const gradient = vignetteCtx.createRadialGradient(
+                        vignetteCanvas.width / 2, vignetteCanvas.height / 2, vignetteCanvas.width / 4,
+                        vignetteCanvas.width / 2, vignetteCanvas.height / 2, vignetteCanvas.width / 1.5
+                    );
+                    gradient.addColorStop(0, 'rgba(43, 97, 78, 0)');  // Deep green with full transparency
+                    gradient.addColorStop(1, 'rgba(43, 97, 78, 0.85)');  // Deep green with opacity
+                    
+                    vignetteCtx.fillStyle = gradient;
+                    vignetteCtx.fillRect(0, 0, vignetteCanvas.width, vignetteCanvas.height);
+                }            // Animation loop for film grain
+            function animateFilmGrain() {
+                createFilmGrainTexture();
+                requestAnimationFrame(animateFilmGrain);
+            }
+            
+            // Start animations
+            createVignetteEffect();
+            animateFilmGrain();
+            
+            // Enhanced film flickering and scratches effect for authentic 1970s look
+            let lastFlicker = 0;
+            const flickerInterval = 400; // milliseconds - more frequent flickers
+            let scratchCanvas, scratchCtx;
+            
+            // Create scratch overlay canvas
+            function createScratchOverlay() {
+                scratchCanvas = document.createElement('canvas');
+                scratchCanvas.width = window.innerWidth;
+                scratchCanvas.height = window.innerHeight;
+                scratchCanvas.style.position = 'fixed';
+                scratchCanvas.style.top = '0';
+                scratchCanvas.style.left = '0';
+                scratchCanvas.style.width = '100%';
+                scratchCanvas.style.height = '100%';
+                scratchCanvas.style.zIndex = '103';
+                scratchCanvas.style.pointerEvents = 'none';
+                scratchCanvas.style.opacity = '0';
+                scratchCanvas.style.transition = 'opacity 0.2s ease';
+                scratchCanvas.style.mixBlendMode = 'screen';
+                document.body.appendChild(scratchCanvas);
+                scratchCtx = scratchCanvas.getContext('2d');
+            }
+            
+            // Create random film scratches
+            function createScratch() {
+                if (!scratchCtx) return;
+                
+                scratchCtx.clearRect(0, 0, scratchCanvas.width, scratchCanvas.height);
+                scratchCtx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+                scratchCtx.lineWidth = Math.random() * 2 + 0.5;
+                
+                // Create 1-3 random scratches
+                const scratchCount = Math.floor(Math.random() * 3) + 1;
+                
+                for (let i = 0; i < scratchCount; i++) {
+                    const startX = Math.random() * scratchCanvas.width;
+                    const startY = 0;
+                    const endY = scratchCanvas.height;
+                    const controlPoint = Math.random() * 50 - 25; // Create slight curve
+                    
+                    scratchCtx.beginPath();
+                    scratchCtx.moveTo(startX, startY);
+                    scratchCtx.quadraticCurveTo(
+                        startX + controlPoint, 
+                        endY / 2, 
+                        startX + Math.random() * 100 - 50, 
+                        endY
+                    );
+                    scratchCtx.stroke();
+                }
+                
+                // Show scratch briefly
+                scratchCanvas.style.opacity = '0.4';
+                setTimeout(() => {
+                    scratchCanvas.style.opacity = '0';
+                }, 120 + Math.random() * 200);
+            }
+            
+            function createFilmFlicker() {
+                const now = Date.now();
+                
+                if (now - lastFlicker > flickerInterval) {
+                    // Random chance to flicker with varied intensity
+                    if (Math.random() > 0.65) { // Increased chance of flicker
+                        const flickerIntensity = Math.random() * 0.25 + 0.8; // More pronounced flicker
+                        document.body.style.opacity = flickerIntensity;
+                        
+                        // Occasional color temperature shift for film look
+                        if (Math.random() > 0.7) {
+                            document.body.style.filter = `sepia(${Math.random() * 0.1})`;
+                            setTimeout(() => {
+                                document.body.style.filter = '';
+                            }, 80 + Math.random() * 120);
+                        }
+                        
+                        setTimeout(() => {
+                            document.body.style.opacity = 1;
+                        }, 50 + Math.random() * 100);
+                        
+                        // Add random scratches with flickering
+                        if (Math.random() > 0.7) {
+                            createScratch();
+                        }
+                        
+                        lastFlicker = now;
+                    }
+                }
+                
+                requestAnimationFrame(createFilmFlicker);
+            }
+            
+            // Initialize scratch overlay
+            createScratchOverlay();
+            
+            // Add occasional hair in film effect
+            function addRandomHairInFilm() {
+                setTimeout(() => {
+                    // Create a random "hair in projector" effect that sometimes happens in old films
+                    if (Math.random() > 0.7) {
+                        const hairEl = document.createElement('div');
+                        hairEl.style.position = 'fixed';
+                        hairEl.style.width = '2px';
+                        hairEl.style.height = Math.random() * 100 + 50 + 'px';
+                        hairEl.style.backgroundColor = 'rgba(0,0,0,0.7)';
+                        hairEl.style.top = Math.random() * window.innerHeight + 'px';
+                        hairEl.style.left = Math.random() * window.innerWidth + 'px';
+                        hairEl.style.borderRadius = '50%';
+                        hairEl.style.zIndex = '106';
+                        hairEl.style.transform = 'rotate(' + (Math.random() * 180) + 'deg)';
+                        hairEl.style.boxShadow = '0 0 4px rgba(0,0,0,0.4)';
+                        hairEl.style.pointerEvents = 'none';
+                        
+                        document.body.appendChild(hairEl);
+                        
+                        // Remove after a few seconds
+                        setTimeout(() => {
+                            document.body.removeChild(hairEl);
+                        }, 2000 + Math.random() * 3000);
+                    }
+                    
+                    // Schedule next hair appearance
+                    addRandomHairInFilm();
+                }, 10000 + Math.random() * 20000);
+            }
+            
+            // Start the hair in film effect
+            addRandomHairInFilm();
+            
+            // Start film flicker
+            createFilmFlicker();
+            
+            // Knob rotation for radio
+            const knobs = document.querySelectorAll('.retro-knob');
+            knobs.forEach(knob => {
+                knob.addEventListener('click', function() {
+                    this.style.transform = `rotate(${Math.floor(Math.random() * 360)}deg)`;
+                    
+                    // Change the "frequency"
+                    const freqDisplay = document.querySelector('.retro-radio-frequency');
+                    if (freqDisplay) {
+                        const randomFreq = (Math.random() * (500 - 88) + 88).toFixed(1);
+                        freqDisplay.textContent = `RADIO INDIA ${randomFreq} kHz`;
+                    }
+                });
+            });
+            
+            // Button functionality
+            const decadeBtns = document.querySelectorAll('.decade-btn');
+            decadeBtns.forEach((btn, index) => {
+                btn.addEventListener('click', () => {
+                    if (index === 0) {
+                        window.location.href = '../decades/1970/explore-timeline.html';
+                    } else {
+                        window.location.href = '../decades/1970/experience-culture.html';
+                    }
+                });
+            });
+            
+            // Memory form submission handler
+            const memoryForm = document.querySelector('.memory-form');
+            memoryForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                const name = document.getElementById('memory-name').value;
+                const year = document.getElementById('memory-year').value;
+                const location = document.getElementById('memory-location').value;
+                const memory = document.getElementById('memory-content').value;
+                
+                // Create a new memory card with the submitted content
+                const newMemory = document.createElement('div');
+                newMemory.className = 'memory-card';
+                newMemory.innerHTML = `
+                    <div class="memory-author">${name}</div>
+                    <div class="memory-date">Remembering ${year}</div>
+                    <div class="memory-content">
+                        <p>${memory}</p>
+                    </div>
+                    <div class="memory-location">${location}</div>
+                `;
+                
+                // Get the memories grid
+                const memoriesGrid = document.querySelector('.memories-grid');
+                
+                // Add the new memory card to the beginning of the grid
+                memoriesGrid.insertBefore(newMemory, memoriesGrid.firstChild);
+                
+                // Apply a highlight effect
+                newMemory.style.backgroundColor = 'rgba(125, 190, 181, 0.3)';
+                setTimeout(() => {
+                    newMemory.style.transition = 'background-color 1s ease';
+                    newMemory.style.backgroundColor = '';
+                }, 100);
+                
+                // Clear the form
+                memoryForm.reset();
+                
+                // Display a thank you message
+                alert('Thank you for sharing your memory! It has been added to the collection.');
+                
+                // Scroll to the newly added memory
+                window.scrollTo({
+                    top: memoriesGrid.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

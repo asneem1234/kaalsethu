@@ -12,7 +12,7 @@ import { BlobServiceClient } from '@azure/storage-blob';
 import authRoutes from './backend/routes/authRoutes.js';
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: './backend/.env' });
 
 const app = express();
 const PORT = process.env.PORT || 5000;

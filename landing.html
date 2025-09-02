@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
+    <title><Landing-Page></title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -409,7 +410,6 @@
             background: linear-gradient(45deg, #b19cd9, #9b59b6, #d8b2ff, #e6e6fa);
             background-size: 400% 400%;
             -webkit-background-clip: text;
-            background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: galaxy-gradient 4s ease-in-out infinite;
         }
@@ -727,28 +727,6 @@
             box-shadow: 0 0 10px #b19cd9;
             z-index: 1;
         }
-        
-        /* Auth Form Error Styles */
-        .auth-form-error {
-            color: #ff6b9d;
-            margin-top: 1rem;
-            padding: 0.5rem;
-            border: 1px solid rgba(255, 107, 157, 0.3);
-            border-radius: 5px;
-            background: rgba(255, 107, 157, 0.1);
-            font-size: 0.9rem;
-            text-align: center;
-        }
-        
-        /* Authenticated Get Started Button */
-        #getStartedBtn.active {
-            animation: pulse-border 2s infinite;
-        }
-        
-        @keyframes pulse-border {
-            0%, 100% { border-color: #b19cd9; box-shadow: 0 0 15px rgba(155, 89, 182, 0.2); }
-            50% { border-color: #9b59b6; box-shadow: 0 0 25px rgba(155, 89, 182, 0.5); }
-        }
     </style>
 </head>
 <body>
@@ -771,8 +749,6 @@
             0 10px 10px rgba(155, 89, 182, 0.2),
             0 20px 20px rgba(155, 89, 182, 0.15);">KAAL SETHU</h1>
         <p style="font-size: 1.5rem; color: #b19cd9; margin-top: 1rem; letter-spacing: 3px; font-weight: 300; text-shadow: 0 0 10px rgba(177, 156, 217, 0.5);">connecting past to the future</p>
-        <button id="getStartedBtn" style="margin-top: 2.5rem; padding: 1rem 2.5rem; background: rgba(155, 89, 182, 0.3); border: 2px solid #b19cd9; border-radius: 30px; color: #e1d4ff; font-size: 1.2rem; font-weight: 600; font-family: 'JetBrains Mono', monospace; cursor: pointer; transition: all 0.4s ease; box-shadow: 0 0 15px rgba(155, 89, 182, 0.2);" onmouseover="this.style.background='rgba(155, 89, 182, 0.5)'; this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 25px rgba(155, 89, 182, 0.5)';" onmouseout="this.style.background='rgba(155, 89, 182, 0.3)'; this.style.transform='translateY(0)'; this.style.boxShadow='0 0 15px rgba(155, 89, 182, 0.2)';">GET STARTED</button>
-        <div id="authMessage" style="margin-top: 1rem; color: #ff6b9d; font-size: 0.9rem; opacity: 0; transition: opacity 0.3s ease;">Please log in or sign up to continue</div>
     </div>
 
     <!-- Auth Navigation -->
@@ -788,14 +764,14 @@
             <div class="auth-modal-header">
                 <h2>Welcome Back, Explorer</h2>
             </div>
-            <form class="auth-form" id="loginForm">
+            <form class="auth-form" id="loginForm" action="/api/auth/login" method="POST">
                 <div class="auth-input-group">
                     <label for="loginEmail">Email</label>
-                    <input type="email" id="loginEmail" required>
+                    <input type="email" id="loginEmail" name="email" required>
                 </div>
                 <div class="auth-input-group">
                     <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" required>
+                    <input type="password" id="loginPassword" name="password" required>
                 </div>
                 <button type="submit" class="auth-submit-btn">Login to Galaxy</button>
                 <div class="auth-switch">
@@ -812,22 +788,22 @@
             <div class="auth-modal-header">
                 <h2>Join the Cosmic Journey</h2>
             </div>
-            <form class="auth-form" id="signupForm">
+            <form class="auth-form" id="signupForm" action="/api/auth/signup" method="POST">
                 <div class="auth-input-group">
                     <label for="signupName">Explorer Name</label>
-                    <input type="text" id="signupName" required>
+                    <input type="text" id="signupName" name="name" required>
                 </div>
                 <div class="auth-input-group">
                     <label for="signupEmail">Email</label>
-                    <input type="email" id="signupEmail" required>
+                    <input type="email" id="signupEmail" name="email" required>
                 </div>
                 <div class="auth-input-group">
                     <label for="signupPassword">Password</label>
-                    <input type="password" id="signupPassword" required>
+                    <input type="password" id="signupPassword" name="password" required>
                 </div>
                 <div class="auth-input-group">
                     <label for="signupConfirmPassword">Confirm Password</label>
-                    <input type="password" id="signupConfirmPassword" required>
+                    <input type="password" id="signupConfirmPassword" name="confirmPassword" required>
                 </div>
                 <button type="submit" class="auth-submit-btn">Begin Exploration</button>
                 <div class="auth-switch">
@@ -855,14 +831,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM loaded, starting script...');
-            
-            // Check authentication status
-            const token = localStorage.getItem('authToken');
-            const isAuthenticated = !!token;
-            console.log('Authentication status:', isAuthenticated ? 'Logged in' : 'Not logged in');
-            
-            // Update UI based on auth status
-            updateAuthUI(isAuthenticated);
            
             // Mouse interaction variables
             let mouseX = 0, mouseY = 0;
@@ -1135,34 +1103,8 @@
                 renderer.setSize(window.innerWidth, window.innerHeight);
             });
 
-            // Get Started button functionality
-            document.getElementById('getStartedBtn').addEventListener('click', () => {
-                if (!isAuthenticated) {
-                    // Show authentication message
-                    const authMessage = document.getElementById('authMessage');
-                    authMessage.style.opacity = '1';
-                    
-                    // Highlight auth buttons
-                    gsap.to('.auth-nav-btn', {
-                        scale: 1.1,
-                        boxShadow: '0 0 20px rgba(155, 89, 182, 0.6)',
-                        duration: 0.5,
-                        yoyo: true,
-                        repeat: 1
-                    });
-                    
-                    // Shake the button slightly to indicate it's not available
-                    gsap.to('#getStartedBtn', {
-                        x: [-5, 5, -5, 5, 0],
-                        duration: 0.5,
-                        ease: "power1.inOut"
-                    });
-                    
-                    return;
-                }
-                
-                // If authenticated, proceed with original functionality
-                
+            // Shared journey initiation function
+            function initiateJourney() {
                 // Hide the main heading and text
                 const mainHeading = document.querySelector("div[style*='position: fixed; top: 50%; left: 50%;']");
                 gsap.to(mainHeading, {
@@ -1235,102 +1177,14 @@
                     }
                 });
                 
-                // Add button hover animation
-                gsap.to('#getStartedBtn', {
-                    scale: 1.05,
-                    boxShadow: '0 0 25px rgba(155, 89, 182, 0.4)',
-                    duration: 0.3,
-                    yoyo: true,
-                    repeat: 1
-                });
-                
                 // Create particle explosion for visual feedback - more particles for a more dramatic effect
                 createExplosion(new THREE.Vector3(0, 0, 0), 200);
-            });
-
-            // Function to update UI based on authentication status
-            function updateAuthUI(isAuthenticated) {
-                const authNav = document.querySelector('.auth-nav');
-                const getStartedBtn = document.getElementById('getStartedBtn');
-                const authMessage = document.getElementById('authMessage');
-                
-                if (isAuthenticated) {
-                    // Update to show logged in state
-                    authNav.innerHTML = `
-                        <span class="auth-nav-btn">Welcome back</span>
-                        <button class="auth-nav-btn" id="logoutBtn">Logout</button>
-                    `;
-                    
-                    // Add logout functionality
-                    document.getElementById('logoutBtn').addEventListener('click', handleLogout);
-                    
-                    // Enable "Get Started" button with clear visual indication
-                    getStartedBtn.classList.add('active');
-                    authMessage.style.opacity = '0';
-                    
-                    // Add a subtle pulse animation to make it clear the button is now active
-                    gsap.to(getStartedBtn, {
-                        boxShadow: '0 0 25px rgba(155, 89, 182, 0.5)',
-                        repeat: 2,
-                        yoyo: true,
-                        duration: 0.5
-                    });
-                } else {
-                    // Ensure login/signup buttons are shown
-                    authNav.innerHTML = `
-                        <button class="auth-nav-btn" id="loginNavBtn">Login</button>
-                        <button class="auth-nav-btn" id="signupNavBtn">Sign Up</button>
-                    `;
-                    
-                    // Remove active class from Get Started button
-                    getStartedBtn.classList.remove('active');
-                    
-                    // Re-add event listeners for auth buttons
-                    document.getElementById('loginNavBtn').addEventListener('click', showLoginModal);
-                    document.getElementById('signupNavBtn').addEventListener('click', showSignupModal);
-                }
-            }
-            
-            function handleLogout() {
-                // Clear authentication data
-                localStorage.removeItem('authToken');
-                localStorage.removeItem('userData');
-                
-                // Update UI
-                updateAuthUI(false);
-                
-                // Show logout success message
-                const messageContainer = document.createElement('div');
-                messageContainer.style.position = 'fixed';
-                messageContainer.style.top = '20px';
-                messageContainer.style.left = '50%';
-                messageContainer.style.transform = 'translateX(-50%)';
-                messageContainer.style.padding = '15px 30px';
-                messageContainer.style.background = 'rgba(155, 89, 182, 0.8)';
-                messageContainer.style.color = '#fff';
-                messageContainer.style.borderRadius = '30px';
-                messageContainer.style.zIndex = '10000';
-                messageContainer.style.boxShadow = '0 5px 20px rgba(0,0,0,0.2)';
-                messageContainer.style.fontFamily = "'JetBrains Mono', monospace";
-                messageContainer.textContent = 'Successfully logged out';
-                
-                document.body.appendChild(messageContainer);
-                
-                // Remove the message after 3 seconds
-                setTimeout(() => {
-                    gsap.to(messageContainer, {
-                        opacity: 0,
-                        y: -20,
-                        duration: 0.5,
-                        onComplete: () => {
-                            document.body.removeChild(messageContainer);
-                        }
-                    });
-                }, 3000);
             }
 
-            // Authentication modal functions
-            function showLoginModal() {
+            // The Get Started button has been removed, and its functionality is now part of the login/signup buttons
+
+            // Authentication functionality
+            document.getElementById('loginNavBtn').addEventListener('click', () => {
                 const loginModal = document.getElementById('loginModal');
                 loginModal.classList.add('active');
                
@@ -1344,9 +1198,9 @@
                     { y: 30, opacity: 0, scale: 0.95 },
                     { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" }
                 );
-            }
-            
-            function showSignupModal() {
+            });
+
+            document.getElementById('signupNavBtn').addEventListener('click', () => {
                 const signupModal = document.getElementById('signupModal');
                 signupModal.classList.add('active');
                
@@ -1360,321 +1214,270 @@
                     { y: 30, opacity: 0, scale: 0.95 },
                     { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" }
                 );
+            });
+
+            // Close modal functions
+            function closeAuthModal(modalId) {
+                const modal = document.getElementById(modalId);
+                const modalContent = modal.querySelector('.auth-modal-content');
+               
+                // Reset button states before closing
+                resetModalButtonStates(modalId);
+               
+                gsap.to(modalContent, {
+                    y: 30,
+                    opacity: 0,
+                    scale: 0.95,
+                    duration: 0.3,
+                    onComplete: () => {
+                        modal.classList.remove('active');
+                    }
+                });
             }
 
-            // Login Navigation Button
-            const loginNavBtn = document.getElementById('loginNavBtn');
-            if (loginNavBtn) {
-                loginNavBtn.addEventListener('click', showLoginModal);
+            // Reset button states in modals
+            function resetModalButtonStates(modalId) {
+                const modal = document.getElementById(modalId);
+                const submitBtn = modal.querySelector('.auth-submit-btn');
+               
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                   
+                    // Reset button text based on modal type
+                    if (modalId === 'loginModal') {
+                        submitBtn.textContent = 'Login to Galaxy';
+                    } else if (modalId === 'signupModal') {
+                        submitBtn.textContent = 'Begin Exploration';
+                    }
+                }
             }
+
+            document.getElementById('closeLoginModal').addEventListener('click', () => {
+                closeAuthModal('loginModal');
+            });
+
+            document.getElementById('closeSignupModal').addEventListener('click', () => {
+                closeAuthModal('signupModal');
+            });
+
+            // Close modals when clicking outside
+            document.getElementById('loginModal').addEventListener('click', (e) => {
+                if (e.target.classList.contains('auth-modal')) {
+                    closeAuthModal('loginModal');
+                }
+            });
+
+            document.getElementById('signupModal').addEventListener('click', (e) => {
+                if (e.target.classList.contains('auth-modal')) {
+                    closeAuthModal('signupModal');
+                }
+            });
+
+            // Close modals with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    const loginModal = document.getElementById('loginModal');
+                    const signupModal = document.getElementById('signupModal');
+                   
+                    if (loginModal.classList.contains('active')) {
+                        closeAuthModal('loginModal');
+                    }
+                    if (signupModal.classList.contains('active')) {
+                        closeAuthModal('signupModal');
+                    }
+                }
+            });
             
-            // Signup Navigation Button
-            const signupNavBtn = document.getElementById('signupNavBtn');
-            if (signupNavBtn) {
-                signupNavBtn.addEventListener('click', showSignupModal);
+            // Create additional stars that appear during the space journey
+            function createTravelStars() {
+                // Create stars that will streak past the camera during travel
+                const travelStarsCount = 3000;
+                const travelStarsGeometry = new THREE.BufferGeometry();
+                const travelStarsPositions = new Float32Array(travelStarsCount * 3);
+                const travelStarsColors = new Float32Array(travelStarsCount * 3);
+                
+                // Position stars in a tunnel-like formation ahead of the camera
+                for (let i = 0; i < travelStarsCount; i++) {
+                    const i3 = i * 3;
+                    const radius = 50 + Math.random() * 100;
+                    const angle = Math.random() * Math.PI * 2;
+                    const depth = -200 - Math.random() * 800; // Positioned ahead of the camera
+                    
+                    travelStarsPositions[i3] = Math.cos(angle) * radius;
+                    travelStarsPositions[i3 + 1] = Math.sin(angle) * radius;
+                    travelStarsPositions[i3 + 2] = depth;
+                    
+                    // Star colors with more blue/purple hues for a cosmic effect
+                    travelStarsColors[i3] = 0.7 + Math.random() * 0.3;     // R
+                    travelStarsColors[i3 + 1] = 0.5 + Math.random() * 0.3; // G
+                    travelStarsColors[i3 + 2] = 0.9 + Math.random() * 0.1; // B - more blue
+                }
+                
+                travelStarsGeometry.setAttribute('position', new THREE.BufferAttribute(travelStarsPositions, 3));
+                travelStarsGeometry.setAttribute('color', new THREE.BufferAttribute(travelStarsColors, 3));
+                
+                const travelStarsMaterial = new THREE.PointsMaterial({
+                    size: 0.4,
+                    sizeAttenuation: true,
+                    depthWrite: false,
+                    blending: THREE.AdditiveBlending,
+                    vertexColors: true,
+                    transparent: true,
+                    opacity: 0
+                });
+                
+                const travelStars = new THREE.Points(travelStarsGeometry, travelStarsMaterial);
+                scene.add(travelStars);
+                
+                // Fade in the travel stars
+                gsap.to(travelStarsMaterial, {
+                    opacity: 1,
+                    duration: 2
+                });
+                
+                // Animate stars moving toward the camera
+                gsap.to(travelStars.position, {
+                    z: 400, // Move toward the camera
+                    duration: 10,
+                    ease: "power1.in"
+                });
             }
 
-            // Form submissions with actual API calls
+            // Switch between login and signup
+            document.getElementById('switchToSignup').addEventListener('click', (e) => {
+                e.preventDefault();
+                closeAuthModal('loginModal');
+                setTimeout(() => {
+                    document.getElementById('signupNavBtn').click();
+                }, 400);
+            });
+
+            document.getElementById('switchToLogin').addEventListener('click', (e) => {
+                e.preventDefault();
+                closeAuthModal('signupModal');
+                setTimeout(() => {
+                    document.getElementById('loginNavBtn').click();
+                }, 400);
+            });
+
+            // Form submissions with real backend connection
             document.getElementById('loginForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
-                const submitBtn = document.querySelector('#loginForm .auth-submit-btn');
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Logging in...';
-                
                 const email = document.getElementById('loginEmail').value;
                 const password = document.getElementById('loginPassword').value;
-              
+               
                 // Basic validation
                 if (!email || !password) {
-                    showFormError('loginForm', 'Please fill in all fields');
-                    resetSubmitButton(submitBtn, 'Login to Galaxy');
+                    alert('Please fill in all fields');
                     return;
                 }
                 
                 try {
-                    // Make actual API call to login endpoint
+                    // Show loading state
+                    const submitBtn = e.target.querySelector('.auth-submit-btn');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = 'Logging in...';
+                    submitBtn.disabled = true;
+                    
+                    // Make API call to backend
                     const response = await fetch('/api/auth/login', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({ email, password })
                     });
                     
-                    // Parse response as JSON
-                    const data = await response.json();
-                    
                     if (!response.ok) {
-                        throw new Error(data.message || 'Invalid email or password. Please try again.');
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Login failed. Please check your credentials.');
                     }
                     
-                    // Store authentication data
-                    localStorage.setItem('authToken', data.token);
-                    localStorage.setItem('userData', JSON.stringify(data.user));
+                    const data = await response.json();
                     
-                    // Update UI based on new auth status
-                    updateAuthUI(true);
-                    
-                    // Show success message
-                    showAuthSuccess('Login successful! Ready to explore.');
+                    // Store user data in localStorage
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    localStorage.setItem('token', data.token);
                     
                     // Close the modal
                     closeAuthModal('loginModal');
+                    
+                    // Start the journey animation
+                    initiateJourney();
+                    
                 } catch (error) {
                     console.error('Login error:', error);
-                    showFormError('loginForm', error.message || 'Login failed. Please try again.');
-                } finally {
-                    resetSubmitButton(submitBtn, 'Login to Galaxy');
+                    alert(error.message || 'Login failed. Please try again.');
+                    
+                    // Reset button
+                    const submitBtn = e.target.querySelector('.auth-submit-btn');
+                    submitBtn.textContent = 'Login to Galaxy';
+                    submitBtn.disabled = false;
                 }
             });
 
             document.getElementById('signupForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
-                const submitBtn = document.querySelector('#signupForm .auth-submit-btn');
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Creating account...';
-                
                 const name = document.getElementById('signupName').value;
                 const email = document.getElementById('signupEmail').value;
                 const password = document.getElementById('signupPassword').value;
                 const confirmPassword = document.getElementById('signupConfirmPassword').value;
-              
+               
                 // Basic validation
                 if (!name || !email || !password || !confirmPassword) {
-                    showFormError('signupForm', 'Please fill in all fields');
-                    resetSubmitButton(submitBtn, 'Begin Exploration');
+                    alert('Please fill in all fields');
                     return;
                 }
-              
+               
                 if (password !== confirmPassword) {
-                    showFormError('signupForm', 'Passwords do not match');
-                    resetSubmitButton(submitBtn, 'Begin Exploration');
+                    alert('Passwords do not match');
                     return;
                 }
                 
                 try {
-                    // Make actual API call to signup endpoint
+                    // Show loading state
+                    const submitBtn = e.target.querySelector('.auth-submit-btn');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = 'Creating account...';
+                    submitBtn.disabled = true;
+                    
+                    // Make API call to backend
                     const response = await fetch('/api/auth/signup', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({ name, email, password })
                     });
                     
-                    // Parse response as JSON
-                    const data = await response.json();
-                    
                     if (!response.ok) {
-                        throw new Error(data.error || 'Signup failed. Please try again.');
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Sign up failed. Please try again.');
                     }
                     
-                    // Store authentication data
-                    localStorage.setItem('authToken', data.token);
-                    localStorage.setItem('userData', JSON.stringify(data.user));
+                    const data = await response.json();
                     
-                    // Update UI based on new auth status
-                    updateAuthUI(true);
-                    
-                    // Show success message
-                    showAuthSuccess('Account created successfully! Ready to explore.');
+                    // Store user data in localStorage
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    localStorage.setItem('token', data.token);
                     
                     // Close the modal
                     closeAuthModal('signupModal');
+                    
+                    // Start the journey animation
+                    initiateJourney();
+                    
                 } catch (error) {
                     console.error('Signup error:', error);
-                    showFormError('signupForm', error.message || 'Signup failed. Please try again.');
-                } finally {
-                    resetSubmitButton(submitBtn, 'Begin Exploration');
+                    alert(error.message || 'Sign up failed. Please try again.');
+                    
+                    // Reset button
+                    const submitBtn = e.target.querySelector('.auth-submit-btn');
+                    submitBtn.textContent = 'Begin Exploration';
+                    submitBtn.disabled = false;
                 }
             });
-            
-            // Helper functions for forms
-            function resetSubmitButton(button, text) {
-                button.disabled = false;
-                button.textContent = text;
-            }
-            
-            function resetModalButtonStates(modalId) {
-                const modal = document.getElementById(modalId);
-                const submitBtn = modal.querySelector('.auth-submit-btn');
-                if (submitBtn) {
-                    resetSubmitButton(submitBtn, modalId === 'loginModal' ? 'Login to Galaxy' : 'Begin Exploration');
-                }
-            }
-            
-            function showFormError(formId, message) {
-                const form = document.getElementById(formId);
-                
-                // Remove any existing error
-                const existingError = form.querySelector('.auth-form-error');
-                if (existingError) {
-                    existingError.remove();
-                }
-                
-                // Create new error element
-                const errorElement = document.createElement('div');
-                errorElement.className = 'auth-form-error';
-                errorElement.textContent = message;
-                
-                // Add to form
-                form.appendChild(errorElement);
-            }
-            
-            function closeAuthModal(modalId) {
-                const modal = document.getElementById(modalId);
-                const modalContent = modal.querySelector('.auth-modal-content');
-                
-                // Animate out
-                gsap.to(modalContent, {
-                    y: 30,
-                    opacity: 0,
-                    scale: 0.95,
-                    duration: 0.3,
-                    onComplete: () => {
-                        modal.classList.remove('active');
-                    }
-                });
-            }
-            
-            function showAuthSuccess(message) {
-                const messageContainer = document.createElement('div');
-                messageContainer.style.position = 'fixed';
-                messageContainer.style.top = '20px';
-                messageContainer.style.left = '50%';
-                messageContainer.style.transform = 'translateX(-50%)';
-                messageContainer.style.padding = '15px 30px';
-                messageContainer.style.background = 'rgba(102, 187, 106, 0.9)';
-                messageContainer.style.color = '#fff';
-                messageContainer.style.borderRadius = '30px';
-                messageContainer.style.zIndex = '10000';
-                messageContainer.style.boxShadow = '0 5px 20px rgba(0,0,0,0.2)';
-                messageContainer.style.fontFamily = "'JetBrains Mono', monospace";
-                messageContainer.textContent = message;
-                
-                document.body.appendChild(messageContainer);
-                
-                // Remove the message after 3 seconds
-                setTimeout(() => {
-                    gsap.to(messageContainer, {
-                        opacity: 0,
-                        y: -20,
-                        duration: 0.5,
-                        onComplete: () => {
-                            document.body.removeChild(messageContainer);
-                        }
-                    });
-                }, 3000);
-            }
-            
-            // Add missing event listeners for modal close buttons
-            document.getElementById('closeLoginModal').addEventListener('click', () => {
-                closeAuthModal('loginModal');
-            });
-            
-            document.getElementById('closeSignupModal').addEventListener('click', () => {
-                closeAuthModal('signupModal');
-            });
-            
-            // Add switch between login and signup
-            document.getElementById('switchToSignup').addEventListener('click', (e) => {
-                e.preventDefault();
-                closeAuthModal('loginModal');
-                setTimeout(() => {
-                    showSignupModal();
-                }, 300);
-            });
-            
-            document.getElementById('switchToLogin').addEventListener('click', (e) => {
-                e.preventDefault();
-                closeAuthModal('signupModal');
-                setTimeout(() => {
-                    showLoginModal();
-                }, 300);
-            });
-            
-            // Function to create travel stars for transition effect
-            function createTravelStars() {
-                // Implementation would go here
-                console.log("Creating travel stars for transition effect");
-            }
-        });
-    </script>
-</body>
-</html>
-                gsap.to(modalContent, {
-                    y: 30,
-                    opacity: 0,
-                    scale: 0.95,
-                    duration: 0.3,
-                    onComplete: () => {
-                        modal.classList.remove('active');
-                    }
-                });
-            }
-            
-            function showAuthSuccess(message) {
-                const messageContainer = document.createElement('div');
-                messageContainer.style.position = 'fixed';
-                messageContainer.style.top = '20px';
-                messageContainer.style.left = '50%';
-                messageContainer.style.transform = 'translateX(-50%)';
-                messageContainer.style.padding = '15px 30px';
-                messageContainer.style.background = 'rgba(102, 187, 106, 0.9)';
-                messageContainer.style.color = '#fff';
-                messageContainer.style.borderRadius = '30px';
-                messageContainer.style.zIndex = '10000';
-                messageContainer.style.boxShadow = '0 5px 20px rgba(0,0,0,0.2)';
-                messageContainer.style.fontFamily = "'JetBrains Mono', monospace";
-                messageContainer.textContent = message;
-                
-                document.body.appendChild(messageContainer);
-                
-                // Remove the message after 3 seconds
-                setTimeout(() => {
-                    gsap.to(messageContainer, {
-                        opacity: 0,
-                        y: -20,
-                        duration: 0.5,
-                        onComplete: () => {
-                            document.body.removeChild(messageContainer);
-                        }
-                    });
-                }, 3000);
-            }
-            
-            // Add missing event listeners for modal close buttons
-            document.getElementById('closeLoginModal').addEventListener('click', () => {
-                closeAuthModal('loginModal');
-            });
-            
-            document.getElementById('closeSignupModal').addEventListener('click', () => {
-                closeAuthModal('signupModal');
-            });
-            
-            // Add switch between login and signup
-            document.getElementById('switchToSignup').addEventListener('click', (e) => {
-                e.preventDefault();
-                closeAuthModal('loginModal');
-                setTimeout(() => {
-                    showSignupModal();
-                }, 300);
-            });
-            
-            document.getElementById('switchToLogin').addEventListener('click', (e) => {
-                e.preventDefault();
-                closeAuthModal('signupModal');
-                setTimeout(() => {
-                    showLoginModal();
-                }, 300);
-            });
-            
-            // Function to create travel stars for transition effect
-            function createTravelStars() {
-                // Implementation would go here
-                console.log("Creating travel stars for transition effect");
-            }
-        });
+        }); // Close DOMContentLoaded
     </script>
 </body>
 </html>
