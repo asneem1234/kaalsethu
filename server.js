@@ -88,8 +88,13 @@ app.get('/', async (req, res) => {
     res.setHeader('Expires', '0');
     res.setHeader('Surrogate-Control', 'no-store');
     
+    // Special handling for Vercel environment
+    const isVercel = process.env.VERCEL === '1';
+    
     // Use absolute path to index.html (former landing.html)
-    const indexPath = path.join(__dirname, 'index.html');
+    const indexPath = isVercel 
+        ? path.join(process.cwd(), 'index.html') 
+        : path.join(__dirname, 'index.html');
     
     try {
         // Serve the index page directly
