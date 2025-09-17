@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -142,81 +143,6 @@
             margin-bottom: 0.5rem;
             color: #b19cd9;
             font-weight: 500;
-        }
-        
-        /* Date picker styles */
-        .date-picker-container {
-            background: rgba(26, 11, 46, 0.3);
-            border-radius: 12px;
-            padding: 1.5rem;
-            border: 1px solid rgba(155, 89, 182, 0.3);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) inset;
-            transform-style: preserve-3d;
-        }
-        
-        .date-inputs {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        @media (max-width: 480px) {
-            .date-inputs {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .date-input-group {
-            position: relative;
-            transform-style: preserve-3d;
-        }
-        
-        .date-input-group label {
-            font-size: 0.85rem;
-            opacity: 0.85;
-            margin-bottom: 0.3rem;
-        }
-        
-        .date-shortcuts {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-        }
-        
-        .date-shortcut-btn {
-            padding: 0.5rem 1rem;
-            background: rgba(155, 89, 182, 0.2);
-            border: 1px solid #9b59b6;
-            border-radius: 20px;
-            color: #e1d4ff;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            transform: translateZ(15px);
-        }
-        
-        .date-shortcut-btn:hover {
-            background: rgba(155, 89, 182, 0.4);
-            transform: translateZ(15px) translateY(-2px);
-            box-shadow: 0 5px 15px rgba(155, 89, 182, 0.3);
-        }
-        
-        .date-hint {
-            font-size: 0.85rem;
-            color: #b19cd9;
-            opacity: 0.7;
-            margin-top: 0.5rem;
-            transform: translateZ(10px);
-        }
-        
-        .date-error {
-            color: #ff6b9d;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-            transform: translateZ(10px);
         }
         
         input[type="text"],
@@ -549,145 +475,10 @@
         .form-group:last-of-type {
             margin-bottom: 2rem;
         }
-
-        /* Received Capsules Button and Modal Styles */
-        #view-received-btn {
-            position: fixed;
-            right: 16px;
-            top: 16px;
-            z-index: 9999;
-            padding: 0.7rem 1.2rem;
-            background: rgba(155, 89, 182, 0.2);
-            border: 2px solid #9b59b6;
-            border-radius: 30px;
-            color: #e1d4ff;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        #view-received-btn:hover {
-            background: rgba(155, 89, 182, 0.4);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(155, 89, 182, 0.4);
-        }
-        
-        #received-modal {
-            position: fixed;
-            right: 16px;
-            top: 70px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            background: rgba(26, 11, 46, 0.95);
-            border: 2px solid #9b59b6;
-            border-radius: 16px;
-            padding: 20px;
-            z-index: 9999;
-            overflow-y: auto;
-            box-shadow: 
-                0 15px 35px rgba(0, 0, 0, 0.4),
-                0 5px 15px rgba(0, 0, 0, 0.3),
-                0 0 0 1px rgba(155, 89, 182, 0.2) inset;
-            transform: translateY(-10px);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-        
-        #received-modal.visible {
-            transform: translateY(0);
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        #received-list {
-            margin-bottom: 20px;
-        }
-        
-        .capsule-item {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(177, 156, 217, 0.2);
-            transition: all 0.3s ease;
-        }
-        
-        .capsule-item:hover {
-            background: rgba(255, 255, 255, 0.08);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        #received-close {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            background: rgba(155, 89, 182, 0.3);
-            border: 1px solid #9b59b6;
-            border-radius: 8px;
-            color: #e1d4ff;
-            font-family: 'JetBrains Mono', monospace;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        #received-close:hover {
-            background: rgba(155, 89, 182, 0.5);
-        }
-        
-        .hidden {
-            display: none;
-        }
-
-        /* Profile button styling */
-        #profile-btn {
-            position: fixed;
-            right: 210px; /* Position to the left of the Received Capsules button */
-            top: 16px;
-            z-index: 9999;
-            padding: 0.7rem 1.2rem;
-            background: rgba(155, 89, 182, 0.2);
-            border: 2px solid #9b59b6;
-            border-radius: 30px;
-            color: #e1d4ff;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        #profile-btn:hover {
-            background: rgba(155, 89, 182, 0.4);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(155, 89, 182, 0.4);
-        }
     </style>
 </head>
 <body>
     <div class="bg-stars"></div>
-    
-    <!-- Add Profile button before the Received Capsules button -->
-    <button id="profile-btn">
-        Your Profile
-    </button>
-    
-    <!-- Received Capsules Button and Modal -->
-    <button id="view-received-btn">
-        Received Capsules (<span id="received-count">0</span>)
-    </button>
-    
-    <div id="received-modal" role="dialog" aria-hidden="true">
-        <h3 style="margin-top: 0; color: #b19cd9; margin-bottom: 15px;">Your Received Time Capsules</h3>
-        <div id="received-list"></div>
-        <button id="received-close">Close</button>
-    </div>
-
     <div class="container">
         <header>
             <h1>Digital Time Capsule</h1>
@@ -766,51 +557,10 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="openDate">When to Open</label>
-                    <div class="date-picker-container">
-                        <div class="date-inputs">
-                            <div class="date-input-group">
-                                <label for="openDay">Day</label>
-                                <select id="openDay" name="openDay" required>
-                                    <option value="" disabled selected>Day</option>
-                                    <!-- Days will be populated via JavaScript -->
-                                </select>
-                            </div>
-                            <div class="date-input-group">
-                                <label for="openMonth">Month</label>
-                                <select id="openMonth" name="openMonth" required>
-                                    <option value="" disabled selected>Month</option>
-                                    <option value="1">January</option>
-                                    <option value="2">February</option>
-                                    <option value="3">March</option>
-                                    <option value="4">April</option>
-                                    <option value="5">May</option>
-                                    <option value="6">June</option>
-                                    <option value="7">July</option>
-                                    <option value="8">August</option>
-                                    <option value="9">September</option>
-                                    <option value="10">October</option>
-                                    <option value="11">November</option>
-                                    <option value="12">December</option>
-                                </select>
-                            </div>
-                            <div class="date-input-group">
-                                <label for="openYear">Year</label>
-                                <select id="openYear" name="openYear" required>
-                                    <option value="" disabled selected>Year</option>
-                                    <!-- Years will be populated via JavaScript -->
-                                </select>
-                            </div>
-                        </div>
-                        <div class="date-shortcuts">
-                            <button type="button" id="setTomorrow" class="date-shortcut-btn">Tomorrow</button>
-                            <button type="button" id="setNextWeek" class="date-shortcut-btn">Next Week</button>
-                            <button type="button" id="setNextMonth" class="date-shortcut-btn">Next Month</button>
-                            <button type="button" id="setNextYear" class="date-shortcut-btn">Next Year</button>
-                        </div>
-                        <div class="date-hint">Select a date in the future when this capsule should be opened</div>
-                        <div class="date-error" style="display: none;">Please select a date in the future</div>
-                    </div>
+                    <label for="openYear">When to Open (Year)</label>
+                    <input type="number" id="openYear" name="openYear" min="2024" max="2100" required 
+                           placeholder="Enter a future year (e.g., 2030)">
+                    <div class="year-hint">Must be at least one year in the future</div>
                 </div>
                 
                 <div class="send-button-container">
@@ -823,7 +573,7 @@
         </div>
         
         <div style="text-align: center; margin-top: 3rem;">
-            <a href="second.html" class="back-btn">Return to Time Capsule</a>
+            <a href="index.html" class="back-btn">Return to Time Capsule</a>
         </div>
     </div>
 
@@ -837,146 +587,7 @@
             const recipientType = document.getElementById('recipientType');
             const recipientDetails = document.querySelector('.recipient-details');
             const recipientEmail = document.getElementById('recipientEmail');
-            
-            // Date picker elements
-            const openDay = document.getElementById('openDay');
-            const openMonth = document.getElementById('openMonth');
             const openYear = document.getElementById('openYear');
-            const dateError = document.querySelector('.date-error');
-            
-            // Initialize date picker
-            initializeDatePicker();
-            
-            // Date shortcut buttons
-            document.getElementById('setTomorrow').addEventListener('click', () => {
-                const tomorrow = new Date();
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                setDateInputs(tomorrow);
-            });
-            
-            document.getElementById('setNextWeek').addEventListener('click', () => {
-                const nextWeek = new Date();
-                nextWeek.setDate(nextWeek.getDate() + 7);
-                setDateInputs(nextWeek);
-            });
-            
-            document.getElementById('setNextMonth').addEventListener('click', () => {
-                const nextMonth = new Date();
-                nextMonth.setMonth(nextMonth.getMonth() + 1);
-                setDateInputs(nextMonth);
-            });
-            
-            document.getElementById('setNextYear').addEventListener('click', () => {
-                const nextYear = new Date();
-                nextYear.setFullYear(nextYear.getFullYear() + 1);
-                setDateInputs(nextYear);
-            });
-            
-            // Function to set the date inputs to a specific date
-            function setDateInputs(date) {
-                const day = date.getDate();
-                const month = date.getMonth() + 1; // JavaScript months are 0-based
-                const year = date.getFullYear();
-                
-                openDay.value = day;
-                openMonth.value = month;
-                openYear.value = year;
-                
-                // Update days in month if needed
-                updateDaysInMonth();
-                
-                // Hide any previous error
-                dateError.style.display = 'none';
-            }
-            
-            // Initialize the date picker with days, months, and years
-            function initializeDatePicker() {
-                // Populate days (1-31)
-                for (let i = 1; i <= 31; i++) {
-                    const option = document.createElement('option');
-                    option.value = i;
-                    option.textContent = i;
-                    openDay.appendChild(option);
-                }
-                
-                // Populate years (current year to current year + 30)
-                const currentYear = new Date().getFullYear();
-                for (let i = currentYear; i <= currentYear + 30; i++) {
-                    const option = document.createElement('option');
-                    option.value = i;
-                    option.textContent = i;
-                    openYear.appendChild(option);
-                }
-                
-                // Update days in month when month changes
-                openMonth.addEventListener('change', updateDaysInMonth);
-                openYear.addEventListener('change', updateDaysInMonth);
-            }
-            
-            // Update number of days based on selected month and year
-            function updateDaysInMonth() {
-                const month = parseInt(openMonth.value);
-                const year = parseInt(openYear.value);
-                
-                // Skip if month or year is not selected
-                if (isNaN(month) || isNaN(year)) return;
-                
-                // Get the current selected day
-                const selectedDay = openDay.value;
-                
-                // Get the last day of the selected month
-                const daysInMonth = new Date(year, month, 0).getDate();
-                
-                // Store current scroll position
-                const scrollPos = window.scrollY;
-                
-                // Clear and repopulate days
-                openDay.innerHTML = '<option value="" disabled selected>Day</option>';
-                for (let i = 1; i <= daysInMonth; i++) {
-                    const option = document.createElement('option');
-                    option.value = i;
-                    option.textContent = i;
-                    openDay.appendChild(option);
-                }
-                
-                // Try to restore selected day if it's valid
-                if (selectedDay && selectedDay <= daysInMonth) {
-                    openDay.value = selectedDay;
-                }
-                
-                // Restore scroll position
-                window.scrollTo(0, scrollPos);
-            }
-            
-            // Validate if the selected date is at least 1 hour in the future
-            function isDateValid() {
-                const day = parseInt(openDay.value);
-                const month = parseInt(openMonth.value);
-                const year = parseInt(openYear.value);
-                
-                // Check if all date components are selected
-                if (isNaN(day) || isNaN(month) || isNaN(year)) {
-                    dateError.textContent = 'Please select a complete date';
-                    dateError.style.display = 'block';
-                    return false;
-                }
-                
-                // Create Date objects for comparison
-                const selectedDate = new Date(year, month - 1, day); // Month is 0-based in JavaScript
-                const now = new Date();
-                const oneHourFromNow = new Date(now.getTime() + (60 * 60 * 1000)); // Add 1 hour
-                
-                // Check if selected date is at least 1 hour in the future
-                if (selectedDate <= oneHourFromNow) {
-                    dateError.textContent = 'Please select a date at least 1 hour in the future';
-                    dateError.style.display = 'block';
-                    return false;
-                }
-                
-                // Valid date
-                dateError.style.display = 'none';
-                return true;
-            }
             
             // File input handling
             const fileInputs = document.querySelectorAll('.file-input');
@@ -1079,12 +690,19 @@
                 }
             });
             
+            // Set minimum year to next year
+            const nextYear = new Date().getFullYear() + 1;
+            openYear.setAttribute('min', nextYear);
+            openYear.setAttribute('placeholder', `Enter a future year (e.g., ${nextYear})`);
+            
             // Form submission
-            timeCapsuleForm.addEventListener('submit', async function(event) {
+            timeCapsuleForm.addEventListener('submit', function(event) {
                 event.preventDefault();
                 
-                // Validate date
-                if (!isDateValid()) {
+                // Validate year
+                const selectedYear = parseInt(openYear.value);
+                if (selectedYear < nextYear) {
+                    alert(`Please select a year at least ${nextYear} or later.`);
                     return false;
                 }
                 
@@ -1094,314 +712,236 @@
                     return false;
                 }
                 
-                const day = parseInt(openDay.value);
-                const month = parseInt(openMonth.value);
-                const year = parseInt(openYear.value);
-                const selectedDate = new Date(year, month - 1, day);
+                // Here you would normally send the data to your server
+                // For demonstration, we'll show a success message
                 
-                // Show loading state
-                const submitBtn = document.querySelector('.send-capsule-btn');
-                const originalBtnText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<span class="btn-icon">⏳</span> Creating Time Capsule...';
-                submitBtn.disabled = true;
+                // Create a success message
+                let formMessage = document.querySelector('.form-message');
+                if (!formMessage) {
+                    formMessage = document.createElement('div');
+                    formMessage.className = 'form-message success-message';
+                    timeCapsuleForm.after(formMessage);
+                }
                 
-                try {
-                    // Create FormData object
-                    const formData = new FormData();
-                    formData.append('message', document.getElementById('message').value);
-                    formData.append('recipientType', recipientType.value);
-                    if (recipientType.value === 'other') {
-                        formData.append('recipientEmail', recipientEmail.value);
-                    }
-                    formData.append('openDay', openDay.value);
-                    formData.append('openMonth', openMonth.value);
-                    formData.append('openYear', openYear.value);
-                    
-                    // Add files if they exist
-                    const audioFile = document.getElementById('audioFile').files[0];
-                    const videoFile = document.getElementById('videoFile').files[0];
-                    const imageFile = document.getElementById('imageFile').files[0];
-                    
-                    if (audioFile) formData.append('audioFile', audioFile);
-                    if (videoFile) formData.append('videoFile', videoFile);
-                    if (imageFile) formData.append('imageFile', imageFile);
-                    
-                    console.log('Submitting form data to /api/time-capsule');
-                    
-                    // Submit to backend
-                    const response = await fetch('/api/time-capsule', {
-                        method: 'POST',
-                        body: formData
-                    });
-                    
-                    console.log('Response status:', response.status);
-                    console.log('Response headers:', response.headers);
-                    
-                    // Check if response is ok
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    
-                    // Check content type
-                    const contentType = response.headers.get('content-type');
-                    if (!contentType || !contentType.includes('application/json')) {
-                        const text = await response.text();
-                        console.error('Non-JSON response:', text);
-                        throw new Error('Server returned non-JSON response');
-                    }
-                    
-                    const result = await response.json();
-                    console.log('Parsed result:', result);
-                    
-                    // Create message element
-                    let formMessage = document.querySelector('.form-message');
-                    if (!formMessage) {
-                        formMessage = document.createElement('div');
-                        timeCapsuleForm.after(formMessage);
-                    }
-                    
-                    if (result.success) {
-                        // Success message
-                        formMessage.className = 'form-message success-message';
-                        formMessage.innerHTML = `
-                            <p>🎉 Your time capsule has been created and scheduled to open on ${result.data.openDate}!</p>
-                            <p>We'll send ${recipientType.value === 'self' ? 'you' : 'the recipient'} an email when it's time to open it.</p>
-                        `;
-                        
-                        // Clear form
-                        timeCapsuleForm.reset();
-                        document.querySelectorAll('.selected-file').forEach(el => el.textContent = '');
-                        document.querySelectorAll('.media-label').forEach(label => {
-                            label.classList.remove('has-file');
-                        });
-                        document.getElementById('imagePreview').src = '';
-                        recipientDetails.style.display = 'none';
-                        
-                    } else {
-                        // Error message
-                        formMessage.className = 'form-message error-message';
-                        formMessage.innerHTML = `
-                            <p>❌ Error: ${result.message}</p>
-                            <p>Please try again or contact support if the problem persists.</p>
-                        `;
-                    }
-                    
-                    formMessage.style.display = 'block';
-                    formMessage.scrollIntoView({ behavior: 'smooth' });
-                    
-                } catch (error) {
-                    console.error('Error submitting form:', error);
-                    
-                    // Show error message
-                    let formMessage = document.querySelector('.form-message');
-                    if (!formMessage) {
-                        formMessage = document.createElement('div');
-                        timeCapsuleForm.after(formMessage);
-                    }
-                    formMessage.className = 'form-message error-message';
-                    
-                    // More specific error messages
-                    if (error.message.includes('Failed to fetch')) {
-                        formMessage.innerHTML = `
-                            <p>❌ Connection Error: Unable to reach the server.</p>
-                            <p>Please make sure the server is running on port 3000.</p>
-                            <p>Try: <code>npm start</code> in your terminal</p>
-                        `;
-                    } else if (error.message.includes('non-JSON response')) {
-                        formMessage.innerHTML = `
-                            <p>❌ Server Error: Received invalid response.</p>
-                            <p>The server may not be configured correctly.</p>
-                            <p>Check the server console for errors.</p>
-                        `;
-                    } else {
-                        formMessage.innerHTML = `
-                            <p>❌ Error: ${error.message}</p>
-                            <p>Please try again or contact support if the problem persists.</p>
-                        `;
-                    }
-                    formMessage.style.display = 'block';
-                    formMessage.scrollIntoView({ behavior: 'smooth' });
-                } finally {
-                    // Reset button state
-                    submitBtn.innerHTML = originalBtnText;
-                    submitBtn.disabled = false;
-                }
+                // Set success message text
+                formMessage.innerHTML = `
+                    <p>🎉 Your time capsule has been created and scheduled to open in ${selectedYear}!</p>
+                    <p>We'll send ${recipientType.value === 'self' ? 'you' : 'the recipient'} an email when it's time to open it.</p>
+                `;
+                formMessage.style.display = 'block';
+                
+                // Clear form
+                timeCapsuleForm.reset();
+                document.querySelectorAll('.selected-file').forEach(el => el.textContent = '');
+                recipientDetails.style.display = 'none';
+                
+                // Scroll to the message
+                formMessage.scrollIntoView({ behavior: 'smooth' });
+                
+                console.log('Time Capsule created for year:', selectedYear);
             });
             
-            // Received Capsules Functionality
-            const viewReceivedBtn = document.getElementById('view-received-btn');
-            const receivedModal = document.getElementById('received-modal');
-            const receivedClose = document.getElementById('received-close');
-            const receivedList = document.getElementById('received-list');
-            const receivedCount = document.getElementById('received-count');
-            
-            // Toggle modal visibility
-            viewReceivedBtn.addEventListener('click', () => {
-                receivedModal.classList.toggle('visible');
-                if (receivedModal.classList.contains('visible')) {
-                    fetchReceivedCapsules();
+            // Create enhanced star background with more stars and improved twinkling
+            function createStars() {
+                const starField = document.querySelector('.bg-stars');
+                const starCount = 350; // Increased from 100 to 350 stars
+                
+                // Add a subtle galaxy glow
+                const galaxyGlow = document.createElement('div');
+                galaxyGlow.style.cssText = `
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 70%;
+                    height: 60%;
+                    background: radial-gradient(ellipse at center, rgba(155, 89, 182, 0.1) 0%, transparent 70%);
+                    z-index: 0;
+                    border-radius: 50%;
+                `;
+                starField.appendChild(galaxyGlow);
+                
+                // Create stars with varying sizes, colors and animations
+                for (let i = 0; i < starCount; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    
+                    // Random positioning across the entire screen
+                    const left = Math.floor(Math.random() * 100);
+                    const top = Math.floor(Math.random() * 100);
+                    
+                    // Varied star sizes with occasional larger stars
+                    const sizeVariation = Math.random();
+                    const size = sizeVariation > 0.97 ? 3 + Math.random() * 2 : // Occasional larger stars (3%)
+                               sizeVariation > 0.85 ? 1.5 + Math.random() * 1 : // Medium stars (12%)
+                               0.5 + Math.random() * 1; // Small stars (85%)
+                    
+                    // Random opacity
+                    const opacity = 0.4 + Math.random() * 0.6;
+                    
+                    // Slight color variation
+                    const hue = Math.random() > 0.8 ? 
+                                Math.floor(Math.random() * 30) + 240 : // Occasional blue/purple tint
+                                Math.floor(Math.random() * 60) + 200; // White to light purple
+                    const saturation = Math.floor(Math.random() * 30);
+                    const color = `hsl(${hue}, ${saturation}%, 90%)`;
+                    
+                    star.style.cssText = `
+                        position: absolute;
+                        left: ${left}%;
+                        top: ${top}%;
+                        width: ${size}px;
+                        height: ${size}px;
+                        background: ${color};
+                        border-radius: 50%;
+                        opacity: ${opacity};
+                        box-shadow: 0 0 ${size * 3}px ${color.replace('90%', '70%')};
+                        z-index: ${Math.floor(size)};
+                    `;
+                    
+                    // Add staggered animation with random duration and delay
+                    const duration = 3 + Math.random() * 7;
+                    const delay = Math.random() * 5;
+                    star.style.animation = `twinkle ${duration}s infinite ${delay}s ease-in-out`;
+                    
+                    starField.appendChild(star);
                 }
-            });
-            
-            // Close modal
-            receivedClose.addEventListener('click', () => {
-                receivedModal.classList.remove('visible');
-            });
-            
-            // Close modal when clicking outside
-            window.addEventListener('click', (e) => {
-                if (e.target !== receivedModal && 
-                    !receivedModal.contains(e.target) && 
-                    e.target !== viewReceivedBtn) {
-                    receivedModal.classList.remove('visible');
-                }
-            });
-            
-            // Fetch received capsules
-            async function fetchReceivedCapsules() {
-                try {
-                    // In a real implementation, the email would come from the authenticated user session
-                    // For now, we'll use a prompt as a placeholder
-                    const userEmail = prompt("Enter your email to check received capsules:");
-                    if (!userEmail) return;
-                    
-                    receivedList.innerHTML = '<p>Loading your capsules...</p>';
-                    
-                    const res = await fetch(`/api/capsules/received?email=${encodeURIComponent(userEmail)}`);
-                    if (res.status === 401) {
-                        receivedList.innerHTML = '<p>You must be logged in to view your capsules.</p>';
-                        return;
+                
+                // Add shooting stars that appear occasionally
+                setInterval(() => {
+                    if (Math.random() > 0.7) { // 30% chance of shooting star appearing
+                        createShootingStar(starField);
                     }
-                    if (!res.ok) {
-                        throw new Error(`Failed to fetch: ${res.status}`);
+                }, 8000);
+                
+                // Add keyframes for enhanced twinkling animation
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes twinkle {
+                        0%, 100% { opacity: 0.2; transform: scale(0.8); }
+                        50% { opacity: 0.9; transform: scale(1.1); }
                     }
                     
-                    const data = await res.json();
-                    const capsules = data.capsules || [];
-                    
-                    receivedCount.textContent = capsules.length;
-                    
-                    if (capsules.length === 0) {
-                        receivedList.innerHTML = '<p>No time capsules have been received yet.</p>';
-                        return;
+                    @keyframes shooting {
+                        0% { transform: translate(0, 0) rotate(-35deg) scale(0.5); opacity: 0; }
+                        15% { opacity: 1; }
+                        60% { transform: translate(-100vw, 100vh) rotate(-35deg) scale(0.5); opacity: 0; }
+                        100% { transform: translate(-100vw, 100vh) rotate(-35deg) scale(0.5); opacity: 0; }
                     }
-                    
-                    receivedList.innerHTML = capsules.map(c => `
-                        <div class="capsule-item" data-id="${c._id}">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                <div>
-                                    <strong>Opened:</strong> ${new Date(c.openDate).toLocaleDateString()}
-                                </div>
-                                <div>
-                                    <small>Created: ${new Date(c.createdAt).toLocaleDateString()}</small>
-                                </div>
-                            </div>
-                            
-                            <p>${(c.message || '').slice(0, 150)}${(c.message && c.message.length > 150) ? '...' : ''}</p>
-                            
-                            <div style="margin-top: 10px;">
-                                ${c.imageFileUrl ? `<a href="${c.imageFileUrl}" target="_blank" style="margin-right: 10px;">View Image</a>` : ''}
-                                ${c.audioFileUrl ? `<a href="${c.audioFileUrl}" target="_blank" style="margin-right: 10px;">Play Audio</a>` : ''}
-                                ${c.videoFileUrl ? `<a href="${c.videoFileUrl}" target="_blank">Watch Video</a>` : ''}
-                            </div>
-                        </div>
-                    `).join('');
-                } catch (err) {
-                    console.error('fetchReceivedCapsules error:', err);
-                    receivedList.innerHTML = '<p>Error loading your capsules. Please try again later.</p>';
-                }
+                `;
+                document.head.appendChild(style);
             }
             
-            // Add profile button functionality
-            const profileBtn = document.getElementById('profile-btn');
-            if (profileBtn) {
-                profileBtn.addEventListener('click', () => {
-                    // Use a simple prompt to get email since there's no login system connected
-                    const userEmail = localStorage.getItem('userEmail') || prompt("Enter your email to view your profile:");
-                    if (userEmail) {
-                        localStorage.setItem('userEmail', userEmail);
-                        alert(`Welcome back, ${userEmail}!\n\nYour profile information would appear here.`);
+            // Function to create occasional shooting stars
+            function createShootingStar(starField) {
+                const shootingStar = document.createElement('div');
+                
+                // Random position at top-right area
+                const startX = 70 + Math.random() * 30; // 70-100% of screen width
+                const startY = Math.random() * 30; // 0-30% of screen height
+                
+                shootingStar.style.cssText = `
+                    position: fixed;
+                    top: ${startY}vh;
+                    right: ${100 - startX}vw;
+                    width: 100px;
+                    height: 2px;
+                    background: linear-gradient(to right, transparent, #fff, transparent);
+                    border-radius: 50%;
+                    filter: drop-shadow(0 0 6px rgba(255,255,255,0.8));
+                    animation: shooting 3s ease-in-out forwards;
+                    z-index: 1;
+                    pointer-events: none;
+                `;
+                
+                starField.appendChild(shootingStar);
+                
+                // Remove the shooting star element after animation completes
+                setTimeout(() => {
+                    if (starField.contains(shootingStar)) {
+                        starField.removeChild(shootingStar);
                     }
-                });
+                }, 3000);
             }
-            
-            // Modify the fetchReceivedCapsules function to use localStorage email if available
-            const originalFetchReceivedCapsules = fetchReceivedCapsules;
-            window.fetchReceivedCapsules = async function() {
-                try {
-                    // Try to get email from localStorage first
-                    let userEmail = localStorage.getItem('userEmail');
-                    
-                    // If not found, prompt the user
-                    if (!userEmail) {
-                        userEmail = prompt("Enter your email to check received capsules:");
-                        if (userEmail) {
-                            localStorage.setItem('userEmail', userEmail);
-                        }
-                    }
-                    
-                    if (!userEmail) return;
-                    
-                    receivedList.innerHTML = '<p>Loading your capsules...</p>';
-                    
-                    const res = await fetch(`/api/capsules/received?email=${encodeURIComponent(userEmail)}`);
-                    
-                    // Continue with existing code for handling the response
-                    if (res.status === 401) {
-                        receivedList.innerHTML = '<p>You must be logged in to view your capsules.</p>';
-                        return;
-                    }
-                    if (!res.ok) {
-                        throw new Error(`Failed to fetch: ${res.status}`);
-                    }
-                    
-                    const data = await res.json();
-                    const capsules = data.capsules || [];
-                    
-                    receivedCount.textContent = capsules.length;
-                    
-                    if (capsules.length === 0) {
-                        receivedList.innerHTML = '<p>No time capsules have been received yet.</p>';
-                        return;
-                    }
-                    
-                    receivedList.innerHTML = capsules.map(c => `
-                        <div class="capsule-item" data-id="${c._id}">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                <div>
-                                    <strong>Opened:</strong> ${new Date(c.openDate).toLocaleDateString()}
-                                </div>
-                                <div>
-                                    <small>Created: ${new Date(c.createdAt).toLocaleDateString()}</small>
-                                </div>
-                            </div>
-                            
-                            <p>${(c.message || '').slice(0, 150)}${(c.message && c.message.length > 150) ? '...' : ''}</p>
-                            
-                            <div style="margin-top: 10px;">
-                                ${c.imageFileUrl ? `<a href="${c.imageFileUrl}" target="_blank" style="margin-right: 10px;">View Image</a>` : ''}
-                                ${c.audioFileUrl ? `<a href="${c.audioFileUrl}" target="_blank" style="margin-right: 10px;">Play Audio</a>` : ''}
-                                ${c.videoFileUrl ? `<a href="${c.videoFileUrl}" target="_blank">Watch Video</a>` : ''}
-                            </div>
-                        </div>
-                    `).join('');
-                } catch (err) {
-                    console.error('fetchReceivedCapsules error:', err);
-                    receivedList.innerHTML = '<p>Error loading your capsules. Please try again later.</p>';
-                }
-            }
-            
-            // Check for capsules on page load (optional)
-            // Uncomment this if you want to check automatically on page load
-            // window.addEventListener('DOMContentLoaded', fetchReceivedCapsules);
-        });
 
-        // Existing document DOMContentLoaded code
-        document.addEventListener('DOMContentLoaded', () => {
-            // Create stars for background
-            // ...existing code...
+            // Add parallax 3D effect based on mouse movement
+            document.addEventListener('mousemove', function(e) {
+                const formContainer = document.querySelector('.time-capsule-form-container');
+                if (!formContainer) return;
+                
+                // Only apply 3D effect if we're hovering over or near the form container
+                const rect = formContainer.getBoundingClientRect();
+                
+                // Skip effect if mouse is far from the form container
+                const padding = 100; // Extra area around the form to consider
+                if (e.clientX < rect.left - padding || e.clientX > rect.right + padding ||
+                    e.clientY < rect.top - padding || e.clientY > rect.bottom + padding) {
+                    return;
+                }
+                
+                // Calculate mouse position relative to the center of the container
+                const containerCenterX = rect.left + rect.width / 2;
+                const containerCenterY = rect.top + rect.height / 2;
+                
+                // Calculate mouse distance from center (normalized to -1 to 1)
+                const mouseX = (e.clientX - containerCenterX) / (rect.width / 2);
+                const mouseY = (e.clientY - containerCenterY) / (rect.height / 2);
+
+                // Apply subtle rotation based on mouse position
+                const maxRotation = 1.5; // degrees
+                const rotateX = -mouseY * maxRotation;
+                const rotateY = mouseX * maxRotation;
+                formContainer.style.transform = `
+                    translateZ(0px)
+                    rotateX(${rotateX}deg)
+                    rotateY(${rotateY}deg)
+                `;
+
+                // Move elements inside the container for parallax effect
+                const elements = {
+                    'h2': 15,
+                    '.media-label': 10,
+                    '.send-capsule-btn': 8,
+                    'input, select, textarea': 5
+                };
+                for (const selector in elements) {
+                    const depth = elements[selector];
+                    const items = formContainer.querySelectorAll(selector);
+                    items.forEach(item => {
+                        const moveX = mouseX * depth * 0.5;
+                        const moveY = mouseY * depth * 0.5;
+                        item.style.transform = `translateX(${moveX}px) translateY(${moveY}px) translateZ(${depth}px)`;
+                    });
+                }
+
+                // Move the cosmic portal in opposite direction for depth effect
+                const portal = document.querySelector('.cosmic-portal');
+                if (portal) {
+                    const portalShift = 20;
+                    portal.style.transform = `
+                        translate(-50%, -50%)
+                        translateZ(-50px)
+                        translate(calc(-50% + ${-mouseX * portalShift}px), calc(-50% + ${-mouseY * portalShift}px))
+                    `;
+                }
+            });
+
+            // Reset transform when mouse leaves the form
+            document.addEventListener('mouseleave', function() {
+                const formContainer = document.querySelector('.time-capsule-form-container');
+                if (formContainer) {
+                    formContainer.style.transform = 'translateZ(0px) rotateX(0deg) rotateY(0deg)';
+                    const elements = formContainer.querySelectorAll('h2, .media-label, .send-capsule-btn, input, select, textarea');
+                    elements.forEach(item => {
+                        item.style.transform = '';
+                    });
+                    const portal = document.querySelector('.cosmic-portal');
+                    if (portal) {
+                        portal.style.transform = 'translate(-50%, -50%) translateZ(-50px)';
+                    }
+                }
+            });
         });
     </script>
-    <script src="test-server.js"></script>
 </body>
 </html>
