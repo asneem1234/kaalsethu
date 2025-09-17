@@ -80,7 +80,7 @@ app.use('/', chatbotRoutes);
 
 // Define the root route FIRST to ensure it takes priority
 app.get('/', async (req, res) => {
-    console.log('Root route accessed - serving landing.html');
+    console.log('Root route accessed - serving index.html (former landing.html)');
     
     // Add no-cache headers to prevent browser caching
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
@@ -88,20 +88,20 @@ app.get('/', async (req, res) => {
     res.setHeader('Expires', '0');
     res.setHeader('Surrogate-Control', 'no-store');
     
-    // Use absolute path to landing.html
-    const landingPath = path.join(__dirname, 'landing.html');
+    // Use absolute path to index.html (former landing.html)
+    const indexPath = path.join(__dirname, 'index.html');
     
     try {
-        // Serve the landing page directly
-        return res.sendFile(landingPath, { dotfiles: 'allow' });
+        // Serve the index page directly
+        return res.sendFile(indexPath, { dotfiles: 'allow' });
     } catch (err) {
-        console.error(`❌ Error with landing.html: ${err.message}`);
+        console.error(`❌ Error with index.html: ${err.message}`);
         console.error(`Error code: ${err.code}`);
         
-        // Show a clear error instead of falling back to index.html
+        // Show a clear error
         return res.status(404).send(`
-            <h1>Error: landing.html not found</h1>
-            <p>Could not find landing.html at: ${landingPath}</p>
+            <h1>Error: index.html not found</h1>
+            <p>Could not find index.html at: ${indexPath}</p>
             <p>Error: ${err.message}</p>
             <p>Please check the file location and server configuration.</p>
         `);
@@ -114,9 +114,10 @@ app.use(express.static(PUBLIC_DIR, {
     index: false  // Disable automatic serving of index.html files
 }));
 
-// Add an explicit route for index.html that redirects to landing page
-app.get('/index.html', (req, res) => {
-    res.redirect('/');
+// Add an explicit route for second.html (former index.html)
+app.get('/second.html', (req, res) => {
+    const secondPath = path.join(__dirname, 'second.html');
+    res.sendFile(secondPath, { dotfiles: 'allow' });
 });
 
 // Health check endpoint
@@ -237,7 +238,7 @@ app.get('/test-server', (req, res) => {
         <h1>Server Test Page</h1>
         <p>The server is running correctly.</p>
         <p>Server time: ${new Date().toISOString()}</p>
-        <p>Looking for landing.html at: ${path.join(__dirname, 'landing.html')}</p>
+        <p>Looking for index.html at: ${path.join(__dirname, 'index.html')}</p>
     `);
 });
 

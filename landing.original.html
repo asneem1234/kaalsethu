@@ -1,0 +1,1484 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><Landing-Page></title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: #1a0b2e;
+            color: #ffffff;
+            overflow: hidden;
+            height: 100vh;
+            position: relative;
+        }
+
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #b19cd9;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
+        }
+
+        #galaxy-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .content-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .section {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            pointer-events: auto;
+            max-width: 90vw;
+            padding: 2rem;
+        }
+
+        .section.active {
+            opacity: 1;
+        }
+
+        /* Navigation */
+        .nav-controls {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #b19cd9;
+            background: transparent;
+            border-radius: 50%;
+            color: #b19cd9;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .nav-btn:hover {
+            background: rgba(177, 156, 217, 0.2);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(177, 156, 217, 0.5);
+        }
+
+        .nav-btn.active {
+            background: #b19cd9;
+            color: #1a0b2e;
+        }
+
+        /* Auth Navigation */
+        .auth-nav {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .auth-nav-btn {
+            padding: 0.8rem 1.5rem;
+            background: rgba(26, 11, 46, 0.3);
+            backdrop-filter: blur(10px);
+            border: 2px solid #b19cd9;
+            border-radius: 25px;
+            color: #b19cd9;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-block;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .auth-nav-btn:hover {
+            background: rgba(177, 156, 217, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(177, 156, 217, 0.3);
+        }
+
+        .auth-nav-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Auth Modal Styles */
+        .auth-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(26, 11, 46, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .auth-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .auth-modal-content {
+            background: linear-gradient(145deg, rgba(177, 156, 217, 0.25), rgba(155, 89, 182, 0.25));
+            border: 2px solid #b19cd9;
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 90%;
+            width: 400px;
+            box-shadow: 0 10px 50px rgba(177, 156, 217, 0.5);
+            backdrop-filter: blur(15px);
+            transform: translateY(30px) scale(0.95);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        .auth-modal.active .auth-modal-content {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .auth-modal-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-modal-header h2 {
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, #d8b2ff, #9b59b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .auth-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 30px;
+            height: 30px;
+            border: 2px solid #b19cd9;
+            border-radius: 50%;
+            background: transparent;
+            color: #b19cd9;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .auth-modal-close:hover {
+            background: rgba(177, 156, 217, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .auth-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .auth-input-group label {
+            color: #e1d4ff;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .auth-input-group input {
+            padding: 0.8rem;
+            background: rgba(26, 11, 46, 0.5);
+            border: 2px solid #b19cd9;
+            border-radius: 10px;
+            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .auth-input-group input:focus {
+            outline: none;
+            border-color: #d8b2ff;
+            box-shadow: 0 0 15px rgba(216, 178, 255, 0.5);
+        }
+
+        .auth-submit-btn {
+            padding: 0.8rem 1.5rem;
+            background: rgba(177, 156, 217, 0.3);
+            border: 2px solid #b19cd9;
+            border-radius: 30px;
+            color: #e1d4ff;
+            font-weight: 500;
+            font-family: 'JetBrains Mono', monospace;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .auth-submit-btn:hover {
+            background: rgba(155, 89, 182, 0.5);
+            box-shadow: 0 0 20px rgba(177, 156, 217, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 1rem;
+            color: #cccccc;
+            font-size: 0.9rem;
+        }
+
+        .auth-switch a {
+            color: #d8b2ff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .auth-switch a:hover {
+            color: #b19cd9;
+        }
+
+        .zoom-controls {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .zoom-btn {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #9b59b6;
+            background: rgba(26, 11, 46, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            color: #9b59b6;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .zoom-btn:hover {
+            background: rgba(155, 89, 182, 0.2);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(155, 89, 182, 0.5);
+        }
+
+        /* Big Bang Transition Effect Styles */
+        .big-bang-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1a0b2e;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .big-bang-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .big-bang-core {
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 50px 20px rgba(255, 255, 255, 0.8),
+                        0 0 100px 40px rgba(177, 156, 217, 0.6);
+            transform-origin: center;
+            transform: scale(0);
+        }
+
+        .energy-wave {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: radial-gradient(
+                circle,
+                rgba(255, 255, 255, 1) 0%,
+                rgba(216, 178, 255, 0.8) 30%,
+                rgba(177, 156, 217, 0.6) 50%,
+                rgba(155, 89, 182, 0.4) 70%,
+                transparent 100%
+            );
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        .star-particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8);
+            opacity: 0;
+        }
+       
+        /* Section Styles */
+        .intro h1 {
+            font-size: clamp(2rem, 8vw, 6rem);
+            font-weight: 700;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #b19cd9, #9b59b6, #d8b2ff, #e6e6fa);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: galaxy-gradient 4s ease-in-out infinite;
+        }
+
+        @keyframes galaxy-gradient {
+            0%, 100% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 50% 100%; }
+            75% { background-position: 50% 0%; }
+        }
+
+        .typing-text {
+            font-size: clamp(1rem, 4vw, 2rem);
+            color: #b19cd9;
+            margin-bottom: 3rem;
+            min-height: 3rem;
+            text-shadow: 0 0 10px rgba(177, 156, 217, 0.5);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            background: rgba(26, 11, 46, 0.3);
+            backdrop-filter: blur(10px);
+            border: 2px solid #b19cd9;
+            color: #b19cd9;
+            text-decoration: none;
+            font-family: inherit;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(177, 156, 217, 0.3);
+            background: rgba(177, 156, 217, 0.1);
+        }
+
+        .year-selector-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(26, 11, 46, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .year-selector-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .year-selector-content {
+            background: linear-gradient(145deg, rgba(177, 156, 217, 0.25), rgba(155, 89, 182, 0.25));
+            border: 2px solid #b19cd9;
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 90%;
+            width: 400px;
+            box-shadow: 0 10px 50px rgba(177, 156, 217, 0.5);
+            backdrop-filter: blur(15px);
+            transform: translateY(30px) scale(0.95);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-align: center;
+        }
+
+        .year-selector-overlay.active .year-selector-content {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .year-selector-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .year-selector-header h3 {
+            font-size: 1.8rem;
+            color: #e1d4ff;
+        }
+
+        .year-input {
+            background: rgba(26, 11, 46, 0.5);
+            border: 2px solid #b19cd9;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            padding: 0.8rem;
+            width: 180px;
+            text-align: center;
+            color: #ffffff;
+            border-radius: 10px;
+            margin: 1rem auto 2rem;
+            display: block;
+        }
+
+        .year-input:focus {
+            outline: none;
+            border-color: #d8b2ff;
+            box-shadow: 0 0 15px rgba(216, 178, 255, 0.5);
+        }
+
+        .year-selector-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .year-selector-btn {
+            padding: 0.8rem 1.5rem;
+            background: rgba(177, 156, 217, 0.3);
+            border: 2px solid #b19cd9;
+            border-radius: 30px;
+            color: #e1d4ff;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .year-selector-btn:hover {
+            background: rgba(155, 89, 182, 0.5);
+            box-shadow: 0 0 20px rgba(177, 156, 217, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .year-validation-error {
+            color: #ff6b9d;
+            font-size: 0.9rem;
+            margin-top: -1rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .milky-way-dust {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* Time Jump Overlay Styles */
+        .time-jump-starfield {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+       
+        .time-jump-star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            z-index: 1;
+        }
+       
+        .time-vortex {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vh;
+            height: 100vh;
+            background: radial-gradient(
+                circle at center,
+                rgba(155, 89, 182, 0.1) 0%,
+                rgba(155, 89, 182, 0.05) 20%,
+                transparent 70%
+            );
+            border-radius: 50%;
+            z-index: 1;
+            animation: vortexPulse 4s infinite linear;
+            opacity: 0;
+        }
+       
+        @keyframes vortexPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+        }
+       
+        /* Space Warp Animation Styles - Not used but kept for reference */
+        .space-warp-overlay {
+            display: none; /* Hidden since we're not using warp lines */
+        }
+        
+        .warp-line {
+            display: none; /* Hidden since we're not using warp lines */
+        }
+
+        .fade-out {
+            animation: fadeOut 2s forwards;
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        .fade-out {
+            animation: fadeOut 2s forwards;
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+       
+        .time-jump-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+            width: 100%;
+            pointer-events: none;
+        }
+       
+        .time-jump-header {
+            color: #d8b2ff;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(216, 178, 255, 0.8);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s forwards 0.5s;
+        }
+       
+        .time-jump-year {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s forwards 0.8s, glowPulse 2s infinite 1s;
+        }
+       
+        @keyframes glowPulse {
+            0%, 100% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
+            50% { text-shadow: 0 0 30px rgba(216, 178, 255, 0.9); }
+        }
+       
+        .time-jump-loading {
+            font-size: 1rem;
+            color: #9b59b6;
+            margin-top: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s forwards 1.1s;
+        }
+       
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+       
+        .loading-dots::after {
+            content: '';
+            animation: loadingDots 1.5s infinite steps(4, end);
+        }
+       
+        @keyframes loadingDots {
+            0% { content: ''; }
+            25% { content: '.'; }
+            50% { content: '..'; }
+            75% { content: '...'; }
+            100% { content: ''; }
+        }
+       
+        .shooting-star {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(177,156,217,1) 100%);
+            box-shadow: 0 0 10px #fff;
+            z-index: 1;
+        }
+       
+        .time-streak {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(to right, rgba(216,178,255,0) 0%, rgba(216,178,255,1) 50%, rgba(216,178,255,0) 100%);
+            box-shadow: 0 0 10px #b19cd9;
+            z-index: 1;
+        }
+       
+        .time-particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: #b19cd9;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #b19cd9;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="galaxy-canvas"></canvas>
+
+    <!-- KAAL SETHU Heading -->
+    <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100; text-align: center;">
+        <h1 style="font-size: 6rem; font-weight: 900; color: #d8b2ff; text-shadow:
+            0 0 15px rgba(177, 156, 217, 0.8),
+            0 1px 0 #b19cd9,
+            0 2px 0 #b19cd9,
+            0 3px 0 #b19cd9,
+            0 4px 0 #b19cd9,
+            0 5px 0 #9b59b6,
+            0 6px 1px rgba(155, 89, 182, 0.1),
+            0 0 5px rgba(155, 89, 182, 0.1),
+            0 1px 3px rgba(155, 89, 182, 0.3),
+            0 3px 5px rgba(155, 89, 182, 0.2),
+            0 5px 10px rgba(155, 89, 182, 0.25),
+            0 10px 10px rgba(155, 89, 182, 0.2),
+            0 20px 20px rgba(155, 89, 182, 0.15);">KAAL SETHU</h1>
+        <p style="font-size: 1.5rem; color: #b19cd9; margin-top: 1rem; letter-spacing: 3px; font-weight: 300; text-shadow: 0 0 10px rgba(177, 156, 217, 0.5);">connecting past to the future</p>
+    </div>
+
+    <!-- Auth Navigation -->
+    <div class="auth-nav">
+        <button class="auth-nav-btn" id="loginNavBtn">Login</button>
+        <button class="auth-nav-btn" id="signupNavBtn">Sign Up</button>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="auth-modal" id="loginModal">
+        <div class="auth-modal-content">
+            <button class="auth-modal-close" id="closeLoginModal">×</button>
+            <div class="auth-modal-header">
+                <h2>Welcome Back, Explorer</h2>
+            </div>
+            <form class="auth-form" id="loginForm" action="/api/auth/login" method="POST">
+                <div class="auth-input-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" name="email" required>
+                </div>
+                <div class="auth-input-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" name="password" required>
+                </div>
+                <button type="submit" class="auth-submit-btn">Login to Galaxy</button>
+                <div class="auth-switch">
+                    Don't have an account? <a href="#" id="switchToSignup">Join the expedition</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="auth-modal" id="signupModal">
+        <div class="auth-modal-content">
+            <button class="auth-modal-close" id="closeSignupModal">×</button>
+            <div class="auth-modal-header">
+                <h2>Join the Cosmic Journey</h2>
+            </div>
+            <form class="auth-form" id="signupForm" action="/api/auth/signup" method="POST">
+                <div class="auth-input-group">
+                    <label for="signupName">Explorer Name</label>
+                    <input type="text" id="signupName" name="name" required>
+                </div>
+                <div class="auth-input-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" name="email" required>
+                </div>
+                <div class="auth-input-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" name="password" required>
+                </div>
+                <div class="auth-input-group">
+                    <label for="signupConfirmPassword">Confirm Password</label>
+                    <input type="password" id="signupConfirmPassword" name="confirmPassword" required>
+                </div>
+                <button type="submit" class="auth-submit-btn">Begin Exploration</button>
+                <div class="auth-switch">
+                    Already exploring? <a href="#" id="switchToLogin">Login here</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Year Selector Popup -->
+    <div class="year-selector-overlay" id="yearSelectorPopup">
+        <div class="year-selector-content">
+            <div class="year-selector-header">
+                <h3>Select a Year</h3>
+            </div>
+            <input type="number" id="yearInput" class="year-input" placeholder="Enter year (e.g., 2025)" />
+            <div class="year-validation-error" id="yearValidationError">Please enter a valid year!</div>
+            <div class="year-selector-actions">
+                <button class="year-selector-btn" id="confirmYearBtn">Confirm Year</button>
+                <button class="year-selector-btn" id="closeYearSelectorBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, starting script...');
+           
+            // Mouse interaction variables
+            let mouseX = 0, mouseY = 0;
+
+            // Three.js Background Stars
+            console.log('Initializing Three.js...');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 3000);
+           
+            const canvas = document.getElementById('galaxy-canvas');
+            if (!canvas) {
+                console.error('Canvas element not found!');
+                return;
+            }
+           
+            const renderer = new THREE.WebGLRenderer({
+                canvas: canvas,
+                alpha: true,
+                antialias: true
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setClearColor(0x1a0b2e, 1);
+           
+            console.log('Three.js initialized successfully');
+
+            // Background stars
+            const starsGeometry = new THREE.BufferGeometry();
+            const starsCount = 20000; // Increased from 8000 for more stars
+            const starsPositions = new Float32Array(starsCount * 3);
+            const starsColors = new Float32Array(starsCount * 3);
+
+            for (let i = 0; i < starsCount; i++) {
+                const i3 = i * 3;
+                starsPositions[i3] = (Math.random() - 0.5) * 2000;
+                starsPositions[i3 + 1] = (Math.random() - 0.5) * 2000;
+                starsPositions[i3 + 2] = (Math.random() - 0.5) * 2000;
+               
+                // Various star colors with purple tints
+                const starType = Math.random();
+                if (starType < 0.5) {
+                    // Blue-white stars
+                    starsColors[i3] = 0.9 + Math.random() * 0.1;
+                    starsColors[i3 + 1] = 0.9 + Math.random() * 0.1;
+                    starsColors[i3 + 2] = 1;
+                } else if (starType < 0.8) {
+                    // Purple-ish stars
+                    starsColors[i3] = 0.7 + Math.random() * 0.3;
+                    starsColors[i3 + 1] = 0.4 + Math.random() * 0.3;
+                    starsColors[i3 + 2] = 1;
+                } else {
+                    // Reddish stars
+                    starsColors[i3] = 0.9 + Math.random() * 0.1;
+                    starsColors[i3 + 1] = 0.2 + Math.random() * 0.2;
+                    starsColors[i3 + 2] = 0.6 + Math.random() * 0.4;
+                }
+            }
+
+            starsGeometry.setAttribute('position', new THREE.BufferAttribute(starsPositions, 3));
+            starsGeometry.setAttribute('color', new THREE.BufferAttribute(starsColors, 3));
+
+            const starsMaterial = new THREE.PointsMaterial({
+                size: 0.4, // Slightly smaller size to accommodate more stars
+                sizeAttenuation: true,
+                depthWrite: false,
+                blending: THREE.AdditiveBlending,
+                vertexColors: true
+            });
+
+            const stars = new THREE.Points(starsGeometry, starsMaterial);
+            scene.add(stars);
+
+            // Camera positioning
+            camera.position.set(0, 100, 700); // Increased from 500 to allow longer zoom
+            camera.lookAt(0, 0, 0);
+
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+                mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+            });
+
+            // Raycaster for ball interactions
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2();
+            
+            // Handle click events
+            document.addEventListener('click', (event) => {
+                // Update mouse position for raycaster
+                mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+               
+                // Cast ray
+                raycaster.setFromCamera(mouse, camera);
+                const intersects = raycaster.intersectObjects([]);
+                
+                // If galaxy core is clicked
+                if (intersects.length > 0) {
+                    // Temporarily increase core light intensity for visual feedback
+                    const originalIntensity = coreLight.intensity;
+                    const originalDistance = coreLight.distance;
+                    gsap.to(coreLight, {
+                        intensity: 2.5,
+                        distance: 200,
+                        duration: 0.3,
+                        onComplete: () => {
+                            gsap.to(coreLight, {
+                                intensity: originalIntensity,
+                                distance: originalDistance,
+                                duration: 0.6,
+                                ease: "elastic.out"
+                            });
+                        }
+                    });
+                   
+                    // Emit particles on click
+                    createExplosion(clickableCore.position, 80);
+                   
+                    // Show the popup with animation
+                    const welcomePopup = document.getElementById('welcomePopup');
+                    welcomePopup.classList.add('active');
+                   
+                    // Add animation to the popup content
+                    const popupContent = welcomePopup.querySelector('.popup-content');
+                    gsap.fromTo(popupContent,
+                        { y: 30, opacity: 0, scale: 0.95 },
+                        { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" }
+                    );
+                }
+            });
+
+            // Create particle explosion effect
+            function createExplosion(position, particleCount) {
+                const explosionGeometry = new THREE.BufferGeometry();
+                const explosionPositions = new Float32Array(particleCount * 3);
+                const explosionColors = new Float32Array(particleCount * 3);
+               
+                for (let i = 0; i < particleCount; i++) {
+                    const i3 = i * 3;
+                    explosionPositions[i3] = position ? position.x : 0;
+                    explosionPositions[i3 + 1] = position ? position.y : 0;
+                    explosionPositions[i3 + 2] = position ? position.z : 0;
+                   
+                    // Particles in lavender/purple colors
+                    explosionColors[i3] = 0.8 + Math.random() * 0.2;
+                    explosionColors[i3 + 1] = 0.6 + Math.random() * 0.3;
+                    explosionColors[i3 + 2] = 0.9 + Math.random() * 0.1;
+                }
+               
+                explosionGeometry.setAttribute('position', new THREE.BufferAttribute(explosionPositions, 3));
+                explosionGeometry.setAttribute('color', new THREE.BufferAttribute(explosionColors, 3));
+               
+                const explosionMaterial = new THREE.PointsMaterial({
+                    size: 4,  // Increased size for more visible particles
+                    color: 0xb19cd9,
+                    transparent: true,
+                    depthWrite: false,
+                    blending: THREE.AdditiveBlending,
+                    vertexColors: true
+                });
+               
+                const explosion = new THREE.Points(explosionGeometry, explosionMaterial);
+                scene.add(explosion);
+               
+                // Animate particles outward
+                const positionAttribute = explosionGeometry.getAttribute('position');
+               
+                // Create random velocities for each particle
+                const velocities = [];
+                for (let i = 0; i < particleCount; i++) {
+                    velocities.push(new THREE.Vector3(
+                        (Math.random() - 0.5) * 5,  // Increased velocity for more dramatic effect
+                        (Math.random() - 0.5) * 5,
+                        (Math.random() - 0.5) * 5
+                    ));
+                }
+               
+                // Animation
+                gsap.to(explosionMaterial, {
+                    opacity: 0,
+                    duration: 3,  // Increased duration for longer particle life
+                    onUpdate: () => {
+                        // Update positions based on velocities
+                        for (let i = 0; i < particleCount; i++) {
+                            const i3 = i * 3;
+                            positionAttribute.array[i3] += velocities[i].x;
+                            positionAttribute.array[i3 + 1] += velocities[i].y;
+                            positionAttribute.array[i3 + 2] += velocities[i].z;
+                        }
+                        positionAttribute.needsUpdate = true;
+                    },
+                    onComplete: () => {
+                        scene.remove(explosion);
+                        explosion.geometry.dispose();
+                        explosion.material.dispose();
+                    }
+                });
+            }
+            
+            // Variables for core hover effect
+            let coreLight = { intensity: 1.2, distance: 150 };
+            let bulgeMaterial = { size: 1.5 };
+            
+            // Update core appearance on hover
+            let isHovering = false;
+            document.addEventListener('mousemove', (event) => {
+                mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+               
+                // Update the picking ray with the camera and mouse position
+                raycaster.setFromCamera(mouse, camera);
+               
+                // Calculate objects intersecting the picking ray
+                const intersects = raycaster.intersectObjects([]);
+               
+                // Change cursor and enhance core appearance on hover
+                if (intersects.length > 0) {
+                    if (!isHovering) {
+                        isHovering = true;
+                        document.body.style.cursor = 'pointer';
+                        gsap.to(coreLight, { intensity: 1.8, distance: 180, duration: 0.3 });
+                       
+                        // Slightly brighten the central bulge particles
+                        gsap.to(bulgeMaterial, { size: 2, duration: 0.3 });
+                    }
+                } else {
+                    if (isHovering) {
+                        isHovering = false;
+                        document.body.style.cursor = 'auto';
+                        gsap.to(coreLight, { intensity: 1.2, distance: 150, duration: 0.3 });
+                        gsap.to(bulgeMaterial, { size: 1.5, duration: 0.3 });
+                    }
+                }
+            });
+
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+               
+                // Rotate stars independently
+                stars.rotation.y += 0.0005;
+                stars.rotation.x += 0.0002;
+               
+                // Camera slight movement based on mouse
+                camera.position.x += (mouseX * 20 - camera.position.x) * 0.01;
+                camera.position.y += (mouseY * 20 - camera.position.y) * 0.01;
+                
+                // If camera is moving closer (space journey), increase rotation speed and add effects
+                if (camera.position.z < 400) {
+                    // Accelerate rotation as we get closer to give a sense of speed
+                    const zoomFactor = (500 - camera.position.z) / 500;
+                    stars.rotation.y += 0.002 * zoomFactor;
+                    stars.rotation.x += 0.001 * zoomFactor;
+                    
+                    // Add subtle camera movement for more immersion
+                    if (camera.position.z < 300) {
+                        const wobbleAmount = zoomFactor * 0.2;
+                        camera.position.x += Math.sin(Date.now() * 0.001) * wobbleAmount;
+                        camera.position.y += Math.cos(Date.now() * 0.0015) * wobbleAmount;
+                    }
+                }
+               
+                renderer.render(scene, camera);
+            }
+
+            animate();
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            // Shared journey initiation function
+            function initiateJourney() {
+                // Hide the main heading and text
+                const mainHeading = document.querySelector("div[style*='position: fixed; top: 50%; left: 50%;']");
+                gsap.to(mainHeading, {
+                    opacity: 0,
+                    scale: 0.8,
+                    duration: 1,
+                    ease: "power2.in",
+                    onComplete: () => {
+                        mainHeading.style.display = 'none';
+                    }
+                });
+                
+                // Hide the auth navigation
+                const authNav = document.querySelector('.auth-nav');
+                gsap.to(authNav, {
+                    opacity: 0,
+                    y: -20,
+                    duration: 0.5
+                });
+                
+                // Create additional stars that appear during the journey
+                createTravelStars();
+                
+                // Create a transition overlay for smoother page transition
+                const transitionOverlay = document.createElement('div');
+                transitionOverlay.style.position = 'fixed';
+                transitionOverlay.style.top = '0';
+                transitionOverlay.style.left = '0';
+                transitionOverlay.style.width = '100%';
+                transitionOverlay.style.height = '100%';
+                transitionOverlay.style.backgroundColor = '#1a0b2e';
+                transitionOverlay.style.opacity = '0';
+                transitionOverlay.style.zIndex = '9999';
+                transitionOverlay.style.transition = 'opacity 2s ease-in-out';
+                document.body.appendChild(transitionOverlay);
+                
+                // Zoom into the starfield
+                gsap.to(camera.position, {
+                    z: 5, // Zoom in even closer
+                    duration: 10,  // Much longer duration for extended zoom effect
+                    ease: "power1.in",
+                    onUpdate: () => {
+                        // Add some slight rotation to the camera for a more dynamic feel
+                        camera.rotation.z += 0.0001;
+                        
+                        camera.updateProjectionMatrix();
+                    },
+                    onComplete: () => {
+                        // Save camera state to sessionStorage for potential reuse in index.html
+                        sessionStorage.setItem('cameraState', JSON.stringify({
+                            position: {
+                                x: camera.position.x,
+                                y: camera.position.y,
+                                z: camera.position.z
+                            },
+                            rotation: {
+                                x: camera.rotation.x,
+                                y: camera.rotation.y,
+                                z: camera.rotation.z
+                            }
+                        }));
+                        
+                        // Fade in the transition overlay
+                        transitionOverlay.style.opacity = '1';
+                        
+                        // Redirect to the index page after the fade completes
+                        setTimeout(() => {
+                            window.location.href = 'index.html'; // Changed from 'time-explorer.html' to 'index.html'
+                        }, 1800);
+                    }
+                });
+                
+                // Create particle explosion for visual feedback - more particles for a more dramatic effect
+                createExplosion(new THREE.Vector3(0, 0, 0), 200);
+            }
+
+            // The Get Started button has been removed, and its functionality is now part of the login/signup buttons
+
+            // Authentication functionality
+            document.getElementById('loginNavBtn').addEventListener('click', () => {
+                const loginModal = document.getElementById('loginModal');
+                loginModal.classList.add('active');
+               
+                // Clear the login form and reset button state
+                document.getElementById('loginForm').reset();
+                resetModalButtonStates('loginModal');
+               
+                // Animate modal content
+                const modalContent = loginModal.querySelector('.auth-modal-content');
+                gsap.fromTo(modalContent,
+                    { y: 30, opacity: 0, scale: 0.95 },
+                    { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" }
+                );
+            });
+
+            document.getElementById('signupNavBtn').addEventListener('click', () => {
+                const signupModal = document.getElementById('signupModal');
+                signupModal.classList.add('active');
+               
+                // Clear the signup form and reset button state
+                document.getElementById('signupForm').reset();
+                resetModalButtonStates('signupModal');
+               
+                // Animate modal content
+                const modalContent = signupModal.querySelector('.auth-modal-content');
+                gsap.fromTo(modalContent,
+                    { y: 30, opacity: 0, scale: 0.95 },
+                    { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" }
+                );
+            });
+
+            // Close modal functions
+            function closeAuthModal(modalId) {
+                const modal = document.getElementById(modalId);
+                const modalContent = modal.querySelector('.auth-modal-content');
+               
+                // Reset button states before closing
+                resetModalButtonStates(modalId);
+               
+                gsap.to(modalContent, {
+                    y: 30,
+                    opacity: 0,
+                    scale: 0.95,
+                    duration: 0.3,
+                    onComplete: () => {
+                        modal.classList.remove('active');
+                    }
+                });
+            }
+
+            // Reset button states in modals
+            function resetModalButtonStates(modalId) {
+                const modal = document.getElementById(modalId);
+                const submitBtn = modal.querySelector('.auth-submit-btn');
+               
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                   
+                    // Reset button text based on modal type
+                    if (modalId === 'loginModal') {
+                        submitBtn.textContent = 'Login to Galaxy';
+                    } else if (modalId === 'signupModal') {
+                        submitBtn.textContent = 'Begin Exploration';
+                    }
+                }
+            }
+
+            document.getElementById('closeLoginModal').addEventListener('click', () => {
+                closeAuthModal('loginModal');
+            });
+
+            document.getElementById('closeSignupModal').addEventListener('click', () => {
+                closeAuthModal('signupModal');
+            });
+
+            // Close modals when clicking outside
+            document.getElementById('loginModal').addEventListener('click', (e) => {
+                if (e.target.classList.contains('auth-modal')) {
+                    closeAuthModal('loginModal');
+                }
+            });
+
+            document.getElementById('signupModal').addEventListener('click', (e) => {
+                if (e.target.classList.contains('auth-modal')) {
+                    closeAuthModal('signupModal');
+                }
+            });
+
+            // Close modals with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    const loginModal = document.getElementById('loginModal');
+                    const signupModal = document.getElementById('signupModal');
+                   
+                    if (loginModal.classList.contains('active')) {
+                        closeAuthModal('loginModal');
+                    }
+                    if (signupModal.classList.contains('active')) {
+                        closeAuthModal('signupModal');
+                    }
+                }
+            });
+            
+            // Create additional stars that appear during the space journey
+            function createTravelStars() {
+                // Create stars that will streak past the camera during travel
+                const travelStarsCount = 3000;
+                const travelStarsGeometry = new THREE.BufferGeometry();
+                const travelStarsPositions = new Float32Array(travelStarsCount * 3);
+                const travelStarsColors = new Float32Array(travelStarsCount * 3);
+                
+                // Position stars in a tunnel-like formation ahead of the camera
+                for (let i = 0; i < travelStarsCount; i++) {
+                    const i3 = i * 3;
+                    const radius = 50 + Math.random() * 100;
+                    const angle = Math.random() * Math.PI * 2;
+                    const depth = -200 - Math.random() * 800; // Positioned ahead of the camera
+                    
+                    travelStarsPositions[i3] = Math.cos(angle) * radius;
+                    travelStarsPositions[i3 + 1] = Math.sin(angle) * radius;
+                    travelStarsPositions[i3 + 2] = depth;
+                    
+                    // Star colors with more blue/purple hues for a cosmic effect
+                    travelStarsColors[i3] = 0.7 + Math.random() * 0.3;     // R
+                    travelStarsColors[i3 + 1] = 0.5 + Math.random() * 0.3; // G
+                    travelStarsColors[i3 + 2] = 0.9 + Math.random() * 0.1; // B - more blue
+                }
+                
+                travelStarsGeometry.setAttribute('position', new THREE.BufferAttribute(travelStarsPositions, 3));
+                travelStarsGeometry.setAttribute('color', new THREE.BufferAttribute(travelStarsColors, 3));
+                
+                const travelStarsMaterial = new THREE.PointsMaterial({
+                    size: 0.4,
+                    sizeAttenuation: true,
+                    depthWrite: false,
+                    blending: THREE.AdditiveBlending,
+                    vertexColors: true,
+                    transparent: true,
+                    opacity: 0
+                });
+                
+                const travelStars = new THREE.Points(travelStarsGeometry, travelStarsMaterial);
+                scene.add(travelStars);
+                
+                // Fade in the travel stars
+                gsap.to(travelStarsMaterial, {
+                    opacity: 1,
+                    duration: 2
+                });
+                
+                // Animate stars moving toward the camera
+                gsap.to(travelStars.position, {
+                    z: 400, // Move toward the camera
+                    duration: 10,
+                    ease: "power1.in"
+                });
+            }
+
+            // Switch between login and signup
+            document.getElementById('switchToSignup').addEventListener('click', (e) => {
+                e.preventDefault();
+                closeAuthModal('loginModal');
+                setTimeout(() => {
+                    document.getElementById('signupNavBtn').click();
+                }, 400);
+            });
+
+            document.getElementById('switchToLogin').addEventListener('click', (e) => {
+                e.preventDefault();
+                closeAuthModal('signupModal');
+                setTimeout(() => {
+                    document.getElementById('loginNavBtn').click();
+                }, 400);
+            });
+
+            // Form submissions with real backend connection
+            document.getElementById('loginForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+               
+                // Basic validation
+                if (!email || !password) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+                
+                try {
+                    // Show loading state
+                    const submitBtn = e.target.querySelector('.auth-submit-btn');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = 'Logging in...';
+                    submitBtn.disabled = true;
+                    
+                    // Make API call to backend
+                    const response = await fetch('/api/auth/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email, password })
+                    });
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Login failed. Please check your credentials.');
+                    }
+                    
+                    const data = await response.json();
+                    
+                    // Store user data in localStorage
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    localStorage.setItem('token', data.token);
+                    
+                    // Close the modal
+                    closeAuthModal('loginModal');
+                    
+                    // Start the journey animation
+                    initiateJourney();
+                    
+                } catch (error) {
+                    console.error('Login error:', error);
+                    alert(error.message || 'Login failed. Please try again.');
+                    
+                    // Reset button
+                    const submitBtn = e.target.querySelector('.auth-submit-btn');
+                    submitBtn.textContent = 'Login to Galaxy';
+                    submitBtn.disabled = false;
+                }
+            });
+
+            document.getElementById('signupForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = document.getElementById('signupName').value;
+                const email = document.getElementById('signupEmail').value;
+                const password = document.getElementById('signupPassword').value;
+                const confirmPassword = document.getElementById('signupConfirmPassword').value;
+               
+                // Basic validation
+                if (!name || !email || !password || !confirmPassword) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+               
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match');
+                    return;
+                }
+                
+                try {
+                    // Show loading state
+                    const submitBtn = e.target.querySelector('.auth-submit-btn');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = 'Creating account...';
+                    submitBtn.disabled = true;
+                    
+                    // Make API call to backend
+                    const response = await fetch('/api/auth/signup', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ name, email, password })
+                    });
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Sign up failed. Please try again.');
+                    }
+                    
+                    const data = await response.json();
+                    
+                    // Store user data in localStorage
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    localStorage.setItem('token', data.token);
+                    
+                    // Close the modal
+                    closeAuthModal('signupModal');
+                    
+                    // Start the journey animation
+                    initiateJourney();
+                    
+                } catch (error) {
+                    console.error('Signup error:', error);
+                    alert(error.message || 'Sign up failed. Please try again.');
+                    
+                    // Reset button
+                    const submitBtn = e.target.querySelector('.auth-submit-btn');
+                    submitBtn.textContent = 'Begin Exploration';
+                    submitBtn.disabled = false;
+                }
+            });
+        }); // Close DOMContentLoaded
+    </script>
+</body>
+</html>
+

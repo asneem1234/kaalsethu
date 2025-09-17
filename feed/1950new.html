@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1950s India - Time Capsule</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Courier+Prime&display=swap" rel="stylesheet">
+    <!-- Three.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Add OrbitControls for camera control -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <style>
+        :root {
+            --background-dark: #131211;
+            --text-beige: #d2c0a7;
+            --text-cream: #f0e6d6;
+            --accent-gold: #c9b18c;
+            --muted-gold: #b5a48c;
+            --dark-brown: #3e2e21;
+            --medium-brown: #5a4634;
+            --border-color: #8c7a6a;
+            --subtle-border: #3a3631;
+            --dusty-brown: #6d5c4d;
+        }
+        
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier Prime', monospace;
+            background-color: var(--background-dark);
+            color: var(--text-beige);
+            position: relative;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Film grain effect */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            pointer-events: none;
+        }
+        
+        /* Film Edge Mark */
+        .film-edge {
+            position: fixed;
+            top: 0;
+            left: 20%;
+            width: 1px;
+            height: 100%;
+            background-color: rgba(255,255,255,0.5);
+            opacity: 0.2;
+            z-index: 104;
+            pointer-events: none;
+        }
+        
+        /* Film grain canvas */
+        #filmGrainCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 102;
+            pointer-events: none;
+            opacity: 0.3;
+            mix-blend-mode: overlay;
+        }
+        
+        /* Vignette canvas */
+        #vignetteCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 103;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+        
+        /* 3D Radio Container */
+        .radio-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+        }
+        
+        #radio3D {
+            width: 40%;
+            height: 100%;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .content-container {
+            width: 60%;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Header styles */
+        header {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            overflow: hidden;
+        }
+
+        .header-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-color: var(--dark-brown);
+            background-size: cover;
+            background-position: center;
+            filter: sepia(0.3) contrast(1.05);
+        }
+
+        .header-background::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(62, 46, 33, 0.1), rgba(19, 18, 17, 0.7));
+        }
+
+        .header-content {
+            text-align: center;
+            z-index: 1;
+            padding: 3rem;
+            max-width: 800px;
+            background-color: rgba(62, 46, 33, 0.85);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-top: 5px solid var(--accent-gold);
+            margin-right: 2rem;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: var(--text-cream);
+            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-family: 'Courier Prime', monospace;
+            font-size: 1.3rem;
+            color: var(--muted-gold);
+            margin-bottom: 2rem;
+            letter-spacing: 2px;
+        }
+
+        .decade-description {
+            font-size: 1.1rem;
+            color: var(--text-cream);
+            margin-bottom: 2rem;
+            max-width: 100%;
+        }
+
+        .header-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .decade-btn {
+            background-color: var(--accent-gold);
+            color: var(--dark-brown);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-family: 'Courier Prime', monospace;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 4px;
+            letter-spacing: 1px;
+        }
+
+        .decade-btn:hover {
+            background-color: var(--text-cream);
+            color: var(--dark-brown);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Navigation styles */
+        nav.category-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            background-color: var(--dark-brown);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab {
+            padding: 1.2rem 1.8rem;
+            font-family: 'Courier Prime', monospace;
+            font-weight: 600;
+            color: var(--text-cream);
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .tab::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background-color: var(--accent-gold);
+            transition: all 0.3s;
+        }
+
+        .tab:hover::after, .tab.active::after {
+            width: 80%;
+        }
+
+        .tab:hover, .tab.active {
+            color: var(--accent-gold);
+        }
+
+        /* Main content styles */
+        main {
+            position: relative;
+            padding: 4rem 2rem;
+            background-color: var(--background-dark);
+        }
+
+        .section {
+            padding: 3rem 0;
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--accent-gold);
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: var(--medium-brown);
+        }
+
+        /* Footer styles */
+        footer {
+            background-color: var(--dark-brown);
+            padding: 3rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            color: var(--text-cream);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .copyright {
+            color: var(--muted-gold);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--subtle-border);
+            padding-top: 2rem;
+            margin-top: 2rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .radio-container {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            #radio3D {
+                width: 100%;
+                height: 50vh;
+            }
+            
+            .content-container {
+                width: 100%;
+                padding: 1rem;
+            }
+            
+            header {
+                justify-content: center;
+            }
+            
+            .header-content {
+                margin-right: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .tab {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Film grain overlays -->
+    <canvas id="filmGrainCanvas"></canvas>
+    <canvas id="vignetteCanvas"></canvas>
+    <div class="film-edge"></div>
+    
+    <div class="radio-container">
+        <!-- 3D Radio Model will render here -->
+        <div id="radio3D"></div>
+        
+        <div class="content-container">
+            <div class="header-content">
+                <h1>1950s India</h1>
+                <p class="subtitle">A JOURNEY THROUGH THE POST-INDEPENDENCE ERA</p>
+                <p class="decade-description">
+                    The 1950s marked a pivotal decade for India, just after gaining independence in 1947. 
+                    This period saw the birth of a new nation, establishing its identity and foundations 
+                    while navigating the complexities of post-colonial development under the leadership 
+                    of its first Prime Minister, Jawaharlal Nehru.
+                </p>
+                <div class="header-buttons">
+                    <button class="decade-btn">Explore Timeline</button>
+                    <button class="decade-btn">Experience Culture</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="category-tabs">
+        <div class="tab active" data-target="intro">Introduction</div>
+        <div class="tab" data-target="music">Music</div>
+        <div class="tab" data-target="events">Major Events</div>
+        <div class="tab" data-target="trends">Fashion</div>
+        <div class="tab" data-target="ideologies">Ideologies</div>
+        <div class="tab" data-target="technology">Technology</div>
+    </nav>
+
+    <main>
+        <!-- Introduction Section -->
+        <section id="intro" class="section active">
+            <h2 class="section-title">India in the 1950s</h2>
+            <div class="grid-container">
+                <div class="card fade-in">
+                    <h3>A New Beginning</h3>
+                    <div class="card-content">
+                        <p>The 1950s was a decade of hope, resilience, and foundation-building for newly independent India. After gaining freedom from British rule in 1947, the nation focused on establishing democratic institutions and planning for economic development.</p>
+                    </div>
+                    <div class="meta">
+                        <span>Historical Overview</span>
+                    </div>
+                </div>
+                
+                <div class="card fade-in delay-1">
+                    <h3>Democratic Foundations</h3>
+                    <div class="card-content">
+                        <p>In 1950, India adopted its constitution and became a republic. The first general elections were held in 1951-52, establishing the world's largest democracy, with Jawaharlal Nehru becoming India's first elected Prime Minister.</p>
+                    </div>
+                    <div class="meta">
+                        <span>Political Development</span>
+                    </div>
+                </div>
+                
+                <div class="card fade-in delay-2">
+                    <h3>Five-Year Plans</h3>
+                    <div class="card-content">
+                        <p>India adopted socialist-inspired economic policies focused on state-led industrialization. The First Five-Year Plan (1951-56) focused on agriculture, while the Second Five-Year Plan (1956-61) emphasized industrialization.</p>
+                    </div>
+                    <div class="meta">
+                        <span>Economic Planning</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Other sections would go here -->
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <h3 class="footer-title">Time Capsule: 1950s India</h3>
+            <p class="footer-text">Explore the cultural, political, and social landscape of India in the 1950s. This digital time capsule captures the essence of a nation in its formative years following independence.</p>
+            <div class="copyright">© 2025 Time Capsule Project. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script>
+        // Film Grain and Vignette Effect
+        document.addEventListener('DOMContentLoaded', function() {
+            // Film grain canvas
+            const filmGrainCanvas = document.getElementById('filmGrainCanvas');
+            const filmGrainCtx = filmGrainCanvas.getContext('2d');
+            
+            // Vignette canvas
+            const vignetteCanvas = document.getElementById('vignetteCanvas');
+            const vignetteCtx = vignetteCanvas.getContext('2d');
+            
+            function resizeCanvases() {
+                filmGrainCanvas.width = window.innerWidth;
+                filmGrainCanvas.height = window.innerHeight;
+                
+                vignetteCanvas.width = window.innerWidth;
+                vignetteCanvas.height = window.innerHeight;
+                
+                // Draw the vignette effect
+                const gradient = vignetteCtx.createRadialGradient(
+                    vignetteCanvas.width / 2,
+                    vignetteCanvas.height / 2,
+                    vignetteCanvas.height / 10,
+                    vignetteCanvas.width / 2,
+                    vignetteCanvas.height / 2,
+                    vignetteCanvas.width / 1.5
+                );
+                gradient.addColorStop(0, 'rgba(0,0,0,0)');
+                gradient.addColorStop(1, 'rgba(0,0,0,0.8)');
+                
+                vignetteCtx.fillStyle = gradient;
+                vignetteCtx.fillRect(0, 0, vignetteCanvas.width, vignetteCanvas.height);
+            }
+            
+            // Initial canvas sizing
+            resizeCanvases();
+            
+            // Resize canvas when window changes
+            window.addEventListener('resize', resizeCanvases);
+            
+            // Generate film grain animation
+            function generateFilmGrain() {
+                filmGrainCtx.clearRect(0, 0, filmGrainCanvas.width, filmGrainCanvas.height);
+                
+                const idata = filmGrainCtx.createImageData(filmGrainCanvas.width, filmGrainCanvas.height);
+                const buffer32 = new Uint32Array(idata.data.buffer);
+                const len = buffer32.length;
+                
+                for (let i = 0; i < len; i++) {
+                    if (Math.random() < 0.05) {
+                        buffer32[i] = 0xff999999; // Semi-transparent gray
+                    }
+                }
+                
+                filmGrainCtx.putImageData(idata, 0, 0);
+                requestAnimationFrame(generateFilmGrain);
+            }
+            
+            generateFilmGrain();
+            
+            // Tab navigation
+            const tabs = document.querySelectorAll('.tab');
+            const sections = document.querySelectorAll('.section');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const target = tab.getAttribute('data-target');
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Show corresponding section
+                    sections.forEach(section => {
+                        if (section.id === target) {
+                            section.classList.add('active');
+                        } else {
+                            section.classList.remove('active');
+                        }
+                    });
+                });
+            });
+            
+            // Fade in animations
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            fadeElements.forEach(element => {
+                observer.observe(element);
+            });
+        });
+        
+        // Three.js Radio Model Implementation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Scene setup
+            const container = document.getElementById('radio3D');
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x131211); // Match the background color
+            
+            // Camera setup
+            const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.set(0, 0, 5);
+            
+            // Renderer setup
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+            
+            // Light setup
+            const ambientLight = new THREE.AmbientLight(0xcccccc, 0.4);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(1, 1, 1);
+            scene.add(directionalLight);
+            
+            // Add a soft key light for vintage look
+            const keyLight = new THREE.PointLight(0xd2c0a7, 1, 10);
+            keyLight.position.set(-2, 3, 4);
+            scene.add(keyLight);
+            
+            // Create a basic radio model
+            function createRadio() {
+                // Radio body
+                const radioGroup = new THREE.Group();
+                
+                // Main body - wooden case
+                const radioGeometry = new THREE.BoxGeometry(3, 1.8, 0.8);
+                const radioMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x8B4513,  // Brown color for wooden case
+                    roughness: 0.8,
+                    metalness: 0.1
+                });
+                const radioBody = new THREE.Mesh(radioGeometry, radioMaterial);
+                radioGroup.add(radioBody);
+                
+                // Speaker grill
+                const grillGeometry = new THREE.PlaneGeometry(2.2, 1);
+                const grillMaterial = new THREE.MeshStandardMaterial({
+                    color: 0xd2c0a7,
+                    roughness: 0.7,
+                    metalness: 0.3
+                });
+                const grill = new THREE.Mesh(grillGeometry, grillMaterial);
+                grill.position.set(0, 0.2, 0.41);
+                radioGroup.add(grill);
+                
+                // Control panel
+                const panelGeometry = new THREE.PlaneGeometry(2.8, 0.5);
+                const panelMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x3e2e21,
+                    roughness: 0.5,
+                    metalness: 0.5
+                });
+                const panel = new THREE.Mesh(panelGeometry, panelMaterial);
+                panel.position.set(0, -0.55, 0.41);
+                radioGroup.add(panel);
+                
+                // Tuning dial - left
+                const dialGeometry1 = new THREE.CylinderGeometry(0.2, 0.2, 0.1, 32);
+                const dialMaterial = new THREE.MeshStandardMaterial({
+                    color: 0xc9b18c,
+                    roughness: 0.3,
+                    metalness: 0.8
+                });
+                const dial1 = new THREE.Mesh(dialGeometry1, dialMaterial);
+                dial1.rotation.x = Math.PI / 2;
+                dial1.position.set(-0.8, -0.55, 0.5);
+                radioGroup.add(dial1);
+                
+                // Volume dial - right
+                const dial2 = dial1.clone();
+                dial2.position.set(0.8, -0.55, 0.5);
+                radioGroup.add(dial2);
+                
+                // Tuning display
+                const displayGeometry = new THREE.PlaneGeometry(1.8, 0.2);
+                const displayMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x1a1a1a,
+                    roughness: 0.2,
+                    metalness: 0.1,
+                    emissive: 0x222222
+                });
+                const display = new THREE.Mesh(displayGeometry, displayMaterial);
+                display.position.set(0, -0.4, 0.42);
+                radioGroup.add(display);
+                
+                // Display indicator
+                const indicatorGeometry = new THREE.BoxGeometry(0.03, 0.15, 0.02);
+                const indicatorMaterial = new THREE.MeshStandardMaterial({
+                    color: 0xff0000,
+                    emissive: 0xff0000,
+                    emissiveIntensity: 0.5
+                });
+                const indicator = new THREE.Mesh(indicatorGeometry, indicatorMaterial);
+                indicator.position.set(-0.2, -0.4, 0.45);
+                radioGroup.add(indicator);
+                
+                // Add some radio buttons
+                for (let i = 0; i < 3; i++) {
+                    const buttonGeometry = new THREE.BoxGeometry(0.15, 0.06, 0.04);
+                    const buttonMaterial = new THREE.MeshStandardMaterial({
+                        color: 0xcccccc
+                    });
+                    const button = new THREE.Mesh(buttonGeometry, buttonMaterial);
+                    button.position.set(-0.5 + i * 0.5, -0.7, 0.42);
+                    radioGroup.add(button);
+                }
+                
+                // Position and return the radio model
+                radioGroup.rotation.x = -0.2;
+                return radioGroup;
+            }
+            
+            const radio = createRadio();
+            scene.add(radio);
+            
+            // OrbitControls for interaction
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.rotateSpeed = 0.7;
+            controls.minDistance = 3;
+            controls.maxDistance = 10;
+            
+            // Automatic rotation
+            let autoRotate = true;
+            setTimeout(() => {
+                autoRotate = false;
+            }, 5000);
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+            
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                if (autoRotate) {
+                    radio.rotation.y += 0.005;
+                }
+                
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+        });
+    </script>
+</body>
+</html>
