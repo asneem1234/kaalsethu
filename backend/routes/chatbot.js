@@ -6,6 +6,13 @@ dotenv.config();
 
 const router = express.Router();
 
+// For Vercel serverless deployment
+export const config = {
+  api: {
+    bodyParser: true,
+  },
+};
+
 router.post('/api/chat', async (req, res) => {
     try {
         console.log("Chat API request received:", req.body);

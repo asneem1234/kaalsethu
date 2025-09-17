@@ -1,9 +1,15 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Get __dirname equivalent for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export function getContextFromDecade(decade) {
     try {
-        const filePath = path.join(process.cwd(), 'data', `${decade}.json`);
+        // Use path relative to this file in Vercel environment
+        const filePath = path.join(__dirname, '..', '..', 'data', `${decade}.json`);
         console.log(`Looking for data file at: ${filePath}`);
         
         const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
