@@ -10,6 +10,7 @@ import { BlobServiceClient } from '@azure/storage-blob';
 
 // Import routes - Fix path to point to backend/routes
 import authRoutes from './backend/routes/authRoutes.js';
+import chatbotRoutes from './backend/routes/chatbot.js';
 
 // Load environment variables
 dotenv.config({ path: './backend/.env' });
