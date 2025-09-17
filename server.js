@@ -80,7 +80,7 @@ app.use('/', chatbotRoutes);
 
 // Define the root route FIRST to ensure it takes priority
 app.get('/', async (req, res) => {
-    console.log('Root route accessed - attempting to serve landing.html');
+    console.log('Root route accessed - serving landing.html');
     
     // Add no-cache headers to prevent browser caching
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
@@ -88,23 +88,11 @@ app.get('/', async (req, res) => {
     res.setHeader('Expires', '0');
     res.setHeader('Surrogate-Control', 'no-store');
     
-    // Check if file exists first with detailed error logging
+    // Use absolute path to landing.html
     const landingPath = path.join(__dirname, 'landing.html');
-    console.log(`Full landing.html path: ${landingPath}`);
-    console.log(`Does the file exist on disk? Checking...`);
     
     try {
-        // Check if file exists
-        const stats = await fs.stat(landingPath);
-        console.log(`✅ landing.html found: ${stats.size} bytes, isFile: ${stats.isFile()}`);
-        
-        // List directory contents to verify
-        console.log('Directory contents:');
-        const files = await fs.readdir(__dirname);
-        files.forEach(file => console.log(` - ${file}`));
-        
-        // Serve the file with absolute path to avoid any ambiguity
-        console.log('Serving landing.html directly');
+        // Serve the landing page directly
         return res.sendFile(landingPath, { dotfiles: 'allow' });
     } catch (err) {
         console.error(`❌ Error with landing.html: ${err.message}`);
@@ -125,6 +113,11 @@ app.get('/', async (req, res) => {
 app.use(express.static(PUBLIC_DIR, {
     index: false  // Disable automatic serving of index.html files
 }));
+
+// Add an explicit route for index.html that redirects to landing page
+app.get('/index.html', (req, res) => {
+    res.redirect('/');
+});
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
