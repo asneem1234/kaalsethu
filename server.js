@@ -10,6 +10,7 @@ import { BlobServiceClient } from '@azure/storage-blob';
 
 // Import routes - Fix path to point to backend/routes
 import authRoutes from './backend/routes/authRoutes.js';
+import chatbotRoutes from './backend/routes/chatbot.js';
 
 // Load environment variables
 dotenv.config({ path: './backend/.env' });
@@ -75,6 +76,7 @@ const TimeCapsule = mongoose.model('TimeCapsule', timeCapsuleSchema);
 
 // API Routes
 app.use('/api/auth', authRoutes);
+app.use('/', chatbotRoutes);
 
 // Define the root route FIRST to ensure it takes priority
 app.get('/', async (req, res) => {
