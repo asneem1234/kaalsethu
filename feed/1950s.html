@@ -5,18 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1950s India - Time Capsule</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Courier+Prime&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <style>
         :root {
-            --background-dark: #131211;
-            --text-beige: #d2c0a7;
-            --text-cream: #f0e6d6;
-            --accent-gold: #c9b18c;
-            --muted-gold: #b5a48c;
-            --dark-brown: #3e2e21;
-            --medium-brown: #5a4634;
-            --border-color: #8c7a6a;
-            --subtle-border: #3a3631;
-            --dusty-brown: #6d5c4d;
+            /* Gray & White Palette (Grayscale Range) - No black or brown */
+            --darkest-gray: #333333; /* Replaced deep-black with dark gray */
+            --dark-gray: #404040; /* Replaced deep-black-alt with dark gray */
+            --charcoal-gray: #505050; /* Lightened */
+            --charcoal-gray-alt: #606060; /* Lightened */
+            --medium-gray: #787878;
+            --medium-gray-alt: #8A8A8A; /* Slightly lightened */
+            /* Light gray removed as requested */
+            --very-light-gray: #D8D8D8;
+            --near-white: #F2F2F2;
+            
+            /* Mapped to previous variables for compatibility */
+            --background-dark: var(--darkest-gray);
+            --text-light: #FFFFFF; /* Added white text */
+            --text-beige: #FFFFFF; /* Changed to white */
+            --text-cream: #FFFFFF; /* Changed to white */
+            --accent-gold: #FFFFFF; /* Changed to white */
+            --muted-gold: #FFFFFF; /* Changed to white */
+            --dark-brown: var(--charcoal-gray); /* Was brown, now gray */
+            --medium-brown: var(--charcoal-gray-alt); /* Was brown, now gray */
+            --border-color: var(--medium-gray);
+            --subtle-border: var(--darkest-gray);
+            --dusty-brown: var(--medium-gray-alt); /* Was brown, now gray */;
         }
         
         /* Reset and Base Styles */
@@ -28,11 +43,12 @@
 
         body {
             font-family: 'Courier Prime', monospace;
-            background-color: var(--background-dark); /* Dark background matching reference image */
-            color: var(--text-beige); /* Warm beige text on dark background */
+            background-color: var(--background-dark);
+            color: #FFFFFF;
             position: relative;
             overflow-x: hidden;
             line-height: 1.6;
+            animation: extremeFlicker 8s infinite;
         }
 
         /* Advanced Film Grain Effect - removed CSS implementation in favor of Canvas-based approach */
@@ -70,7 +86,7 @@
             height: 100%;
             z-index: 102;
             pointer-events: none;
-            opacity: 0.3;
+            opacity: 0.5;
             mix-blend-mode: overlay;
         }
         
@@ -101,7 +117,7 @@
             height: 100%;
             background: radial-gradient(ellipse at center, 
                             rgba(210, 192, 167, 0) 50%, 
-                            rgba(62, 46, 33, 0.4) 100%);
+                            rgba(80, 80, 80, 0.4) 100%);
             pointer-events: none;
             z-index: 101;
             opacity: 0.8; /* Stronger vignette for old photo look */
@@ -137,7 +153,83 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(rgba(62, 46, 33, 0.1), rgba(19, 18, 17, 0.7));
+            background: linear-gradient(rgba(80, 80, 80, 0.1), rgba(51, 51, 51, 0.7));
+        }
+        
+        #radio-container {
+            position: relative;
+            width: 100%;
+            height: 70vh;
+            z-index: 15;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .radio-main {
+            position: relative;
+            margin: 0 auto;
+        }
+        
+        .header-buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            z-index: 20;
+            position: relative;
+        }
+        
+        @media (max-width: 768px) {
+            .header-buttons-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+        }
+        
+        .radio-text-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            pointer-events: none;
+            z-index: 16;
+            padding: 2rem;
+        }
+        
+        .radio-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--text-cream);
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .radio-subtitle {
+            font-family: 'Courier Prime', monospace;
+            font-size: 1.2rem;
+            color: var(--accent-gold);
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .radio-description {
+            font-family: 'Courier Prime', monospace;
+            font-size: 1rem;
+            color: var(--text-beige);
+            max-width: 80%;
+            line-height: 1.6;
+            margin: 0 auto;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .header-content {
@@ -145,7 +237,7 @@
             z-index: 1;
             padding: 3rem;
             max-width: 1000px;
-            background-color: rgba(62, 46, 33, 0.85);
+            background-color: rgba(80, 80, 80, 0.85);
             border-radius: 8px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             border-top: 5px solid var(--accent-gold);
@@ -310,13 +402,14 @@
 
         .card-content {
             margin-bottom: 15px;
+            color: #FFFFFF; /* Changed text color to white */
         }
 
         .meta {
             display: flex;
             justify-content: space-between;
             font-size: 0.9rem;
-            color: var(--dusty-brown);
+            color: #FFFFFF; /* Changed from dusty-brown to white */
             margin-top: 20px;
             padding-top: 15px;
             border-top: 1px dotted var(--border-color);
@@ -338,7 +431,7 @@
             margin-bottom: 5px;
             border: 1px solid #8c7a6a; /* Soft cream border */
             font-size: 0.8rem;
-            color: #3e2e21; /* Dark brown text */
+            color: #FFFFFF; /* Changed to white text */
         }
 
         /* Article Grid */
@@ -365,7 +458,7 @@
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            color: #3e2e21; /* Dark brown text */
+            color: #FFFFFF; /* Changed to white text */
             font-weight: 600;
         }
 
@@ -374,7 +467,7 @@
             padding: 10px;
             background: rgba(240, 230, 214, 0.8); /* Soft cream background with transparency */
             border: 1px solid #8c7a6a; /* Soft cream border */
-            color: #3e2e21; /* Dark brown text */
+            color: #FFFFFF; /* Changed to white text */
             font-family: 'Courier Prime', monospace;
         }
 
@@ -387,7 +480,7 @@
             display: inline-block;
             padding: 12px 25px;
             background: rgba(62, 46, 33, 0.8); /* Dark brown background with transparency */
-            color: #f0e6d6; /* Soft cream text */
+            color: #FFFFFF; /* Changed to white text */
             border: none;
             font-family: 'Courier Prime', monospace;
             cursor: pointer;
@@ -449,7 +542,7 @@
             display: none;
             background: none;
             border: none;
-            color: #e0e0e0;
+            color: #FFFFFF; /* Changed to white text */
             font-size: 1.5rem;
             cursor: pointer;
             padding: 5px;
@@ -464,7 +557,7 @@
             height: 40px;
             background: rgba(62, 46, 33, 0.8); /* Dark brown background with transparency */
             border: 1px solid #8c7a6a; /* Soft cream border */
-            color: #f0e6d6; /* Soft cream text */
+            color: #FFFFFF; /* Changed to white text */
             text-align: center;
             line-height: 40px;
             cursor: pointer;
@@ -521,7 +614,7 @@
             font-family: 'Playfair Display', serif;
             font-size: 1.3rem;
             margin-bottom: 15px;
-            color: #f0e6d6; /* Soft cream text */
+            color: #FFFFFF; /* Changed to white text */
             text-align: center;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* Subtle shadow */
         }
@@ -567,11 +660,11 @@
         }
         
         .retro-radio-frequency {
-            color: #c9b18c; /* Brighter muted gold text */
+            color: #FFFFFF; /* Changed to white text */
             font-family: 'Courier Prime', monospace;
             font-size: 0.9rem;
             animation: radioFrequency 10s linear infinite;
-            text-shadow: 0 0 5px rgba(201, 177, 140, 0.5); /* Glow effect */
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Glow effect updated for white */
         }
         
         @keyframes radioFrequency {
@@ -584,15 +677,15 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background-color: #5a4634; /* Dark brown background */
+            background-color: var(--charcoal-gray); /* Changed to gray */
             display: inline-flex;
             align-items: center;
             justify-content: center;
             margin-right: 10px;
             font-weight: bold;
-            color: #f0e6d6; /* Soft cream text */
-            border: 2px solid #b5a48c; /* Muted gold border */
-            box-shadow: 1px 1px 3px rgba(62, 46, 33, 0.3); /* Subtle shadow */
+            color: #FFFFFF; /* Changed to white text */
+            border: 2px solid var(--medium-gray); /* Updated border color */
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* Updated shadow */
         }
 
         /* Content fade in animations */
@@ -836,7 +929,7 @@
 
         .footer-text {
             margin-bottom: 2rem;
-            color: var(--text-beige);
+            color: #FFFFFF;
             max-width: 800px;
             margin-left: auto;
             margin-right: auto;
@@ -911,19 +1004,11 @@
     
     <header>
         <div class="header-background"></div>
-        <div class="header-content">
-            <h1>1950s India</h1>
-            <p class="subtitle">THE DAWN OF MODERN INDIA</p>
-            <p class="decade-description">
-                Experience the pivotal first decade after independence, when a newly sovereign nation 
-                laid the foundation for its future. From the adoption of the Constitution to the 
-                establishment of democratic institutions, witness the birth of modern India.
-            </p>
-            <div class="header-buttons">
-                <button class="decade-btn">EXPLORE TIMELINE</button>
-                <button class="decade-btn">EXPERIENCE CULTURE</button>
-            </div>
+        <div id="radio-container" class="radio-main">
+            <!-- Radio will be rendered here by Three.js -->
+            <!-- Text content will be added by JS to the radio display -->
         </div>
+       
     </header>
 
     <nav class="category-tabs">
@@ -1372,21 +1457,14 @@
             <p class="footer-text">Experience the dawn of a new nation through the stories and sounds of this transformative decade - when India took its first steps as an independent republic.</p>
             
             <div class="footer-links">
-                <a href="../decades/1950/index.html" class="footer-link">1950s Home</a>
-                <a href="../decades/1960/index.html" class="footer-link">Explore the 1960s</a>
-                <a href="../index.html" class="footer-link">Return to Main Galaxy</a>
-                <a href="#" class="footer-link">About the Project</a>
-                <a href="#" class="footer-link">Submit a Memory</a>
+                <!-- Footer links removed as requested -->
             </div>
             
             <div class="footer-social">
-                <a href="#" class="social-icon">📻</a>
-                <a href="#" class="social-icon">📰</a>
-                <a href="#" class="social-icon">📽️</a>
-                <a href="#" class="social-icon">📚</a>
+                <!-- Social icons removed as requested -->
             </div>
             
-            <p class="copyright">© 2025 Time Capsule Project. All rights reserved.</p>
+            <!-- Copyright removed as requested -->
         </div>
     </footer>
 
@@ -1411,8 +1489,7 @@
                 });
                 document.getElementById(target).classList.add('active');
                 
-                // Scroll to top when switching tabs
-                window.scrollTo({top: 0, behavior: 'smooth'});
+                // Removed scrolling to top when switching tabs
             }
             
             // Add click event listeners to all tabs
@@ -1466,23 +1543,23 @@
                     const data = imageData.data;
                     
                     for (let i = 0; i < data.length; i += 4) {
-                        // Random noise value
+                        // Random noise value with higher contrast
                         const value = Math.floor(Math.random() * 255);
                         
-                        // Apply noise with varying intensity
+                        // Apply noise with increased intensity
                         data[i] = data[i + 1] = data[i + 2] = value;
-                        // Alpha channel - make it subtle
-                        data[i + 3] = Math.random() > 0.95 ? 255 : Math.random() * 40;
+                        // Alpha channel - make it more pronounced
+                        data[i + 3] = Math.random() > 0.9 ? 255 : Math.random() * 60;
                     }
                     
                     grainCtx.putImageData(imageData, 0, 0);
                     
-                    // Add scratches
-                    grainCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                    // Add more pronounced scratches
+                    grainCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
                     grainCtx.lineWidth = 1;
                     
                     // Vertical scratches
-                    for (let i = 0; i < 10; i++) {
+                    for (let i = 0; i < 20; i++) {
                         const x = Math.random() * grainCanvas.width;
                         grainCtx.beginPath();
                         grainCtx.moveTo(x, 0);
@@ -1491,14 +1568,36 @@
                     }
                     
                     // Add dust specks
-                    grainCtx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-                    for (let i = 0; i < 100; i++) {
+                    grainCtx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                    for (let i = 0; i < 200; i++) {
                         const x = Math.random() * grainCanvas.width;
                         const y = Math.random() * grainCanvas.height;
-                        const size = Math.random() * 3 + 1;
+                        const size = Math.random() * 4 + 1;
                         grainCtx.beginPath();
                         grainCtx.arc(x, y, size, 0, Math.PI * 2);
                         grainCtx.fill();
+                    }
+                    
+                    // Add hair-like scratches (common in old film)
+                    grainCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                    grainCtx.lineWidth = 0.5;
+                    for (let i = 0; i < 15; i++) {
+                        const startX = Math.random() * grainCanvas.width;
+                        const startY = Math.random() * grainCanvas.height;
+                        const length = Math.random() * 100 + 50;
+                        const angle = Math.random() * Math.PI * 2;
+                        
+                        grainCtx.beginPath();
+                        grainCtx.moveTo(startX, startY);
+                        grainCtx.bezierCurveTo(
+                            startX + Math.cos(angle) * length * 0.3, 
+                            startY + Math.sin(angle) * length * 0.3,
+                            startX + Math.cos(angle) * length * 0.6, 
+                            startY + Math.sin(angle) * length * 0.6,
+                            startX + Math.cos(angle) * length, 
+                            startY + Math.sin(angle) * length
+                        );
+                        grainCtx.stroke();
                     }
                 }
                 
@@ -1508,13 +1607,17 @@
                     
                     // Create radial gradient for vignette
                     const gradient = vignetteCtx.createRadialGradient(
-                        vignetteCanvas.width / 2, vignetteCanvas.height / 2, vignetteCanvas.width / 4,
-                        vignetteCanvas.width / 2, vignetteCanvas.height / 2, vignetteCanvas.width / 1.5
+                        vignetteCanvas.width / 2, vignetteCanvas.height / 2, vignetteCanvas.width / 5,
+                        vignetteCanvas.width / 2, vignetteCanvas.height / 2, vignetteCanvas.width / 1.3
                     );
                     gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
-                    gradient.addColorStop(1, 'rgba(0, 0, 0, 0.85)');
+                    gradient.addColorStop(1, 'rgba(0, 0, 0, 0.9)');
                     
                     vignetteCtx.fillStyle = gradient;
+                    vignetteCtx.fillRect(0, 0, vignetteCanvas.width, vignetteCanvas.height);
+                    
+                    // Add a subtle sepia tone overlay
+                    vignetteCtx.fillStyle = 'rgba(112, 66, 20, 0.15)';
                     vignetteCtx.fillRect(0, 0, vignetteCanvas.width, vignetteCanvas.height);
                 }
                 
@@ -1530,18 +1633,25 @@
                 
                 // Create film flickering effect
                 let lastFlicker = 0;
-                const flickerInterval = 500; // milliseconds
+                const flickerInterval = 400; // milliseconds - more frequent flicker
                 
                 function createFilmFlicker() {
                     const now = Date.now();
                     
                     if (now - lastFlicker > flickerInterval) {
-                        // Random chance to flicker
-                        if (Math.random() > 0.7) {
-                            document.body.style.opacity = Math.random() * 0.15 + 0.85;
+                        // Random chance to flicker - increased probability
+                        if (Math.random() > 0.6) {
+                            // More pronounced opacity changes
+                            document.body.style.opacity = Math.random() * 0.25 + 0.75;
+                            
+                            // Occasional more dramatic flickers
+                            if (Math.random() > 0.9) {
+                                document.body.style.opacity = Math.random() * 0.5 + 0.5;
+                            }
+                            
                             setTimeout(() => {
                                 document.body.style.opacity = 1;
-                            }, 50 + Math.random() * 100);
+                            }, 30 + Math.random() * 120);
                             lastFlicker = now;
                         }
                     }
@@ -1627,7 +1737,1402 @@
                     behavior: 'smooth'
                 });
             });
+            
+            // Initialize the 3D vintage radio
+            initVintageRadio();
         });
+        
+        // 3D vintage radio with stands implementation
+        function initVintageRadio() {
+            // Get header text content to display on radio
+            const headerTitle = "1950s India";
+            const headerSubtitle = "THE DAWN OF MODERN INDIA";
+            const headerDescription = "Experience the pivotal first decade after independence, when a newly sovereign nation laid the foundation for its future. From the adoption of the Constitution to the establishment of democratic institutions, witness the birth of modern India.";
+            
+            const container = document.getElementById('radio-container');
+            
+            // Create scene, camera, and renderer
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setClearColor(0x000000, 0);
+            container.appendChild(renderer.domElement);
+            
+            // Add lighting - reduced intensity
+            const ambientLight = new THREE.AmbientLight(0x8A8A8A, 0.35); // Medium-gray-alt
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xF2F2F2, 0.55); // Near white (slightly brighter)
+            directionalLight.position.set(1, 1, 2);
+            scene.add(directionalLight);
+            
+            // Create the radio body with curved edges - make it even larger
+            // Use BoxGeometry with higher segment counts for smoother edges
+            const radioGeometry = new THREE.BoxGeometry(7, 4, 1.8, 5, 5, 5);
+            
+            // Add curved edges by manipulating vertices
+            const radioPositions = radioGeometry.attributes.position;
+            for (let i = 0; i < radioPositions.count; i++) {
+                const x = radioPositions.getX(i);
+                const y = radioPositions.getY(i);
+                const z = radioPositions.getZ(i);
+                
+                // Calculate distance from each corner
+                const edgeX = Math.abs(x) / (7/2);
+                const edgeY = Math.abs(y) / (4/2);
+                
+                // Smooth the corners
+                if (edgeX > 0.85 && edgeY > 0.85) {
+                    // Push corners inward to round them
+                    radioPositions.setX(i, x * 0.92);
+                    radioPositions.setY(i, y * 0.92);
+                }
+                
+                // Slightly curve the front face
+                if (z > 0.85) {
+                    // Add subtle curve to front face based on distance from center
+                    const distFromCenter = Math.sqrt(x*x + y*y);
+                    radioPositions.setZ(i, z - (0.1 * (distFromCenter/4)));
+                }
+            }
+            radioGeometry.computeVertexNormals();
+            
+            const radioMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x505050, // Updated charcoal gray (no black)
+                roughness: 0.8,
+                metalness: 0.2
+            });
+            const radio = new THREE.Mesh(radioGeometry, radioMaterial);
+            scene.add(radio);
+            
+            // Add wood grain texture to radio
+            const woodTextureGeometry = new THREE.PlaneGeometry(5, 3);
+            const woodMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x606060, // Updated charcoal gray alt (no brown)
+                roughness: 0.9,
+                metalness: 0.1,
+                transparent: true,
+                opacity: 0.6
+            });
+            
+            // Add decorative border frame around the front panel
+            const borderFrameGeometry = new THREE.BoxGeometry(6.5, 3.7, 0.1, 10, 10, 1);
+            const borderFramePositions = borderFrameGeometry.attributes.position;
+            // Create curved border frame
+            for (let i = 0; i < borderFramePositions.count; i++) {
+                const x = borderFramePositions.getX(i);
+                const y = borderFramePositions.getY(i);
+                
+                // Apply curve to match front panel
+                const z = -0.12 * Math.pow(x/3.15, 2);
+                if (borderFramePositions.getZ(i) > 0) {
+                    borderFramePositions.setZ(i, 0.05 + z);
+                } else {
+                    borderFramePositions.setZ(i, -0.05 + z);
+                }
+                
+                // Round the corners
+                const edgeX = Math.abs(x) / (6.5/2);
+                const edgeY = Math.abs(y) / (3.7/2);
+                if (edgeX > 0.85 && edgeY > 0.85) {
+                    borderFramePositions.setX(i, x * 0.95);
+                    borderFramePositions.setY(i, y * 0.95);
+                }
+            }
+            borderFrameGeometry.computeVertexNormals();
+            
+            const borderFrameMaterial = new THREE.MeshStandardMaterial({
+                color: 0x8A8A8A, // Updated medium gray alt
+                roughness: 0.4,
+                metalness: 0.6,
+                emissive: 0x8A8A8A, // Updated medium gray alt
+                emissiveIntensity: 0.05
+            });
+            const borderFrame = new THREE.Mesh(borderFrameGeometry, borderFrameMaterial);
+            borderFrame.position.set(0, 0, 0.9);
+            radio.add(borderFrame);
+            
+            // Add front panel to radio (main display area) - with enhanced curves
+            const frontPanelGeometry = new THREE.PlaneGeometry(6.3, 3.5, 20, 20); // More segments for bending
+            // Add curvature to the front panel
+            const frontPanelPositions = frontPanelGeometry.attributes.position;
+            for (let i = 0; i < frontPanelPositions.count; i++) {
+                const x = frontPanelPositions.getX(i);
+                const y = frontPanelPositions.getY(i);
+                
+                // Apply a slight curve along the X axis
+                const z = -0.12 * Math.pow(x/3.15, 2);
+                frontPanelPositions.setZ(i, z);
+                
+                // Add subtle vertical curve as well
+                frontPanelPositions.setZ(i, frontPanelPositions.getZ(i) - 0.03 * Math.pow(y/2, 2));
+            }
+            frontPanelGeometry.computeVertexNormals(); // Important after modifying vertices
+            
+            const frontPanelMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x787878, // Updated medium gray
+                roughness: 0.6,
+                metalness: 0.15,
+                emissive: 0x404040, // Updated to dark gray instead of black
+                emissiveIntensity: 0.02
+            });
+            const frontPanel = new THREE.Mesh(frontPanelGeometry, frontPanelMaterial);
+            frontPanel.position.set(0, 0, 0.93);
+            radio.add(frontPanel);
+            
+            // Add display screen border
+            const displayBorderGeometry = new THREE.BoxGeometry(5.9, 3.1, 0.05, 8, 8, 1);
+            const displayBorderPositions = displayBorderGeometry.attributes.position;
+            // Create curved border
+            for (let i = 0; i < displayBorderPositions.count; i++) {
+                const x = displayBorderPositions.getX(i);
+                const y = displayBorderPositions.getY(i);
+                
+                // Apply curve to match display
+                const z = -0.11 * Math.pow(x/2.9, 2) - 0.03 * Math.pow(y/1.8, 2);
+                if (displayBorderPositions.getZ(i) > 0) {
+                    displayBorderPositions.setZ(i, 0.03 + z);
+                } else {
+                    displayBorderPositions.setZ(i, -0.02 + z);
+                }
+                
+                // Round the corners
+                const edgeX = Math.abs(x) / (5.9/2);
+                const edgeY = Math.abs(y) / (3.1/2);
+                if (edgeX > 0.9 && edgeY > 0.9) {
+                    displayBorderPositions.setX(i, x * 0.95);
+                    displayBorderPositions.setY(i, y * 0.95);
+                }
+            }
+            displayBorderGeometry.computeVertexNormals();
+            
+            const displayBorderMaterial = new THREE.MeshStandardMaterial({
+                color: 0x404040, // Updated to dark gray (no black)
+                roughness: 0.7,
+                metalness: 0.3
+            });
+            const displayBorder = new THREE.Mesh(displayBorderGeometry, displayBorderMaterial);
+            displayBorder.position.set(0, 0, 0.94);
+            radio.add(displayBorder);
+            
+            // Add main display screen (for text) - with enhanced curves
+            const displayScreenGeometry = new THREE.PlaneGeometry(5.8, 3.0, 20, 20);
+            // Apply enhanced curvature to the display screen
+            const displayPositions = displayScreenGeometry.attributes.position;
+            for (let i = 0; i < displayPositions.count; i++) {
+                const x = displayPositions.getX(i);
+                const y = displayPositions.getY(i);
+                
+                // Apply curves along both X and Y axes
+                const z = -0.11 * Math.pow(x/2.9, 2) - 0.03 * Math.pow(y/1.8, 2);
+                displayPositions.setZ(i, z);
+                
+                // Create subtle inward curve at edges
+                const edgeX = Math.abs(x) / (5.8/2);
+                const edgeY = Math.abs(y) / (3.0/2);
+                if (edgeX > 0.9) {
+                    displayPositions.setZ(i, displayPositions.getZ(i) - 0.01 * Math.pow(edgeX, 8));
+                }
+                if (edgeY > 0.9) {
+                    displayPositions.setZ(i, displayPositions.getZ(i) - 0.01 * Math.pow(edgeY, 8));
+                }
+            }
+            displayScreenGeometry.computeVertexNormals();
+            
+            // Create canvas for text rendering
+            const canvas = document.createElement('canvas');
+            canvas.width = 1024;
+            canvas.height = 512;
+            const context = canvas.getContext('2d');
+            
+            // Create a subtle texture pattern for the background
+            context.fillStyle = '#D8D8D8'; // Very light gray
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Add a subtle grain texture
+            for (let i = 0; i < 20000; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const size = Math.random() * 1.5;
+                context.fillStyle = `rgba(80, 80, 80, ${Math.random() * 0.03})`;
+                context.fillRect(x, y, size, size);
+            }
+            
+            // Add subtle border frame inside
+            context.strokeStyle = '#505050'; // Updated charcoal gray
+            context.lineWidth = 2;
+            context.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+            
+            // Add Vividh Radio logo at the top
+            context.fillStyle = '#606060'; // Updated charcoal gray alt
+            context.font = 'italic bold 42px Playfair Display, serif';
+            context.textAlign = 'center';
+            context.fillText('Vividh Radio', canvas.width/2, 70);
+            
+            // Add vintage radio icon using simple drawing
+            context.strokeStyle = '#606060'; // Updated charcoal gray alt
+            context.lineWidth = 1;
+            
+            // Draw small radio icon
+            const iconX = canvas.width/2;
+            const iconY = 90;
+            const iconSize = 30;
+            
+            // Draw radio body
+            context.beginPath();
+            context.rect(iconX - iconSize/2, iconY, iconSize, iconSize/2);
+            context.stroke();
+            
+            // Draw radio dial
+            context.beginPath();
+            context.arc(iconX, iconY + iconSize/4, iconSize/6, 0, Math.PI*2);
+            context.stroke();
+            
+            // Draw radio waves
+            for(let i = 1; i <= 3; i++) {
+                context.beginPath();
+                context.arc(iconX + iconSize/2 + 5, iconY + iconSize/4, i * 5, -Math.PI/3, Math.PI/3);
+                context.stroke();
+            }
+            
+            // Add text to canvas
+            context.fillStyle = '#5a3423';
+            context.font = 'bold 70px Playfair Display, serif';
+            context.textAlign = 'center';
+            context.fillText(headerTitle, canvas.width/2, 160);
+            
+            context.font = 'bold 36px Courier Prime, monospace';
+            context.fillText(headerSubtitle, canvas.width/2, 220);
+            
+            // Description text - multiple lines
+            context.font = '22px Courier Prime, monospace';
+            const maxWidth = 900;
+            const lineHeight = 28;
+            const words = headerDescription.split(' ');
+            let line = '';
+            let y = 270;
+            
+            for (let i = 0; i < words.length; i++) {
+                const testLine = line + words[i] + ' ';
+                const metrics = context.measureText(testLine);
+                const testWidth = metrics.width;
+                
+                if (testWidth > maxWidth && i > 0) {
+                    context.fillText(line, canvas.width/2, y);
+                    line = words[i] + ' ';
+                    y += lineHeight;
+                } else {
+                    line = testLine;
+                }
+            }
+            context.fillText(line, canvas.width/2, y);
+            
+            // Add "Est. 1957" text at bottom (historical reference for Vividh Bharati/Vividh Radio)
+            context.font = 'italic 20px Courier Prime, monospace';
+            context.fillText('Est. 1957', canvas.width/2, y + 40);
+            
+            // Create texture from canvas
+            const texture = new THREE.CanvasTexture(canvas);
+            
+            const displayScreenMaterial = new THREE.MeshStandardMaterial({ 
+                map: texture,
+                roughness: 0.4,
+                metalness: 0.05,
+                emissive: 0xf5e9d0,
+                emissiveIntensity: 0.03 // Further reduced emissive intensity
+            });
+            
+            const displayScreen = new THREE.Mesh(displayScreenGeometry, displayScreenMaterial);
+            displayScreen.position.set(0, 0, 0.95);
+            radio.add(displayScreen);
+            
+            // Add decorative speaker frame
+            const speakerFrameGeometry = new THREE.CylinderGeometry(1.3, 1.3, 0.1, 32, 1, false);
+            const speakerFrameMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x8A8A8A, // Updated to medium gray alt
+                roughness: 0.6,
+                metalness: 0.4
+            });
+            const speakerFrame = new THREE.Mesh(speakerFrameGeometry, speakerFrameMaterial);
+            speakerFrame.rotation.x = Math.PI / 2;
+            speakerFrame.position.set(2.2, -1.2, 0.91);
+            radio.add(speakerFrame);
+            
+            // Add speaker grill - recessed for depth
+            const speakerGrillGeometry = new THREE.CylinderGeometry(1.2, 1.2, 0.15, 32, 3, false);
+            // Create a slight curve on the speaker face
+            const speakerGrillPositions = speakerGrillGeometry.attributes.position;
+            for (let i = 0; i < speakerGrillPositions.count; i++) {
+                const x = speakerGrillPositions.getX(i);
+                const y = speakerGrillPositions.getY(i);
+                
+                // Calculate distance from center
+                const dist = Math.sqrt(x*x + y*y);
+                if (dist < 1.0 && speakerGrillPositions.getZ(i) > 0) {
+                    // Create concave surface
+                    speakerGrillPositions.setZ(i, speakerGrillPositions.getZ(i) - 0.05 * (1 - dist/1.2));
+                }
+            }
+            speakerGrillGeometry.computeVertexNormals();
+            
+            const speakerGrillMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x2a2a2a,
+                roughness: 0.9,
+                metalness: 0.1
+            });
+            const speakerGrill = new THREE.Mesh(speakerGrillGeometry, speakerGrillMaterial);
+            speakerGrill.rotation.x = Math.PI / 2;
+            speakerGrill.position.set(2.2, -1.2, 0.93);
+            radio.add(speakerGrill);
+            
+            // Add speaker mesh pattern with more complex pattern
+            const speakerMeshGeometry = new THREE.CylinderGeometry(1.05, 1.05, 0.16, 32, 3, false); // Reduced radius from 1.15 to 1.05
+            const speakerMeshMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0x111111, 
+                wireframe: true
+            });
+            const speakerMesh = new THREE.Mesh(speakerMeshGeometry, speakerMeshMaterial);
+            speakerMesh.rotation.x = Math.PI / 2;
+            speakerMesh.position.set(2.2, -1.2, 0.935); // Reduced from 0.94 to 0.935
+            radio.add(speakerMesh);
+            
+            // Add speaker cloth texture visual effect
+            const speakerClothGeometry = new THREE.CircleGeometry(1.05, 32); // Reduced radius from 1.1 to 1.05
+            
+            // Create canvas for speaker cloth texture
+            const speakerCanvas = document.createElement('canvas');
+            speakerCanvas.width = 256;
+            speakerCanvas.height = 256;
+            const speakerContext = speakerCanvas.getContext('2d');
+            
+            // Fill background
+            speakerContext.fillStyle = '#222222';
+            speakerContext.fillRect(0, 0, 256, 256);
+            
+            // Draw cloth pattern
+            speakerContext.strokeStyle = '#111111';
+            speakerContext.lineWidth = 1;
+            
+            // Horizontal lines
+            for (let y = 0; y < 256; y += 4) {
+                speakerContext.beginPath();
+                speakerContext.moveTo(0, y);
+                speakerContext.lineTo(256, y);
+                speakerContext.stroke();
+            }
+            
+            // Vertical lines
+            for (let x = 0; x < 256; x += 4) {
+                speakerContext.beginPath();
+                speakerContext.moveTo(x, 0);
+                speakerContext.lineTo(x, 256);
+                speakerContext.stroke();
+            }
+            
+            const speakerTexture = new THREE.CanvasTexture(speakerCanvas);
+            const speakerClothMaterial = new THREE.MeshStandardMaterial({
+                map: speakerTexture,
+                roughness: 1.0,
+                metalness: 0.0,
+                transparent: true,
+                opacity: 0.9
+            });
+            
+            const speakerCloth = new THREE.Mesh(speakerClothGeometry, speakerClothMaterial);
+            speakerCloth.rotation.x = -Math.PI / 2;
+            speakerCloth.position.set(2.2, -1.2, 0.925); // Further reduced from 0.94 to 0.925
+            radio.add(speakerCloth);
+            
+            // Add title band border
+            const titleBandBorderGeometry = new THREE.BoxGeometry(5.9, 0.8, 0.05, 10, 2, 1);
+            const titleBandBorderPositions = titleBandBorderGeometry.attributes.position;
+            // Apply curvature to title band border
+            for (let i = 0; i < titleBandBorderPositions.count; i++) {
+                const x = titleBandBorderPositions.getX(i);
+                // Apply curve to match main display
+                const z = -0.11 * Math.pow(x/2.9, 2);
+                if (titleBandBorderPositions.getZ(i) > 0) {
+                    titleBandBorderPositions.setZ(i, 0.03 + z);
+                } else {
+                    titleBandBorderPositions.setZ(i, -0.02 + z);
+                }
+                
+                // Round the corners slightly
+                const edgeX = Math.abs(x) / (5.9/2);
+                const edgeY = Math.abs(titleBandBorderPositions.getY(i)) / (0.8/2);
+                if (edgeX > 0.92 && edgeY > 0.9) {
+                    titleBandBorderPositions.setX(i, x * 0.98);
+                }
+            }
+            titleBandBorderGeometry.computeVertexNormals();
+            
+            const titleBandBorderMaterial = new THREE.MeshStandardMaterial({
+                color: 0x606060, // Updated to charcoal gray alt
+                roughness: 0.6,
+                metalness: 0.2
+            });
+            const titleBandBorder = new THREE.Mesh(titleBandBorderGeometry, titleBandBorderMaterial);
+            titleBandBorder.position.set(0, 1.4, 0.93);
+            radio.add(titleBandBorder);
+            
+            // Add title band at top of screen - curved and larger
+            const titleBandGeometry = new THREE.PlaneGeometry(5.8, 0.7, 20, 2);
+            // Apply enhanced curvature to title band
+            const titleBandPositions = titleBandGeometry.attributes.position;
+            for (let i = 0; i < titleBandPositions.count; i++) {
+                const x = titleBandPositions.getX(i);
+                // Apply a slight curve along the X axis
+                const z = -0.11 * Math.pow(x/2.9, 2);
+                titleBandPositions.setZ(i, z);
+            }
+            titleBandGeometry.computeVertexNormals();
+            
+            // Create canvas for decorative title band with "VIVIDH RADIO" text
+            const titleCanvas = document.createElement('canvas');
+            titleCanvas.width = 512;
+            titleCanvas.height = 64;
+            const titleContext = titleCanvas.getContext('2d');
+            
+            // Create gradient background
+            const titleGradient = titleContext.createLinearGradient(0, 0, 512, 0);
+            titleGradient.addColorStop(0, '#c9b18c');
+            titleGradient.addColorStop(0.5, '#e5d9c0');
+            titleGradient.addColorStop(1, '#c9b18c');
+            titleContext.fillStyle = titleGradient;
+            titleContext.fillRect(0, 0, 512, 64);
+            
+            // Add decorative lines
+            titleContext.strokeStyle = '#8B4513';
+            titleContext.lineWidth = 2;
+            titleContext.beginPath();
+            titleContext.moveTo(0, 4);
+            titleContext.lineTo(512, 4);
+            titleContext.stroke();
+            
+            titleContext.beginPath();
+            titleContext.moveTo(0, 60);
+            titleContext.lineTo(512, 60);
+            titleContext.stroke();
+            
+            // Add "VIVIDH RADIO" text with embossed effect
+            titleContext.fillStyle = '#5a3423'; 
+            titleContext.font = 'bold 32px Playfair Display, serif';
+            titleContext.textAlign = 'center';
+            titleContext.textBaseline = 'middle';
+            
+            // Add shadow for embossed effect
+            titleContext.shadowColor = 'rgba(0, 0, 0, 0.3)';
+            titleContext.shadowBlur = 4;
+            titleContext.shadowOffsetX = 2;
+            titleContext.shadowOffsetY = 2;
+            titleContext.fillText('VIVIDH RADIO', 256, 32);
+            
+            // Clear shadow for highlight
+            titleContext.shadowColor = 'transparent';
+            
+            // Add highlight effect
+            titleContext.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            titleContext.fillText('VIVIDH RADIO', 255, 31);
+            
+            // Add subtle texture
+            for (let i = 0; i < 2000; i++) {
+                const x = Math.random() * 512;
+                const y = Math.random() * 64;
+                titleContext.fillStyle = `rgba(139, 69, 19, ${Math.random() * 0.05})`;
+                titleContext.fillRect(x, y, 1, 1);
+            }
+            
+            const titleTexture = new THREE.CanvasTexture(titleCanvas);
+            const titleBandMaterial = new THREE.MeshStandardMaterial({ 
+                map: titleTexture,
+                roughness: 0.4,
+                metalness: 0.3,
+                emissive: 0xc9b18c,
+                emissiveIntensity: 0.04
+            });
+            
+            const titleBand = new THREE.Mesh(titleBandGeometry, titleBandMaterial);
+            titleBand.position.set(0, 1.4, 0.94);
+            radio.add(titleBand);
+            
+            // Add tuning display border
+            const tuningBorderGeometry = new THREE.BoxGeometry(2.7, 0.7, 0.05, 8, 2, 1);
+            const tuningBorderPositions = tuningBorderGeometry.attributes.position;
+            // Apply curvature to tuning display border
+            for (let i = 0; i < tuningBorderPositions.count; i++) {
+                const x = tuningBorderPositions.getX(i);
+                // Apply curve to match
+                const z = -0.09 * Math.pow(x/1.3, 2);
+                if (tuningBorderPositions.getZ(i) > 0) {
+                    tuningBorderPositions.setZ(i, 0.03 + z);
+                } else {
+                    tuningBorderPositions.setZ(i, -0.02 + z);
+                }
+                
+                // Round the corners slightly
+                const edgeX = Math.abs(x) / (2.7/2);
+                const edgeY = Math.abs(tuningBorderPositions.getY(i)) / (0.7/2);
+                if (edgeX > 0.92 && edgeY > 0.9) {
+                    tuningBorderPositions.setX(i, x * 0.97);
+                }
+            }
+            tuningBorderGeometry.computeVertexNormals();
+            
+            const tuningBorderMaterial = new THREE.MeshStandardMaterial({
+                color: 0x606060, // Updated to charcoal gray alt
+                roughness: 0.6,
+                metalness: 0.2
+            });
+            const tuningBorder = new THREE.Mesh(tuningBorderGeometry, tuningBorderMaterial);
+            tuningBorder.position.set(-1.8, -1.4, 0.92);
+            radio.add(tuningBorder);
+            
+            // Add tuning display - with enhanced details
+            const tuningDisplayGeometry = new THREE.PlaneGeometry(2.6, 0.6, 10, 2);
+            // Apply curvature to tuning display
+            const tuningDisplayPositions = tuningDisplayGeometry.attributes.position;
+            for (let i = 0; i < tuningDisplayPositions.count; i++) {
+                const x = tuningDisplayPositions.getX(i);
+                // Apply a slight curve along the X axis
+                const z = -0.09 * Math.pow(x/1.3, 2);
+                tuningDisplayPositions.setZ(i, z);
+            }
+            tuningDisplayGeometry.computeVertexNormals();
+            
+            // Create canvas for tuning display with frequency markings
+            const tuningCanvas = document.createElement('canvas');
+            tuningCanvas.width = 256;
+            tuningCanvas.height = 64;
+            const tuningContext = tuningCanvas.getContext('2d');
+            
+            // Background
+            tuningContext.fillStyle = '#f0e6d2';
+            tuningContext.fillRect(0, 0, 256, 64);
+            
+            // Add vintage paper texture
+            for (let i = 0; i < 2000; i++) {
+                const x = Math.random() * 256;
+                const y = Math.random() * 64;
+                tuningContext.fillStyle = `rgba(100, 80, 60, ${Math.random() * 0.03})`;
+                tuningContext.fillRect(x, y, 1, 1);
+            }
+            
+            // Add frequency markings
+            tuningContext.fillStyle = '#5a3423';
+            tuningContext.font = '12px Courier Prime, monospace';
+            
+            // Frequency ticks
+            for (let i = 0; i < 10; i++) {
+                const x = i * 25 + 15;
+                tuningContext.fillRect(x, 25, 1, 15);
+                if (i % 2 === 0) {
+                    const freq = 88 + i * 5;
+                    tuningContext.fillText(`${freq}`, x - 6, 20);
+                }
+            }
+            
+            // Radio station name - prominent Vividh Radio label
+            tuningContext.font = 'bold 16px Playfair Display, serif';
+            tuningContext.textAlign = 'center';
+            tuningContext.fillText("VIVIDH RADIO", 128, 32);
+            
+            // Add station frequency
+            tuningContext.font = 'bold 12px Courier Prime, monospace';
+            tuningContext.fillText("102.8 MHz", 128, 50);
+            
+            // Red indicator
+            tuningContext.fillStyle = '#8B0000';
+            tuningContext.fillRect(128, 25, 2, 15);
+            
+            // Add AIR (All India Radio) logo reference 
+            tuningContext.font = 'italic 9px Courier Prime, monospace';
+            tuningContext.textAlign = 'right';
+            tuningContext.fillStyle = '#5a3423';
+            tuningContext.fillText("AIR", 245, 58);
+            
+            const tuningTexture = new THREE.CanvasTexture(tuningCanvas);
+            const tuningDisplayMaterial = new THREE.MeshStandardMaterial({ 
+                map: tuningTexture,
+                roughness: 0.4,
+                metalness: 0.2,
+                emissive: 0xf0e6d2,
+                emissiveIntensity: 0.02
+            });
+            
+            const tuningDisplay = new THREE.Mesh(tuningDisplayGeometry, tuningDisplayMaterial);
+            tuningDisplay.position.set(-1.8, -1.4, 0.93);
+            radio.add(tuningDisplay);
+            
+            // Add decorative tuning knobs with rim and indicator
+            function createDetailedKnob(x, y, z) {
+                const knobGroup = new THREE.Group();
+                
+                // Base knob
+                const knobBaseGeometry = new THREE.CylinderGeometry(0.32, 0.36, 0.18, 32);
+                const knobBaseMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0x787878, // Updated to medium gray
+                    roughness: 0.6,
+                    metalness: 0.4,
+                    emissive: 0x404040 // Updated to dark gray
+                });
+                const knobBase = new THREE.Mesh(knobBaseGeometry, knobBaseMaterial);
+                knobBase.rotation.x = Math.PI / 2;
+                knobGroup.add(knobBase);
+                
+                // Decorative rim
+                const knobRimGeometry = new THREE.TorusGeometry(0.34, 0.03, 16, 32);
+                const knobRimMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x606060, // Updated to charcoal gray alt
+                    roughness: 0.4,
+                    metalness: 0.6
+                });
+                const knobRim = new THREE.Mesh(knobRimGeometry, knobRimMaterial);
+                knobRim.rotation.x = Math.PI / 2;
+                knobRim.position.z = 0.08;
+                knobGroup.add(knobRim);
+                
+                // Indicator line
+                const indicatorGeometry = new THREE.BoxGeometry(0.02, 0.02, 0.2); // Reduced length from 0.3 to 0.2
+                const indicatorMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x505050, // Updated to charcoal gray
+                    roughness: 0.5,
+                    metalness: 0.2
+                });
+                const indicator = new THREE.Mesh(indicatorGeometry, indicatorMaterial);
+                indicator.position.set(0, 0.15, 0.08); // Changed y position from 0.28 to 0.15
+                knobGroup.add(indicator);
+                
+                // Center dot
+                const centerDotGeometry = new THREE.CylinderGeometry(0.05, 0.05, 0.02, 16);
+                const centerDotMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x505050, // Updated to charcoal gray
+                    roughness: 0.4,
+                    metalness: 0.3
+                });
+                const centerDot = new THREE.Mesh(centerDotGeometry, centerDotMaterial);
+                centerDot.rotation.x = Math.PI / 2;
+                centerDot.position.z = 0.19;
+                knobGroup.add(centerDot);
+                
+                // Position the entire knob group
+                knobGroup.position.set(x, y, z);
+                // Random rotation for variety
+                knobGroup.rotation.z = Math.random() * Math.PI * 2;
+                
+                return knobGroup;
+            }
+            
+            // Create multiple knobs along bottom with decorative details
+            const knob1 = createDetailedKnob(-2.5, -1.8, 1.0);
+            radio.add(knob1);
+            
+            const knob2 = createDetailedKnob(-1.7, -1.8, 1.0);
+            radio.add(knob2);
+            
+            const knob3 = createDetailedKnob(-0.9, -1.8, 1.0);
+            radio.add(knob3);
+            
+            const knob4 = createDetailedKnob(-0.1, -1.8, 1.0);
+            radio.add(knob4);
+            
+            const knob5 = createDetailedKnob(0.7, -1.8, 1.0);
+            radio.add(knob5);
+            
+            // Create stylish radio stands with proper vintage design
+            function createStylishStand(x, y, z) {
+                const standGroup = new THREE.Group();
+                
+                // Main leg part - tapered design
+                const legGeometry = new THREE.CylinderGeometry(0.15, 0.25, 1.0, 8, 2, false);
+                
+                // Add rounded edges and tapering to legs
+                const legPositions = legGeometry.attributes.position;
+                for (let i = 0; i < legPositions.count; i++) {
+                    const y = legPositions.getY(i);
+                    // Add slight curve to legs
+                    if (y < 0) {
+                        const radius = Math.sqrt(
+                            Math.pow(legPositions.getX(i), 2) + 
+                            Math.pow(legPositions.getZ(i), 2)
+                        );
+                        if (radius > 0.1) {
+                            // Flare out the bottom slightly
+                            const factor = 1 + Math.abs(y) * 0.1;
+                            legPositions.setX(i, legPositions.getX(i) * factor);
+                            legPositions.setZ(i, legPositions.getZ(i) * factor);
+                        }
+                    }
+                }
+                legGeometry.computeVertexNormals();
+                
+                const legMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0x505050, // Updated to charcoal gray
+                    roughness: 0.6,
+                    metalness: 0.15
+                });
+                
+                const leg = new THREE.Mesh(legGeometry, legMaterial);
+                leg.rotation.x = Math.PI; // Flip it so wider part is at bottom
+                standGroup.add(leg);
+                
+                // Decorative ring near top of leg
+                const ringGeometry = new THREE.TorusGeometry(0.17, 0.04, 8, 16);
+                const ringMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x8A8A8A, // Updated to medium gray alt
+                    roughness: 0.4,
+                    metalness: 0.6
+                });
+                
+                const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+                ring.rotation.x = Math.PI / 2;
+                ring.position.y = -0.3;
+                standGroup.add(ring);
+                
+                // Foot pad at bottom
+                const footGeometry = new THREE.CylinderGeometry(0.27, 0.27, 0.05, 8);
+                const footMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x404040, // Updated to dark gray
+                    roughness: 0.9,
+                    metalness: 0.05
+                });
+                
+                const foot = new THREE.Mesh(footGeometry, footMaterial);
+                foot.position.y = -0.52;
+                standGroup.add(foot);
+                
+                // Position the stand
+                standGroup.position.set(x, y, z);
+                return standGroup;
+            }
+            
+            // Add four stands to the radio with proper placement
+            // Moving the stands more forward by adjusting the z-coordinate to be more positive
+            const stand1 = createStylishStand(3.0, -2.0, 0.4); // Changed from -0.4 to 0.4
+            radio.add(stand1);
+            
+            const stand2 = createStylishStand(-3.0, -2.0, 0.4); // Changed from -0.4 to 0.4
+            radio.add(stand2);
+            
+            const stand3 = createStylishStand(3.0, -2.0, -0.4); // Changed from -1.2 to -0.4
+            radio.add(stand3);
+            
+            const stand4 = createStylishStand(-3.0, -2.0, -0.4); // Changed from -1.2 to -0.4
+            radio.add(stand4);
+            
+            // Create a vintage toggle switch for the top of the radio
+            function createVintageToggleSwitch(x, y, z) {
+                const switchGroup = new THREE.Group();
+                
+                // Base of the switch - reduced size
+                const baseGeometry = new THREE.CylinderGeometry(0.25, 0.3, 0.1, 16); // Reduced sizes
+                const baseMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x404040, // Updated to dark gray
+                    roughness: 0.7,
+                    metalness: 0.3
+                });
+                const base = new THREE.Mesh(baseGeometry, baseMaterial);
+                switchGroup.add(base);
+                
+                // Decorative ring around base - reduced size
+                const ringGeometry = new THREE.TorusGeometry(0.28, 0.03, 8, 24); // Reduced from 0.38 to 0.28
+                const ringMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x8A8A8A, // Updated to medium gray alt
+                    roughness: 0.3,
+                    metalness: 0.7
+                });
+                const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+                ring.rotation.x = Math.PI / 2;
+                ring.position.y = 0.02;
+                switchGroup.add(ring);
+                
+                // Switch lever - use more segments for smoother bending
+                const leverGeometry = new THREE.CylinderGeometry(0.1, 0.08, 0.5, 12, 8, false);
+                
+                // Modify the geometry to create a more pronounced bend in the lever
+                const leverPositions = leverGeometry.attributes.position;
+                for (let i = 0; i < leverPositions.count; i++) {
+                    const y = leverPositions.getY(i);
+                    
+                    // Create a curved bend in the lever
+                    if (y > -0.25) { // Apply to most of the lever
+                        // Calculate the distance from the center axis
+                        const x = leverPositions.getX(i);
+                        const z = leverPositions.getZ(i);
+                        const distanceFromCenter = Math.sqrt(x*x + z*z);
+                        
+                        // Only bend if we're on the surface, not the central axis
+                        if (distanceFromCenter > 0.01) {
+                            // Apply an increasing bend as we move up the lever - more dramatic curve
+                            const normalizedHeight = (y + 0.25) / 0.5; // 0 to 1 range
+                            const bendFactor = Math.pow(normalizedHeight, 2) * 0.3; // Quadratic curve for more bend at top
+                            
+                            // Get direction vector from center (normalized)
+                            const dirX = x / distanceFromCenter;
+                            const dirZ = z / distanceFromCenter;
+                            
+                            // Apply bend in x direction (since switch is rotated 90 degrees)
+                            leverPositions.setX(i, x + bendFactor);
+                        }
+                    }
+                }
+                leverGeometry.computeVertexNormals();
+                
+                const leverMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x505050, // Updated to charcoal gray
+                    roughness: 0.5,
+                    metalness: 0.4
+                });
+                const lever = new THREE.Mesh(leverGeometry, leverMaterial);
+                lever.position.y = 0.3;
+                lever.rotation.z = Math.PI * 0.15; // Changed from x to z for new orientation
+                switchGroup.add(lever);
+                
+                // Switch handle/knob at the top
+                const handleGeometry = new THREE.SphereGeometry(0.15, 16, 16);
+                const handleMaterial = new THREE.MeshStandardMaterial({
+                    color: 0xD8D8D8, // Updated to very light gray
+                    roughness: 0.4,
+                    metalness: 0.1
+                });
+                const handle = new THREE.Mesh(handleGeometry, handleMaterial);
+                // Position handle at the end of the lever - adjusted for front mounting
+                handle.position.set(
+                    Math.sin(lever.rotation.z) * 0.25,
+                    0.55,
+                    -Math.cos(lever.rotation.z) * 0.25 + 0.3 // Offset for the bend
+                );
+                switchGroup.add(handle);
+                
+                // Add text label "ON/OFF" next to the switch
+                const canvas = document.createElement('canvas');
+                canvas.width = 256;
+                canvas.height = 64;
+                const context = canvas.getContext('2d');
+                context.fillStyle = '#f0e6d6';
+                context.font = 'bold 36px Courier Prime';
+                context.textAlign = 'center';
+                context.textBaseline = 'middle';
+                context.fillText('ON / OFF', 128, 32);
+                
+                const labelTexture = new THREE.CanvasTexture(canvas);
+                labelTexture.needsUpdate = true;
+                
+                const labelGeometry = new THREE.PlaneGeometry(0.8, 0.2);
+                const labelMaterial = new THREE.MeshBasicMaterial({
+                    map: labelTexture,
+                    transparent: true,
+                    opacity: 0.9,
+                    side: THREE.DoubleSide
+                });
+                
+                const label = new THREE.Mesh(labelGeometry, labelMaterial);
+                // Adjust label position for better visibility with new switch position
+                label.position.set(0.5, 0, 0); // Position label to the right of the switch
+                label.rotation.x = 0; // No rotation needed
+                switchGroup.add(label);
+                
+                // Position the entire switch
+                switchGroup.position.set(x, y, z);
+                // No rotation here as we'll apply it when adding to radio
+                return switchGroup;
+            }
+            
+            // Add the vintage toggle switch to the front face of the radio, not on top
+            // Repositioned to avoid overlap based on the new screenshot
+            const toggleSwitch = createVintageToggleSwitch(-2.0, 0.5, 1.3); // Moved to the left side (x = -2.0)
+            // Rotate to face outward from the front face
+            toggleSwitch.rotation.x = -Math.PI / 2; // Point outward from front face
+            toggleSwitch.rotation.z = 0; // Reset z rotation to fix orientation
+            radio.add(toggleSwitch);
+            
+            // Add volume control to the front face
+            function createVolumeKnob(x, y, z) {
+                const knobGroup = new THREE.Group();
+                
+                // Base plate - simplified with dark color
+                const basePlateGeometry = new THREE.CylinderGeometry(0.35, 0.35, 0.03, 24); // Very thin
+                const basePlateMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x2a1a0a, // Darker brown
+                    roughness: 0.9,
+                    metalness: 0.1
+                });
+                const basePlate = new THREE.Mesh(basePlateGeometry, basePlateMaterial);
+                knobGroup.add(basePlate);
+                
+                // Simple knob - completely flat design without any protrusions
+                const knobGeometry = new THREE.CylinderGeometry(0.3, 0.32, 0.06, 24); // Very flat knob
+                const knobMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x404040, // Updated to dark gray
+                    roughness: 0.8,
+                    metalness: 0.1
+                });
+                const knob = new THREE.Mesh(knobGeometry, knobMaterial);
+                knob.position.y = 0.05; // Just barely above the base plate
+                knobGroup.add(knob);
+                
+                // Completely remove the indicator - it was causing the protrusion
+                // Instead, we'll rely on the texture marking for indication
+                
+                // Thin decorative ring around the knob edge
+                const ringGeometry = new THREE.TorusGeometry(0.31, 0.02, 8, 32); // Very thin ring
+                const ringMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x5a4634, // Medium brown
+                    roughness: 0.6,
+                    metalness: 0.2
+                });
+                const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+                ring.rotation.x = Math.PI / 2;
+                ring.position.y = 0.08; // At the top of the knob
+                knobGroup.add(ring);
+                
+                // Add volume markings around the knob
+                const canvas = document.createElement('canvas');
+                canvas.width = 512;
+                canvas.height = 512;
+                const context = canvas.getContext('2d');
+                
+                // Fill with transparent background
+                context.fillStyle = 'rgba(0,0,0,0)';
+                context.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw circular volume markers (slightly smaller)
+                context.strokeStyle = '#f0e6d6';
+                context.lineWidth = 6; // Reduced from 8
+                context.beginPath();
+                context.arc(canvas.width/2, canvas.height/2, 170, 0, Math.PI * 2 * 0.75); // Reduced from 200
+                context.stroke();
+                
+                // Add volume indicators
+                context.fillStyle = '#f0e6d6';
+                context.font = 'bold 36px Courier Prime';
+                context.textAlign = 'center';
+                context.textBaseline = 'middle';
+                
+                // Add "VOLUME" text - need to draw it reversed to appear correct after transformation
+                context.save();
+                context.font = 'bold 40px Courier Prime';
+                context.translate(canvas.width/2, canvas.height/2 - 220);
+                context.scale(-1, 1); // Flip horizontally to correct the reversed text
+                context.fillText('VOLUME', 0, 0);
+                context.restore();
+                
+                // Create markings - simplified with fewer dots
+                for (let i = 0; i <= 10; i += 2) { // Only use even numbers (0,2,4,6,8,10)
+                    const angle = (Math.PI * 2 * 0.75) * (i / 10) - (Math.PI * 2 * 0.75) / 2;
+                    const x = canvas.width/2 + Math.cos(angle) * 220; // Reduced from 240
+                    const y = canvas.height/2 + Math.sin(angle) * 220; // Reduced from 240
+                    
+                    // Draw smaller markings
+                    context.beginPath();
+                    context.arc(x, y, 5, 0, Math.PI * 2); // Small dots
+                    context.fill();
+                    
+                    // Add number markings more sparingly
+                    if (i % 4 === 0) { // Only show 0, 4, 8 numbers
+                        const textX = canvas.width/2 + Math.cos(angle) * 250;
+                        const textY = canvas.height/2 + Math.sin(angle) * 250;
+                        
+                        // Draw the number in reversed form so it appears correct after texture transform
+                        context.save();
+                        context.translate(textX, textY);
+                        context.scale(-1, 1); // Flip horizontally
+                        context.fillText(i, 0, 0);
+                        context.restore();
+                    }
+                }
+                
+                const markingsTexture = new THREE.CanvasTexture(canvas);
+                markingsTexture.needsUpdate = true;
+                
+                const markingsGeometry = new THREE.CircleGeometry(0.55, 32); // Further reduced size
+                const markingsMaterial = new THREE.MeshBasicMaterial({
+                    map: markingsTexture,
+                    transparent: true,
+                    opacity: 0.9,
+                    side: THREE.DoubleSide
+                });
+                
+                const markings = new THREE.Mesh(markingsGeometry, markingsMaterial);
+                // Properly orient the volume text and rotate 180 degrees clockwise
+                markings.rotation.x = -Math.PI / 2; // Make it face outward
+                markings.rotation.z = Math.PI; // Rotate 180 degrees clockwise
+                markings.position.y = 0.09; // Move to the top surface of the knob
+                knobGroup.add(markings);
+                
+                // Position the knob
+                knobGroup.position.set(x, y, z);
+                // No additional rotation needed as we'll apply it when adding to radio
+                
+                return knobGroup;
+            }
+            
+            // Add the volume knob to the front face of the radio where it belongs
+            // Repositioned to avoid overlap with other elements based on the screenshot
+            const volumeKnob = createVolumeKnob(2.0, 0.5, 1.3); // Moved to the right side (x = 2.0), same height as toggle switch
+            // Rotate to face outward from front face
+            volumeKnob.rotation.x = -Math.PI / 2; // Point outward from front face
+            volumeKnob.scale.set(0.8, 0.8, 0.8); // Scale down slightly to match the radio better
+            radio.add(volumeKnob);
+            
+            // Make the volume knob interactive
+            let isDraggingVolume = false;
+            let lastMouseX = 0;
+            let volumeValue = 0.5; // 0 to 1 range
+            
+            // Get the markings from the volume knob (it's the third child now that we removed the indicator)
+            const volumeMarkings = volumeKnob.children[2]; // The markings are the third child
+            
+            // No need to set initial rotation for the markings - it's handled in the creation
+            
+            // Add event listeners for dragging the volume knob
+            renderer.domElement.addEventListener('mousedown', (event) => {
+                // Get normalized device coordinates
+                const rect = renderer.domElement.getBoundingClientRect();
+                mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+                mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+                
+                // Set the raycaster
+                raycaster.setFromCamera(mouse, camera);
+                
+                // Check for intersections with the volume knob
+                const intersects = raycaster.intersectObjects([
+                    volumeKnob.children[0], // base plate
+                    volumeKnob.children[1], // ring
+                    volumeKnob.children[2]  // knob with markings
+                ]);
+                
+                // If the volume knob was clicked
+                if (intersects.length > 0) {
+                    isDraggingVolume = true;
+                    lastMouseX = event.clientX;
+                    
+                    // Play a click sound
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
+                    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.1);
+                }
+            });
+            
+            renderer.domElement.addEventListener('mousemove', (event) => {
+                if (isDraggingVolume) {
+                    // Calculate the change in mouse position
+                    const deltaX = event.clientX - lastMouseX;
+                    lastMouseX = event.clientX;
+                    
+                    // Adjust volume based on mouse movement (sensitivity can be adjusted)
+                    volumeValue += deltaX * 0.005;
+                    
+                    // Clamp volume between 0 and 1
+                    volumeValue = Math.max(0, Math.min(1, volumeValue));
+                    
+                    // We're now using the markings instead of a separate indicator
+                    // The markings are already rotated 180 degrees (Math.PI), so we need to adjust the formula
+                    // No need to update rotation here as the markings are fixed
+                }
+            });
+            
+            renderer.domElement.addEventListener('mouseup', () => {
+                if (isDraggingVolume) {
+                    isDraggingVolume = false;
+                    
+                    // Play a subtle click sound when released
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(330, audioContext.currentTime);
+                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.1);
+                }
+            });
+            
+            // Make sure to release dragging if mouse leaves the canvas
+            renderer.domElement.addEventListener('mouseleave', () => {
+                isDraggingVolume = false;
+            });
+            
+            // Make the toggle switch interactive
+            let switchState = false; // false = off, true = on
+            let switchLever = toggleSwitch.children[2]; // The lever is the third child
+            let switchHandle = toggleSwitch.children[3]; // The handle/knob is the fourth child
+            
+            // Add a raycaster for detecting clicks on the switch
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2();
+            
+            // Event listener for mouse clicks
+            renderer.domElement.addEventListener('click', (event) => {
+                // Get normalized device coordinates
+                const rect = renderer.domElement.getBoundingClientRect();
+                mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+                mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+                
+                // Set the raycaster
+                raycaster.setFromCamera(mouse, camera);
+                
+                // Check for intersections with the toggle switch
+                const intersects = raycaster.intersectObjects([
+                    switchLever, 
+                    switchHandle, 
+                    toggleSwitch.children[0], // base
+                    toggleSwitch.children[1]  // ring
+                ]);
+                
+                // If the switch was clicked
+                if (intersects.length > 0) {
+                    // Toggle the switch state
+                    switchState = !switchState;
+                    
+                    // Animate the switch - for front mounted switch, we need to rotate around Z axis
+                    const targetRotation = switchState ? Math.PI * -0.15 : Math.PI * 0.15;
+                    
+                    // Simple animation using a start time and requestAnimationFrame
+                    const startTime = Date.now();
+                    const startRotation = switchLever.rotation.z;
+                    const startHandlePos = {
+                        x: switchHandle.position.x,
+                        y: switchHandle.position.y,
+                        z: switchHandle.position.z
+                    };
+                    
+                    // Animation duration in milliseconds
+                    const duration = 300;
+                    
+                    function animateSwitch() {
+                        const elapsed = Date.now() - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+                        
+                        // Use easeInOutQuad for smoother animation
+                        const eased = progress < 0.5 
+                            ? 2 * progress * progress 
+                            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+                        
+                        // Update lever rotation - adjusted for new orientation
+                        switchLever.rotation.z = startRotation + (targetRotation - startRotation) * eased;
+                        
+                        // Update handle position based on lever rotation and the increased bend
+                        switchHandle.position.set(
+                            Math.sin(switchLever.rotation.z) * 0.25,
+                            0.55,
+                            -Math.cos(switchLever.rotation.z) * 0.25 + 0.3 // Offset for the bent lever
+                        );
+                        
+                        // Continue animation if not complete
+                        if (progress < 1) {
+                            requestAnimationFrame(animateSwitch);
+                        }
+                    }
+                    
+                    // Start the animation
+                    animateSwitch();
+                    
+                    // Play a click sound
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.type = 'square';
+                    oscillator.frequency.setValueAtTime(switchState ? 450 : 350, audioContext.currentTime);
+                    gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.3);
+                }
+            });
+            
+            // Position the camera and radio for better viewing angle
+            camera.position.z = 8.5;
+            camera.position.y = 0.5; // Slightly higher viewpoint to see the radio better
+            radio.position.set(0, 0, 0);
+            radio.rotation.x = -0.15; // Tilt forward slightly more to show the display better
+            radio.rotation.y = Math.PI / 10; // Slight rotation for perspective
+            
+            // Add orbit controls for 360-degree rotation
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true; // Add smooth damping effect
+            controls.dampingFactor = 0.05;
+            controls.rotateSpeed = 0.5; // Adjust rotation speed
+            controls.enableZoom = false; // Disable zoom to prevent scroll wheel zooming
+            controls.enablePan = false; // Disable panning
+            
+            // Auto-rotation disabled
+            let autoRotate = false;
+            
+            // Set auto-rotation to false
+            controls.autoRotate = false;
+            // controls.autoRotateSpeed is irrelevant when auto-rotation is disabled
+            
+            // Default view settings are maintained without a reset button
+            
+            // Add instructions overlay
+            const instructionsDiv = document.createElement('div');
+            instructionsDiv.style.position = 'absolute';
+            instructionsDiv.style.top = '20px';
+            instructionsDiv.style.right = '20px';
+            instructionsDiv.style.background = 'rgba(62, 46, 33, 0.7)';
+            instructionsDiv.style.color = '#f0e6d6';
+            instructionsDiv.style.padding = '10px';
+            instructionsDiv.style.borderRadius = '4px';
+            instructionsDiv.style.fontFamily = 'Courier Prime, monospace';
+            instructionsDiv.style.fontSize = '14px';
+            instructionsDiv.style.maxWidth = '250px';
+            instructionsDiv.style.zIndex = '100';
+            instructionsDiv.innerHTML = ``;
+            
+            container.appendChild(instructionsDiv);
+            
+            // Create a fade timeout for instructions
+            setTimeout(() => {
+                instructionsDiv.style.transition = 'opacity 1s ease';
+                instructionsDiv.style.opacity = '0.5';
+            }, 5000);
+            
+            // Show instructions on hover
+            instructionsDiv.addEventListener('mouseenter', () => {
+                instructionsDiv.style.opacity = '1';
+            });
+            
+            instructionsDiv.addEventListener('mouseleave', () => {
+                instructionsDiv.style.opacity = '0.5';
+            });
+            
+            // Set up animation loop with OrbitControls
+            let animationFrameId;
+            function animate() {
+                animationFrameId = requestAnimationFrame(animate);
+                
+                // Update orbit controls (only needed for manual rotation)
+                controls.update();
+                
+                // Fixed position instead of floating animation
+                radio.position.y = 0;
+                
+                // No automatic tilt variations
+                
+                // Keep gentle pulsing light effect for ambiance
+                if (directionalLight) {
+                    const time = Date.now() * 0.001;
+                    directionalLight.intensity = 0.5 + Math.sin(time * 0.5) * 0.05;
+                }
+                
+                // Render the scene
+                renderer.render(scene, camera);
+            }
+            
+            // Start the animation
+            animate();
+            
+            // Handle window resize
+            function handleResize() {
+                // Update camera aspect ratio
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                
+                // Adjust position and scale based on screen width
+                if (window.innerWidth < 768) {
+                    radio.scale.set(1.2, 1.2, 1.2); // Increased size for mobile
+                    radio.position.set(0, 0, 0); 
+                    camera.position.z = 10.5; // Zoom out more to accommodate larger size
+                    camera.position.y = 0.3; // Lower camera height for mobile
+                    radio.rotation.x = -0.1; // Less tilt on mobile
+                    
+                    // No need for min/max distance since zoom is disabled
+                    
+                    // Make instructions more visible on mobile
+                    instructionsDiv.style.fontSize = '12px';
+                    instructionsDiv.style.top = '10px';
+                    instructionsDiv.style.right = '10px';
+                    instructionsDiv.style.opacity = '0.8';
+                    rotationToggleBtn.style.bottom = '10px';
+                    rotationToggleBtn.style.right = '10px';
+                    resetViewBtn.style.bottom = '10px';
+                    resetViewBtn.style.right = '125px';
+                } 
+                else if (window.innerWidth < 1200) {
+                    radio.scale.set(1.4, 1.4, 1.4); // Increased size for tablets
+                    radio.position.set(0, 0, 0);
+                    camera.position.z = 10;
+                    camera.position.y = 0.4;
+                    radio.rotation.x = -0.12;
+                    
+                    // No need for min/max distance since zoom is disabled
+                }
+                else {
+                    radio.scale.set(1.8, 1.8, 1.8); // Increased size for desktop
+                    radio.position.set(0, 0, 0);
+                    camera.position.z = 9.5;
+                    camera.position.y = 0.5;
+                    radio.rotation.x = -0.15;
+                    
+                    // No need for min/max distance since zoom is disabled
+                }
+                
+                // Reset controls to update properly after resize
+                controls.update();
+            }
+            
+            // Add resize listener
+            window.addEventListener('resize', handleResize);
+            
+            // Initial size check
+            handleResize();
+            
+            // Clean up on page unload
+            window.addEventListener('unload', () => {
+                // Remove event listeners
+                window.removeEventListener('resize', handleResize);
+                
+                // Stop animation loop
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                }
+                
+                // Dispose of controls
+                controls.dispose();
+                
+                // Remove UI elements
+                if (rotationToggleBtn && rotationToggleBtn.parentNode) {
+                    rotationToggleBtn.parentNode.removeChild(rotationToggleBtn);
+                }
+                
+                if (resetViewBtn && resetViewBtn.parentNode) {
+                    resetViewBtn.parentNode.removeChild(resetViewBtn);
+                }
+                
+                if (instructionsDiv && instructionsDiv.parentNode) {
+                    instructionsDiv.parentNode.removeChild(instructionsDiv);
+                }
+                
+                // Dispose of Three.js resources
+                renderer.dispose();
+                scene.dispose();
+            });
+        }
     </script>
 </body>
 </html>

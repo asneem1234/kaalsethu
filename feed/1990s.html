@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1990s - Digital Revolution</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Lexend:wght@400;600;700&family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Windows 95 Color Palette */
+            --win95-blue: #000080;
+            --win95-gray: #c0c0c0;
+            --win95-dark-gray: #808080;
+            --win95-light-gray: #d4d0c8;
+            --win95-white: #ffffff;
+            --win95-black: #000000;
+            --win95-highlight: #000080;
+            --win95-text: #000000;
+            --neon-green: #00ff00;
+            --neon-pink: #ff00ff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', 'MS Sans Serif', sans-serif;
+            background-color: var(--win95-light-gray);
+            color: var(--win95-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            text-align: left;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('../assets/images/noise-texture.png');
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
+        header {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .header-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: url('../assets/images/1990s/windows95_background.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .header-content {
+            text-align: center;
+            z-index: 1;
+            padding: 1rem;
+            max-width: 800px;
+            background-color: var(--win95-gray);
+            border: 3px outset var(--win95-white);
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .title-bar {
+            background: linear-gradient(90deg, var(--win95-blue), #1084d0);
+            color: white;
+            padding: 5px;
+            font-weight: bold;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .title-bar-text {
+            margin-left: 5px;
+        }
+        
+        .title-bar-controls {
+            display: flex;
+        }
+        
+        .title-bar-button {
+            width: 16px;
+            height: 14px;
+            background-color: var(--win95-gray);
+            border: 1px outset var(--win95-white);
+            margin-left: 2px;
+            font-size: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        h1 {
+            font-family: 'Arial', 'MS Sans Serif', sans-serif;
+            font-size: 3rem;
+            color: var(--win95-text);
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+        
+        .subtitle {
+            font-family: 'Arial', 'MS Sans Serif', sans-serif;
+            font-size: 1.5rem;
+            color: var(--win95-highlight);
+            margin-bottom: 1.5rem;
+        }
+        
+        .decade-description {
+            font-size: 1rem;
+            color: var(--win95-text);
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .header-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        
+        .win95-btn {
+            background-color: var(--win95-gray);
+            color: var(--win95-text);
+            border: 2px outset var(--win95-white);
+            padding: 0.5rem 1rem;
+            font-family: 'Arial', 'MS Sans Serif', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: inline-block;
+            margin: 0.5rem;
+        }
+        
+        .win95-btn:active {
+            border-style: inset;
+        }
+        
+        nav.win95-toolbar {
+            display: flex;
+            background-color: var(--win95-gray);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px outset var(--win95-white);
+            padding: 2px;
+        }
+        
+        .tab {
+            padding: 0.5rem 1rem;
+            font-family: 'Arial', 'MS Sans Serif', sans-serif;
+            color: var(--win95-text);
+            cursor: pointer;
+            background-color: var(--win95-gray);
+            border: 2px outset var(--win95-white);
+            margin: 2px;
+        }
+        
+        .tab.active {
+            border-style: inset;
+            background-color: var(--win95-light-gray);
+        }
+        
+        main {
+            position: relative;
+            padding: 1rem;
+            background-color: var(--win95-light-gray);
+        }
+        
+        .section {
+            padding: 1rem 0;
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .section-title {
+            font-family: 'Arial', 'MS Sans Serif', sans-serif;
+            font-size: 1.8rem;
+            color: var(--win95-text);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .win95-window {
+            background-color: var(--win95-gray);
+            border: 3px outset var(--win95-white);
+            padding: 2px;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .window-content {
+            background-color: var(--win95-white);
+            border: 1px inset var(--win95-gray);
+            padding: 1rem;
+        }
+        
+        .window-panel {
+            background-color: var(--win95-white);
+            padding: 1rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            border: 1px solid var(--win95-dark-gray);
+        }
+        
+        .window-title {
+            font-family: 'Arial', 'MS Sans Serif', sans-serif;
+            font-size: 1.2rem;
+            color: var(--win95-text);
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .item-list {
+            list-style-type: none;
+        }
+        
+        .list-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--win95-dark-gray);
+            margin-bottom: 0.3rem;
+        }
+        
+        .item-number {
+            font-family: 'Arial', 'MS Sans Serif', sans-serif;
+            font-size: 0.9rem;
+            color: var(--win95-blue);
+            margin-right: 1rem;
+            min-width: 20px;
+            font-weight: bold;
+        }
+        
+        .item-info {
+            flex-grow: 1;
+        }
+        
+        .item-title {
+            color: var(--win95-text);
+            font-weight: bold;
+            font-size: 1rem;
+        }
+        
+        .item-subtitle {
+            color: var(--win95-dark-gray);
+            font-size: 0.8rem;
+        }
+        
+        /* Desktop icons */
+        .desktop-icon {
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+            width: 70px;
+            cursor: pointer;
+        }
+        
+        .icon-img {
+            width: 32px;
+            height: 32px;
+            margin: 0 auto;
+            display: block;
+            image-rendering: pixelated;
+            background-color: var(--win95-gray);
+            border: 1px solid var(--win95-black);
+            padding: 2px;
+        }
+        
+        .icon-text {
+            font-size: 0.8rem;
+            color: var(--win95-text);
+            margin-top: 5px;
+        }
+        
+        /* 90s specific elements */
+        .under-construction {
+            display: block;
+            margin: 20px auto;
+            max-width: 150px;
+            border: 1px solid var(--win95-dark-gray);
+        }
+        
+        .gif-animation {
+            margin: 10px;
+            border: 1px solid var(--win95-dark-gray);
+        }
+        
+        .marquee {
+            background-color: var(--win95-gray);
+            color: var(--win95-blue);
+            padding: 3px;
+            font-family: 'Arial', 'MS Sans Serif', sans-serif;
+            white-space: nowrap;
+            overflow: hidden;
+            border: 2px inset var(--win95-white);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .marquee span {
+            display: inline-block;
+            animation: marquee 15s linear infinite;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        /* Taskbar */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--win95-gray);
+            border-top: 2px solid var(--win95-white);
+            display: flex;
+            padding: 2px;
+            z-index: 1000;
+        }
+        
+        .start-button {
+            background-color: var(--win95-gray);
+            border: 2px outset var(--win95-white);
+            color: var(--win95-text);
+            padding: 2px 8px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            font-family: 'Arial', 'MS Sans Serif', sans-serif;
+            font-size: 0.9rem;
+        }
+        
+        .start-button img {
+            width: 16px;
+            height: 16px;
+            margin-right: 5px;
+        }
+        
+        .taskbar-divider {
+            width: 1px;
+            background-color: var(--win95-dark-gray);
+            margin: 0 5px;
+        }
+        
+        .taskbar-time {
+            margin-left: auto;
+            padding: 2px 8px;
+            border: 1px inset var(--win95-white);
+            background-color: var(--win95-gray);
+            font-family: 'Arial', 'MS Sans Serif', sans-serif;
+            font-size: 0.8rem;
+        }
+        
+        footer {
+            background-color: var(--win95-gray);
+            color: var(--win95-text);
+            text-align: center;
+            padding: 1rem 0;
+            font-size: 0.8rem;
+            margin-top: 2rem;
+            border-top: 2px outset var(--win95-white);
+            font-family: 'Arial', 'MS Sans Serif', sans-serif;
+        }
+        
+        .counter {
+            color: var(--win95-blue);
+            font-weight: bold;
+        }
+        
+        /* System tray and taskbar items */
+        .taskbar-items {
+            display: flex;
+            flex-grow: 1;
+        }
+        
+        .taskbar-item {
+            background-color: var(--win95-gray);
+            border: 1px inset var(--win95-white);
+            padding: 3px 8px;
+            margin-right: 4px;
+            font-size: 0.8rem;
+            height: 22px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .system-tray {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+        
+        .system-tray-item {
+            margin: 0 3px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        /* Dialog styling */
+        .system-dialog {
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        
+        .win95-link {
+            color: var(--win95-blue);
+            text-decoration: none;
+        }
+        
+        .win95-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-background"></div>
+        <div class="header-content">
+            <div class="title-bar">
+                <div class="title-bar-text">1990s_India.exe - Digital India Time Capsule</div>
+                <div class="title-bar-controls">
+                    <div class="title-bar-button">_</div>
+                    <div class="title-bar-button">□</div>
+                    <div class="title-bar-button">X</div>
+                </div>
+            </div>
+            <div style="padding: 15px;">
+                <h1>WELCOME TO 1990s INDIA!</h1>
+                <div class="subtitle">THE DIGITAL REVOLUTION BEGINS</div>
+                <div class="decade-description">
+                    The 1990s marked the beginning of India's economic liberalization and the dawn of the digital age. From cable TV explosion to the first internet cafés, this decade transformed Indian society and culture forever.
+                </div>
+                <div class="header-buttons">
+                    <button class="win95-btn">Explore 90s India</button>
+                    <button class="win95-btn">Sign Guestbook</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="marquee">
+        <span>Welcome to 1990s India Time Capsule! From economic liberalization to the IT boom, experience India's transformation! स्वागत है! Best viewed with Netscape Navigator at 640x480 resolution!</span>
+    </div>
+
+    <div style="text-align: center; margin: 10px 0;">
+        <div class="desktop-icon">
+            <div class="icon-img">
+                <div style="text-align: center; line-height: 32px;">WWW</div>
+            </div>
+            <div class="icon-text">VSNL Internet</div>
+        </div>
+        
+        <div class="desktop-icon">
+            <div class="icon-img">
+                <div style="text-align: center; line-height: 32px;">TV</div>
+            </div>
+            <div class="icon-text">Cable TV</div>
+        </div>
+        
+        <div class="desktop-icon">
+            <div class="icon-img">
+                <div style="text-align: center; line-height: 32px;">CD</div>
+            </div>
+            <div class="icon-text">T-Series</div>
+        </div>
+    </div>
+
+    <nav class="win95-toolbar">
+        <div class="tab active" data-target="technology">Technology</div>
+        <div class="tab" data-target="music">Bollywood</div>
+        <div class="tab" data-target="movies">Cinema & TV</div>
+        <div class="tab" data-target="fashion">Fashion</div>
+        <div class="tab" data-target="culture">Culture</div>
+        <div class="tab" data-target="events">Events</div>
+    </nav>
+
+    <main>
+        <section id="technology" class="section active">
+            <h2 class="section-title">India's Digital Dawn</h2>
+            
+            <div class="win95-window">
+                <div class="title-bar">
+                    <div class="title-bar-text">Tech Milestones in 1990s India</div>
+                    <div class="title-bar-controls">
+                        <div class="title-bar-button">_</div>
+                        <div class="title-bar-button">□</div>
+                        <div class="title-bar-button">X</div>
+                    </div>
+                </div>
+                <div class="window-content">
+                    <ul class="item-list">
+                        <li class="list-item">
+                            <span class="item-number">01</span>
+                            <div class="item-info">
+                                <div class="item-title">VSNL Internet</div>
+                                <div class="item-subtitle">First public internet service in India (1995)</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">02</span>
+                            <div class="item-info">
+                                <div class="item-title">STD/ISD PCOs</div>
+                                <div class="item-subtitle">Public telephone booths across the country</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">03</span>
+                            <div class="item-info">
+                                <div class="item-title">Cable TV Revolution</div>
+                                <div class="item-subtitle">Explosion of Doordarshan and private channels</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">04</span>
+                            <div class="item-info">
+                                <div class="item-title">C-DOT Telephones</div>
+                                <div class="item-subtitle">Indigenous telephone technology</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">05</span>
+                            <div class="item-info">
+                                <div class="item-title">Cybercafés</div>
+                                <div class="item-subtitle">First internet cafés in major cities</div>
+                            </div>
+                        </li>
+                    </ul>
+                    
+                    <div style="text-align: center; margin-top: 15px;">
+                        <button class="win95-btn">Dial-up Now! (56kbps)</button>
+                        <button class="win95-btn">Book Internet Time</button>
+                    </div>
+                </div>
+            </div>
+            
+            <img src="https://media.giphy.com/media/hV6TUztCqK9Ho4OPXU/giphy.gif" alt="Under Construction" class="under-construction">
+        </section>
+        
+        <section id="music" class="section">
+            <h2 class="section-title">Bollywood Beats</h2>
+            
+            <div class="win95-window">
+                <div class="title-bar">
+                    <div class="title-bar-text">90s Bollywood Hits</div>
+                    <div class="title-bar-controls">
+                        <div class="title-bar-button">_</div>
+                        <div class="title-bar-button">□</div>
+                        <div class="title-bar-button">X</div>
+                    </div>
+                </div>
+                <div class="window-content">
+                    <ul class="item-list">
+                        <li class="list-item">
+                            <span class="item-number">01</span>
+                            <div class="item-info">
+                                <div class="item-title">Pehla Nasha</div>
+                                <div class="item-subtitle">Jo Jeeta Wohi Sikandar (1992) - Udit Narayan</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">02</span>
+                            <div class="item-info">
+                                <div class="item-title">Chaiyya Chaiyya</div>
+                                <div class="item-subtitle">Dil Se (1998) - Sukhwinder Singh & Sapna Awasthi</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">03</span>
+                            <div class="item-info">
+                                <div class="item-title">Tujhe Dekha To</div>
+                                <div class="item-subtitle">Dilwale Dulhania Le Jayenge (1995) - Kumar Sanu & Lata Mangeshkar</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">04</span>
+                            <div class="item-info">
+                                <div class="item-title">Dhak Dhak Karne Laga</div>
+                                <div class="item-subtitle">Beta (1992) - Anuradha Paudwal</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">05</span>
+                            <div class="item-info">
+                                <div class="item-title">Pardesi Pardesi</div>
+                                <div class="item-subtitle">Raja Hindustani (1996) - Kumar Sanu & Alka Yagnik</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="win95-window" style="margin-top: 20px;">
+                <div class="title-bar">
+                    <div class="title-bar-text">Music Industry</div>
+                    <div class="title-bar-controls">
+                        <div class="title-bar-button">_</div>
+                        <div class="title-bar-button">□</div>
+                        <div class="title-bar-button">X</div>
+                    </div>
+                </div>
+                <div class="window-content">
+                    <p style="margin-bottom: 10px;">The 1990s saw the rise of music cassettes and CDs in India, with companies like T-Series and Venus dominating the market. Music videos on MTV India became immensely popular, and Indipop emerged as a genre with artists like Alisha Chinai, Baba Sehgal, and Colonial Cousins.</p>
+                    <p>The era of 90s Bollywood music is often considered the golden age with composers like A.R. Rahman, Nadeem-Shravan, and Jatin-Lalit creating memorable melodies.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="movies" class="section">
+            <h2 class="section-title">Indian Cinema & Television</h2>
+            
+            <div class="win95-window">
+                <div class="title-bar">
+                    <div class="title-bar-text">Blockbuster Films</div>
+                    <div class="title-bar-controls">
+                        <div class="title-bar-button">_</div>
+                        <div class="title-bar-button">□</div>
+                        <div class="title-bar-button">X</div>
+                    </div>
+                </div>
+                <div class="window-content">
+                    <ul class="item-list">
+                        <li class="list-item">
+                            <span class="item-number">01</span>
+                            <div class="item-info">
+                                <div class="item-title">Dilwale Dulhania Le Jayenge</div>
+                                <div class="item-subtitle">Shah Rukh Khan & Kajol (1995) - Still playing at Maratha Mandir</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">02</span>
+                            <div class="item-info">
+                                <div class="item-title">Hum Aapke Hain Koun..!</div>
+                                <div class="item-subtitle">Salman Khan & Madhuri Dixit (1994)</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">03</span>
+                            <div class="item-info">
+                                <div class="item-title">Kuch Kuch Hota Hai</div>
+                                <div class="item-subtitle">Shah Rukh Khan, Kajol & Rani Mukerji (1998)</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">04</span>
+                            <div class="item-info">
+                                <div class="item-title">Raja Hindustani</div>
+                                <div class="item-subtitle">Aamir Khan & Karisma Kapoor (1996)</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">05</span>
+                            <div class="item-info">
+                                <div class="item-title">Border</div>
+                                <div class="item-subtitle">Sunny Deol, Suniel Shetty & Jackie Shroff (1997)</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="win95-window" style="margin-top: 20px;">
+                <div class="title-bar">
+                    <div class="title-bar-text">TV Shows</div>
+                    <div class="title-bar-controls">
+                        <div class="title-bar-button">_</div>
+                        <div class="title-bar-button">□</div>
+                        <div class="title-bar-button">X</div>
+                    </div>
+                </div>
+                <div class="window-content">
+                    <ul class="item-list">
+                        <li class="list-item">
+                            <span class="item-number">01</span>
+                            <div class="item-info">
+                                <div class="item-title">Shaktimaan</div>
+                                <div class="item-subtitle">India's first superhero show (1997-2005)</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">02</span>
+                            <div class="item-info">
+                                <div class="item-title">Ramayan & Mahabharat</div>
+                                <div class="item-subtitle">Epic mythological series that emptied streets</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">03</span>
+                            <div class="item-info">
+                                <div class="item-title">Hum Paanch</div>
+                                <div class="item-subtitle">Ekta Kapoor's comedy series (1995-1999)</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">04</span>
+                            <div class="item-info">
+                                <div class="item-title">Tara</div>
+                                <div class="item-subtitle">Groundbreaking women-centric show</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">05</span>
+                            <div class="item-info">
+                                <div class="item-title">Byomkesh Bakshi</div>
+                                <div class="item-subtitle">Popular detective series on Doordarshan</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section id="fashion" class="section">
+            <h2 class="section-title">90s Indian Fashion</h2>
+            
+            <div class="win95-window">
+                <div class="title-bar">
+                    <div class="title-bar-text">Style Trends</div>
+                    <div class="title-bar-controls">
+                        <div class="title-bar-button">_</div>
+                        <div class="title-bar-button">□</div>
+                        <div class="title-bar-button">X</div>
+                    </div>
+                </div>
+                <div class="window-content">
+                    <ul class="item-list">
+                        <li class="list-item">
+                            <span class="item-number">01</span>
+                            <div class="item-info">
+                                <div class="item-title">Oversized Shirts & Jeans</div>
+                                <div class="item-subtitle">Influenced by Shah Rukh Khan's DDLJ look</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">02</span>
+                            <div class="item-info">
+                                <div class="item-title">Madhuri Dixit's Purple Saree</div>
+                                <div class="item-subtitle">From "Hum Aapke Hain Koun" - started a trend</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">03</span>
+                            <div class="item-info">
+                                <div class="item-title">Salwar Kameez with Chiffon Dupattas</div>
+                                <div class="item-subtitle">Yash Chopra heroines made these iconic</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">04</span>
+                            <div class="item-info">
+                                <div class="item-title">Kaajal & Bindis</div>
+                                <div class="item-subtitle">Essential accessories for women</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">05</span>
+                            <div class="item-info">
+                                <div class="item-title">Chunky Gold Jewelry</div>
+                                <div class="item-subtitle">Statement pieces inspired by film costumes</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="win95-window" style="margin-top: 20px;">
+                <div class="title-bar">
+                    <div class="title-bar-text">Fashion Icons</div>
+                    <div class="title-bar-controls">
+                        <div class="title-bar-button">_</div>
+                        <div class="title-bar-button">□</div>
+                        <div class="title-bar-button">X</div>
+                    </div>
+                </div>
+                <div class="window-content">
+                    <p style="margin-bottom: 10px;">The 1990s saw Bollywood stars becoming major fashion influencers. Madhuri Dixit's outfits were copied nationwide, while Shah Rukh Khan's cool boy looks from "Kuch Kuch Hota Hai" inspired young men.</p>
+                    <p>International brands began entering India after economic liberalization, and local markets filled with "imported" clothes and accessories. The fusion of Western and traditional Indian styles became popular among the youth.</p>
+                </div>
+            </div>
+        </section>
+        <section id="culture" class="section">
+            <h2 class="section-title">Cultural Phenomena</h2>
+            
+            <div class="win95-window">
+                <div class="title-bar">
+                    <div class="title-bar-text">Pop Culture Trends</div>
+                    <div class="title-bar-controls">
+                        <div class="title-bar-button">_</div>
+                        <div class="title-bar-button">□</div>
+                        <div class="title-bar-button">X</div>
+                    </div>
+                </div>
+                <div class="window-content">
+                    <ul class="item-list">
+                        <li class="list-item">
+                            <span class="item-number">01</span>
+                            <div class="item-info">
+                                <div class="item-title">Cricket Mania</div>
+                                <div class="item-subtitle">Sachin Tendulkar becoming "God of Cricket"</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">02</span>
+                            <div class="item-info">
+                                <div class="item-title">Chitrahaar & Rangoli</div>
+                                <div class="item-subtitle">Beloved music shows on Doordarshan</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">03</span>
+                            <div class="item-info">
+                                <div class="item-title">Video Game Parlors</div>
+                                <div class="item-subtitle">Playing Contra and Mario in neighborhood shops</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">04</span>
+                            <div class="item-info">
+                                <div class="item-title">Cassette Culture</div>
+                                <div class="item-subtitle">Recording songs from radio on blank cassettes</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">05</span>
+                            <div class="item-info">
+                                <div class="item-title">Pen Pals</div>
+                                <div class="item-subtitle">Writing letters through magazines like Champak</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="win95-window" style="margin-top: 20px;">
+                <div class="title-bar">
+                    <div class="title-bar-text">Indian Youth Culture</div>
+                    <div class="title-bar-controls">
+                        <div class="title-bar-button">_</div>
+                        <div class="title-bar-button">□</div>
+                        <div class="title-bar-button">X</div>
+                    </div>
+                </div>
+                <div class="window-content">
+                    <p style="margin-bottom: 10px;">The 1990s marked a cultural shift as India opened up to global influences. Youth culture was characterized by a blend of traditional values and Western trends, particularly in urban areas.</p>
+                    <p>Young Indians were captivated by Channel V and MTV, while also participating in traditional celebrations. The concept of "hanging out" at newly opened malls and fast-food joints became popular in metropolitan cities.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="events" class="section">
+            <h2 class="section-title">Defining Moments</h2>
+            
+            <div class="win95-window">
+                <div class="title-bar">
+                    <div class="title-bar-text">Historic Events of 1990s India</div>
+                    <div class="title-bar-controls">
+                        <div class="title-bar-button">_</div>
+                        <div class="title-bar-button">□</div>
+                        <div class="title-bar-button">X</div>
+                    </div>
+                </div>
+                <div class="window-content">
+                    <ul class="item-list">
+                        <li class="list-item">
+                            <span class="item-number">01</span>
+                            <div class="item-info">
+                                <div class="item-title">Economic Liberalization</div>
+                                <div class="item-subtitle">1991 - India opened its economy to the world</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">02</span>
+                            <div class="item-info">
+                                <div class="item-title">Rise of IT Industry</div>
+                                <div class="item-subtitle">Infosys, TCS, and Wipro becoming global players</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">03</span>
+                            <div class="item-info">
+                                <div class="item-title">Miss World & Universe Wins</div>
+                                <div class="item-subtitle">Sushmita Sen and Aishwarya Rai in 1994</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">04</span>
+                            <div class="item-info">
+                                <div class="item-title">Cricket World Cup 1996</div>
+                                <div class="item-subtitle">Co-hosted by India, Pakistan, and Sri Lanka</div>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <span class="item-number">05</span>
+                            <div class="item-info">
+                                <div class="item-title">Pokhran-II Nuclear Tests</div>
+                                <div class="item-subtitle">1998 - India declared itself a nuclear state</div>
+                            </div>
+                        </li>
+                    </ul>
+                    
+                    <div style="text-align: center; margin-top: 15px;">
+                        <button class="win95-btn">Historical Timeline</button>
+                        <button class="win95-btn">View Photos</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin: 20px 0;">
+                <img src="https://media.giphy.com/media/3oKHWtXlzTHeuVewtq/giphy.gif" alt="90s Animation" class="gif-animation">
+                <img src="https://media.giphy.com/media/l4JyRqcDU93S334KQ/giphy.gif" alt="90s Animation" class="gif-animation">
+                <img src="https://media.giphy.com/media/YRcXl6VfNhBoxbdf4H/giphy.gif" alt="90s Animation" class="gif-animation">
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>© 1999 भारतीय Time Capsule | Best viewed with Netscape Navigator 4.0 or higher | 1024x768 resolution recommended</p>
+        <p>This page has been visited <span class="counter">12,345</span> times since 15/8/1999</p>
+        <p>Last updated: September 19, 1999</p>
+    </footer>
+    
+    <div class="taskbar">
+        <div class="start-button">
+            <img src="https://i.imgur.com/T7y4m1T.png" alt="Start" style="height: 20px; margin-right: 5px;">
+            Start
+        </div>
+        <div class="taskbar-divider"></div>
+        <div class="taskbar-items">
+            <div class="taskbar-item">1990s_India.exe</div>
+        </div>
+        <div class="taskbar-divider"></div>
+        <div class="system-tray">
+            <div class="system-tray-item" id="indiaMapIcon">🇮🇳</div>
+            <div class="system-tray-item" onclick="toggleSystemDialog()">⚙️</div>
+            <div class="taskbar-time">4:20 PM</div>
+        </div>
+    </div>
+    
+    <!-- System Dialog -->
+    <div id="systemDialog" class="system-dialog" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; transition: opacity 0.3s, transform 0.3s;">
+        <div class="win95-window" style="width: 300px; margin: 0;">
+            <div class="title-bar">
+                <div class="title-bar-text">System Restore</div>
+                <div class="title-bar-controls">
+                    <div class="title-bar-button" onclick="toggleSystemDialog()">X</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <p>Visit other decades in Indian history:</p>
+                <ul style="list-style-type: none; margin-top: 10px;">
+                    <li><a href="../1950s.html" class="win95-link">1950s - Independence Era</a></li>
+                    <li><a href="../1960s_new.html" class="win95-link">1960s - Cultural Renaissance</a></li>
+                    <li><a href="../1970s.html" class="win95-link">1970s - Political Transformation</a></li>
+                    <li><a href="../1980s.html" class="win95-link">1980s - Television Revolution</a></li>
+                    <li><a href="../1990s.html" class="win95-link">1990s - Digital Dawn</a></li>
+                    <li><a href="../2000s.html" class="win95-link">2000s - Technological Boom</a></li>
+                    <li><a href="../2010s.html" class="win95-link">2010s - Smartphone Era</a></li>
+                </ul>
+                <div style="text-align: center; margin-top: 15px;">
+                    <button class="win95-btn" onclick="toggleSystemDialog()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Tab switching functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs and sections
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Show corresponding section
+                const target = this.getAttribute('data-target');
+                document.getElementById(target).classList.add('active');
+            });
+        });
+        
+        // Windows focus effect
+        document.querySelectorAll('.win95-window').forEach(window => {
+            window.addEventListener('click', function() {
+                document.querySelectorAll('.win95-window').forEach(w => {
+                    w.style.zIndex = 1;
+                });
+                this.style.zIndex = 10;
+            });
+        });
+        
+        // Taskbar clock
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            document.querySelector('.taskbar-time').textContent = `${hours}:${minutes} ${ampm}`;
+        }
+        
+        setInterval(updateClock, 60000);
+        updateClock();
+        
+        // Toggle system dialog
+        function toggleSystemDialog() {
+            const dialog = document.getElementById('systemDialog');
+            if (dialog.style.display === 'none') {
+                dialog.style.display = 'block';
+                // Add a small animation
+                dialog.style.opacity = 0;
+                dialog.style.transform = 'translate(-50%, -50%) scale(0.9)';
+                setTimeout(() => {
+                    dialog.style.opacity = 1;
+                    dialog.style.transform = 'translate(-50%, -50%) scale(1)';
+                }, 10);
+            } else {
+                dialog.style.opacity = 0;
+                dialog.style.transform = 'translate(-50%, -50%) scale(0.9)';
+                setTimeout(() => {
+                    dialog.style.display = 'none';
+                }, 300);
+            }
+        }
+
+        // Simulate the Windows 95 startup sound (commented out to not autoplay)
+        // const startupSound = new Audio('https://www.winhistory.de/more/winstart/down/win95.mp3');
+        // window.onload = function() {
+        //     startupSound.play();
+        // };
+    </script>
+</body>
+</html>

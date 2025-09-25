@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2000s Time Capsule</title>
+    <style>
+        /* 2000s Web Style */
+        @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&display=swap');
+        
+        body {
+            font-family: 'Raleway', Arial, sans-serif;
+            background: linear-gradient(135deg, #6dd5ed, #2193b0);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            font-size: 3em;
+            margin: 0;
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .content-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title {
+            border-bottom: 2px solid #2193b0;
+            padding-bottom: 10px;
+            margin-top: 0;
+            color: #2193b0;
+        }
+        
+        .web-2-0-badge {
+            display: inline-block;
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 5px;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .badge-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .gallery-item {
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .gallery-img {
+            max-width: 100%;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .button {
+            display: inline-block;
+            background: linear-gradient(90deg, #2193b0, #6dd5ed);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 10px 5px;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .social-icons {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .social-icon {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: #2193b0;
+            color: white;
+            border-radius: 50%;
+            line-height: 40px;
+            margin: 0 10px;
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            transform: rotate(360deg);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        /* Glossy elements */
+        .glossy-bar {
+            height: 10px;
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            border-radius: 5px;
+            margin: 20px 0;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Web 2.0 style navigation */
+        .nav {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 30px;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav a {
+            color: #2193b0;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .nav a:hover {
+            background-color: #2193b0;
+            color: white;
+        }
+        
+        /* Reflection effect */
+        .reflection {
+            position: relative;
+            margin-bottom: 40px;
+        }
+        
+        .reflection::after {
+            content: "";
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
+            transform: scaleY(-1);
+        }
+        
+        /* Modern alert box */
+        .alert {
+            background-color: #ffeaa7;
+            border-left: 5px solid #fdcb6e;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Progress bar */
+        .progress-container {
+            background-color: #f1f1f1;
+            border-radius: 10px;
+            height: 20px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 75%;
+            background: linear-gradient(90deg, #2193b0, #6dd5ed);
+            border-radius: 10px;
+            animation: progress-animation 2s ease;
+        }
+        
+        @keyframes progress-animation {
+            from { width: 0%; }
+            to { width: 75%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>2000s Time Capsule</h1>
+            <p class="subtitle">Exploring the Digital Revolution of the New Millennium</p>
+        </header>
+        
+        <div class="nav">
+            <a href="#">Home</a>
+            <a href="#">Technology</a>
+            <a href="#">Culture</a>
+            <a href="#">Gallery</a>
+            <a href="#">About</a>
+        </div>
+        
+        <div class="badge-container">
+            <span class="web-2-0-badge">Web 2.0</span>
+            <span class="web-2-0-badge">Social Media</span>
+            <span class="web-2-0-badge">iPod Era</span>
+            <span class="web-2-0-badge">Broadband</span>
+            <span class="web-2-0-badge">Blogosphere</span>
+        </div>
+        
+        <div class="content-section">
+            <h2 class="section-title">The Digital Revolution</h2>
+            <p>The 2000s witnessed an unprecedented digital transformation that changed how we communicate, work, and entertain ourselves. From the rise of social media to the emergence of smartphones, this decade laid the foundation for our modern digital lifestyle.</p>
+            
+            <div class="glossy-bar"></div>
+            
+            <div class="alert">
+                <strong>Did you know?</strong> Facebook was founded in 2004, YouTube in 2005, and Twitter in 2006!
+            </div>
+            
+            <h3>Key Technological Milestones</h3>
+            <ul>
+                <li>Rise of social networking platforms (Facebook, MySpace)</li>
+                <li>Introduction of the iPhone (2007)</li>
+                <li>YouTube and video sharing revolution</li>
+                <li>Transition from dial-up to broadband internet</li>
+                <li>Wikipedia and collaborative knowledge</li>
+                <li>Birth of the blogosphere</li>
+                <li>The iPod and digital music revolution</li>
+                <li>Early cloud computing</li>
+            </ul>
+            
+            <div class="progress-container">
+                <div class="progress-bar"></div>
+            </div>
+            
+            <div style="text-align: center;">
+                <button class="button">Learn More</button>
+                <button class="button">Share This Page</button>
+            </div>
+        </div>
+        
+        <div class="reflection">
+            <div class="content-section">
+                <h2 class="section-title">Pop Culture Highlights</h2>
+                
+                <h3>Music Trends</h3>
+                <ul>
+                    <li>Rise of digital music and MP3 players</li>
+                    <li>Hip-hop and R&B dominance</li>
+                    <li>Pop stars: Britney Spears, Christina Aguilera, Justin Timberlake</li>
+                    <li>Indie rock renaissance</li>
+                    <li>Emo and pop punk (Green Day, Fall Out Boy, My Chemical Romance)</li>
+                </ul>
+                
+                <h3>Movies & TV</h3>
+                <ul>
+                    <li>Harry Potter film series</li>
+                    <li>Lord of the Rings trilogy</li>
+                    <li>Reality TV explosion</li>
+                    <li>The rise of superhero films</li>
+                    <li>TV shows: Friends, The Office, Lost, 24</li>
+                </ul>
+                
+                <h3>Fashion Trends</h3>
+                <ul>
+                    <li>Low-rise jeans</li>
+                    <li>Von Dutch trucker hats</li>
+                    <li>Juicy Couture tracksuits</li>
+                    <li>Popped collars</li>
+                    <li>Ugg boots</li>
+                    <li>Frosted tips and spiky hair</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="content-section">
+            <h2 class="section-title">2000s Gallery</h2>
+            <div class="gallery">
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/150?text=iPod" alt="iPod" class="gallery-img">
+                    <p>iPod Revolution</p>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/150?text=MySpace" alt="MySpace" class="gallery-img">
+                    <p>MySpace Profile</p>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/150?text=Flip+Phone" alt="Flip Phone" class="gallery-img">
+                    <p>Flip Phones</p>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/150?text=MSN" alt="MSN Messenger" class="gallery-img">
+                    <p>MSN Messenger</p>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/150?text=BlackBerry" alt="BlackBerry" class="gallery-img">
+                    <p>BlackBerry</p>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/150?text=YouTube" alt="Early YouTube" class="gallery-img">
+                    <p>Early YouTube</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="social-icons">
+            <a href="#" class="social-icon">f</a>
+            <a href="#" class="social-icon">t</a>
+            <a href="#" class="social-icon">in</a>
+            <a href="#" class="social-icon">M</a>
+        </div>
+        
+        <footer>
+            <p>© 2023 Time Capsule Project | A nostalgic journey through the 2000s</p>
+            <p>Designed with ❤️ using modern Web 2.0 principles</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Simple animation for elements
+        document.addEventListener('DOMContentLoaded', function() {
+            const badges = document.querySelectorAll('.web-2-0-badge');
+            badges.forEach((badge, index) => {
+                setTimeout(() => {
+                    badge.style.opacity = '1';
+                    badge.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+            
+            // Add hover effect to gallery items
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            galleryItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05)';
+                    this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.2)';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                    this.style.boxShadow = '0 3px 5px rgba(0, 0, 0, 0.1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

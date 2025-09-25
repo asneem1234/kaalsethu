@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2010s Time Capsule</title>
+    <!-- Font Awesome for modern icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #e74c3c;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --info-color: #1abc9c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            background-color: #f9f9f9;
+            line-height: 1.6;
+        }
+        
+        /* Material Design inspired card shadows */
+        .card {
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+        }
+        
+        .card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        /* Container with responsive design */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Flat design navigation */
+        .navbar {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .navbar-nav {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-left: 20px;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-link:hover {
+            opacity: 0.8;
+        }
+        
+        /* Hero section with parallax effect */
+        .hero {
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://source.unsplash.com/random/1600x900/?technology');
+            height: 50vh;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+        
+        /* Modern button styles */
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--light-color);
+            color: var(--light-color);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        /* Grid layout system */
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px;
+        }
+        
+        .col {
+            flex: 1;
+            padding: 0 15px;
+            min-width: 300px;
+        }
+        
+        /* Section styling */
+        section {
+            padding: 50px 0;
+        }
+        
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            color: var(--dark-color);
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+        
+        /* Timeline component */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 40px auto;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: var(--primary-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background-color: white;
+            border: 4px solid var(--primary-color);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .timeline-item:nth-child(even)::after {
+            left: -10px;
+        }
+        
+        .timeline-content {
+            padding: 20px;
+            background-color: white;
+            position: relative;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-year {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        /* Social media icons */
+        .social-icons {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #333;
+            color: white;
+            border-radius: 50%;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .social-icon:hover {
+            transform: scale(1.2);
+        }
+        
+        .social-icon.facebook { background-color: #3b5998; }
+        .social-icon.twitter { background-color: #1da1f2; }
+        .social-icon.instagram { background-color: #e1306c; }
+        .social-icon.youtube { background-color: #ff0000; }
+        .social-icon.snapchat { background-color: #fffc00; color: black; }
+        
+        /* Feature cards */
+        .feature-card {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 40px 0 20px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 15px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+        
+        /* Tags and badges */
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin: 3px;
+        }
+        
+        .badge-primary { background-color: var(--primary-color); color: white; }
+        .badge-secondary { background-color: var(--secondary-color); color: white; }
+        .badge-success { background-color: var(--success-color); color: white; }
+        .badge-warning { background-color: var(--warning-color); color: white; }
+        .badge-info { background-color: var(--info-color); color: white; }
+        
+        /* Image gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+            height: 200px;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .navbar .container {
+                flex-direction: column;
+            }
+            
+            .navbar-nav {
+                margin-top: 15px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 50px;
+                padding-right: 0;
+            }
+            
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+            
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item::after {
+                left: 21px;
+                right: auto;
+            }
+            
+            .timeline-item:nth-child(even)::after {
+                left: 21px;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="navbar-brand">2010s Time Capsule</a>
+            <ul class="navbar-nav">
+                <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="#timeline" class="nav-link">Timeline</a></li>
+                <li class="nav-item"><a href="#culture" class="nav-link">Culture</a></li>
+                <li class="nav-item"><a href="#tech" class="nav-link">Technology</a></li>
+                <li class="nav-item"><a href="#social" class="nav-link">Social Media</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>The 2010s Decade</h1>
+            <p>A decade defined by smartphones, social media, streaming services, and the dawn of a more connected world.</p>
+            <a href="#timeline" class="btn btn-outline">Explore the Timeline</a>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <section id="intro">
+            <div class="card">
+                <h2 class="section-title">Welcome to the 2010s</h2>
+                <p>The 2010s were marked by the rise of social media, streaming services, and smartphones becoming an essential part of everyday life. This decade saw technology become more integrated into our daily routines than ever before.</p>
+                <p>From the Arab Spring to the rise of influencer culture, from Netflix changing how we consume media to apps transforming how we shop, travel, and connect - the 2010s fundamentally changed how we live, work, and relate to each other.</p>
+                
+                <div class="row" style="margin-top: 30px;">
+                    <div class="col">
+                        <div class="feature-card">
+                            <i class="fab fa-instagram feature-icon"></i>
+                            <h3>Social Media Age</h3>
+                            <p>Instagram, Snapchat, and TikTok transformed how we share our lives and consume content.</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="feature-card">
+                            <i class="fas fa-mobile-alt feature-icon"></i>
+                            <h3>Smartphone Revolution</h3>
+                            <p>Smartphones became ubiquitous, changing everything from navigation to photography.</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="feature-card">
+                            <i class="fas fa-stream feature-icon"></i>
+                            <h3>Streaming Takeover</h3>
+                            <p>Netflix, Spotify, and other streaming services revolutionized entertainment consumption.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="timeline">
+            <h2 class="section-title">Decade Timeline</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-year">2010</span>
+                        <h3>iPad Released</h3>
+                        <p>Apple launches the iPad, creating the modern tablet market. Instagram is founded.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-year">2011</span>
+                        <h3>Arab Spring</h3>
+                        <p>Social media plays a pivotal role in the Arab Spring protests. Game of Thrones debuts on HBO.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-year">2012</span>
+                        <h3>Facebook IPO</h3>
+                        <p>Facebook goes public with one of the biggest tech IPOs in history. Gangnam Style becomes the first YouTube video to reach 1 billion views.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-year">2013</span>
+                        <h3>Netflix Original Content</h3>
+                        <p>Netflix releases "House of Cards," its first major original series, changing television forever.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-year">2014</span>
+                        <h3>Ice Bucket Challenge</h3>
+                        <p>The ALS Ice Bucket Challenge goes viral on social media, raising over $115 million for research.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-year">2016</span>
+                        <h3>Pokémon GO</h3>
+                        <p>Pokémon GO launches, becoming a global phenomenon and popularizing augmented reality games.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-year">2018</span>
+                        <h3>GDPR Enacted</h3>
+                        <p>The EU's General Data Protection Regulation goes into effect, changing how companies handle user data worldwide.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-year">2019</span>
+                        <h3>TikTok Explosion</h3>
+                        <p>TikTok becomes a global social media phenomenon, especially among Gen Z users.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="culture">
+            <div class="card">
+                <h2 class="section-title">Cultural Phenomena</h2>
+                
+                <div class="row">
+                    <div class="col">
+                        <h3><i class="fas fa-music"></i> Music</h3>
+                        <ul>
+                            <li>Streaming services replace downloads</li>
+                            <li>Rise of EDM and festival culture</li>
+                            <li>Hip-hop becomes the dominant genre</li>
+                            <li>K-pop goes global with BTS and BLACKPINK</li>
+                            <li>Taylor Swift, Drake, and Beyoncé dominate charts</li>
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <h3><i class="fas fa-film"></i> Movies & TV</h3>
+                        <ul>
+                            <li>Marvel Cinematic Universe dominance</li>
+                            <li>Game of Thrones cultural phenomenon</li>
+                            <li>Streaming services create "binge-watching"</li>
+                            <li>Star Wars sequel trilogy</li>
+                            <li>Rise of prestige TV and limited series</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="row" style="margin-top: 30px;">
+                    <div class="col">
+                        <h3><i class="fas fa-tshirt"></i> Fashion</h3>
+                        <ul>
+                            <li>Athleisure becomes mainstream</li>
+                            <li>High-waisted jeans comeback</li>
+                            <li>Minimalism and "normcore"</li>
+                            <li>Beard culture for men</li>
+                            <li>Sustainable and ethical fashion movement</li>
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <h3><i class="fas fa-hashtag"></i> Trends & Challenges</h3>
+                        <ul>
+                            <li>Ice Bucket Challenge</li>
+                            <li>Mannequin Challenge</li>
+                            <li>Tide Pod Challenge controversy</li>
+                            <li>Fidget Spinners</li>
+                            <li>VSCO girls and e-boys/e-girls</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="gallery">
+                    <div class="gallery-item">
+                        <img src="https://via.placeholder.com/300x200?text=Marvel" alt="Marvel Films">
+                        <div class="gallery-overlay">Marvel Films</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://via.placeholder.com/300x200?text=Instagram" alt="Instagram Culture">
+                        <div class="gallery-overlay">Instagram Aesthetics</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://via.placeholder.com/300x200?text=Netflix" alt="Netflix & Streaming">
+                        <div class="gallery-overlay">Streaming Revolution</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://via.placeholder.com/300x200?text=Athleisure" alt="Athleisure Fashion">
+                        <div class="gallery-overlay">Athleisure Fashion</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="tech">
+            <div class="card">
+                <h2 class="section-title">Technological Advances</h2>
+                
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <span class="badge badge-primary">Smartphones</span>
+                    <span class="badge badge-secondary">Social Media</span>
+                    <span class="badge badge-success">Cloud Computing</span>
+                    <span class="badge badge-warning">AI & Machine Learning</span>
+                    <span class="badge badge-info">Streaming Services</span>
+                    <span class="badge badge-primary">Ride-sharing Apps</span>
+                    <span class="badge badge-secondary">Smart Homes</span>
+                    <span class="badge badge-success">Electric Vehicles</span>
+                    <span class="badge badge-warning">Cryptocurrency</span>
+                </div>
+                
+                <div class="row">
+                    <div class="col">
+                        <div class="feature-card">
+                            <i class="fas fa-cloud feature-icon"></i>
+                            <h3>Cloud Computing</h3>
+                            <p>Cloud services like AWS, Azure, and Google Cloud transformed how businesses operate.</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="feature-card">
+                            <i class="fas fa-robot feature-icon"></i>
+                            <h3>AI Revolution</h3>
+                            <p>Machine learning and AI began to transform industries from healthcare to transportation.</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="feature-card">
+                            <i class="fas fa-home feature-icon"></i>
+                            <h3>Smart Homes</h3>
+                            <p>Smart speakers and IoT devices brought automation and voice control to homes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="social">
+            <div class="card">
+                <h2 class="section-title">Social Media Revolution</h2>
+                <p style="text-align: center; margin-bottom: 30px;">The 2010s saw social media transform from simple networking tools to platforms that influence elections, shape culture, and drive economies.</p>
+                
+                <div class="social-icons">
+                    <a href="#" class="social-icon facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-icon snapchat"><i class="fab fa-snapchat-ghost"></i></a>
+                </div>
+                
+                <div class="row">
+                    <div class="col">
+                        <h3>The Rise of Influencers</h3>
+                        <p>Social media created a new career path - the influencer. From beauty gurus on YouTube to fitness influencers on Instagram, these new celebrities built personal brands and marketing empires.</p>
+                    </div>
+                    <div class="col">
+                        <h3>Social Movements</h3>
+                        <p>Hashtags like #MeToo, #BlackLivesMatter, and #ClimateStrike transformed how social movements organize and spread awareness, connecting local issues to global audiences.</p>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <a href="#" class="btn btn-primary">Learn More</a>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About This Project</h3>
+                    <p>The 2010s Time Capsule is an exploration of the cultural, technological, and social transformations that defined the decade.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#intro">Introduction</a></li>
+                        <li><a href="#timeline">Timeline</a></li>
+                        <li><a href="#culture">Culture</a></li>
+                        <li><a href="#tech">Technology</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>Email: info@2010stimecapsule.com</p>
+                    <p>Follow us on social media for updates</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 2010s Time Capsule | All rights reserved</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Add active class to nav items on scroll
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

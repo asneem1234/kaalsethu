@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2020s Time Capsule</title>
+    <!-- Modern Font Import -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            /* Modern, accessible color scheme */
+            --primary: #7f5af0;
+            --primary-dark: #6930c3;
+            --secondary: #2cb67d;
+            --accent: #ff8906;
+            --background: #16161a;
+            --surface: #242629;
+            --text: #fffffe;
+            --text-secondary: #94a1b2;
+            --border: #383a3f;
+            --error: #ef4565;
+            
+            /* Typography scale using clamp for fluid typography */
+            --fs-xs: clamp(0.7rem, 0.7vw, 0.85rem);
+            --fs-sm: clamp(0.8rem, 0.85vw, 0.95rem);
+            --fs-base: clamp(1rem, 1vw, 1.1rem);
+            --fs-md: clamp(1.1rem, 1.2vw, 1.3rem);
+            --fs-lg: clamp(1.4rem, 1.6vw, 1.8rem);
+            --fs-xl: clamp(1.8rem, 2.5vw, 2.5rem);
+            --fs-xxl: clamp(2.2rem, 4vw, 3.5rem);
+            
+            /* Spacing scale */
+            --space-xs: clamp(0.5rem, 0.5vw, 0.75rem);
+            --space-sm: clamp(0.75rem, 0.75vw, 1rem);
+            --space-md: clamp(1rem, 1.5vw, 1.5rem);
+            --space-lg: clamp(1.5rem, 2vw, 2rem);
+            --space-xl: clamp(2rem, 3vw, 3rem);
+            --space-xxl: clamp(3rem, 5vw, 5rem);
+            
+            /* Border radius */
+            --radius-sm: 0.25rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 1rem;
+            --radius-full: 9999px;
+        }
+        
+        /* CSS Reset and Global Styles */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 5rem;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+        
+        a:hover {
+            color: var(--primary-dark);
+        }
+        
+        /* Layout Utilities */
+        .container {
+            width: min(90%, 1200px);
+            margin-inline: auto;
+        }
+        
+        .flow > * + * {
+            margin-top: var(--flow-space, var(--space-md));
+        }
+        
+        .grid {
+            display: grid;
+            gap: var(--gap, var(--space-md));
+        }
+        
+        .flex {
+            display: flex;
+            gap: var(--gap, var(--space-md));
+        }
+        
+        .flex-col {
+            flex-direction: column;
+        }
+        
+        .align-center {
+            align-items: center;
+        }
+        
+        .justify-between {
+            justify-content: space-between;
+        }
+        
+        .justify-center {
+            justify-content: center;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        /* Components */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: var(--space-sm) 0;
+            background-color: rgba(22, 22, 26, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .logo {
+            font-weight: 700;
+            font-size: var(--fs-lg);
+            color: var(--text);
+            letter-spacing: -0.02em;
+        }
+        
+        .nav-list {
+            list-style: none;
+            display: flex;
+            gap: var(--space-md);
+        }
+        
+        .nav-link {
+            color: var(--text);
+            font-weight: 500;
+            padding: var(--space-xs);
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary);
+            background-color: rgba(127, 90, 240, 0.1);
+        }
+        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: var(--fs-lg);
+            cursor: pointer;
+        }
+        
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, var(--primary-dark), transparent 50%),
+                        radial-gradient(circle at bottom left, var(--secondary), transparent 50%);
+            opacity: 0.2;
+            z-index: -1;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+        }
+        
+        .hero-title {
+            font-size: var(--fs-xxl);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: var(--space-md);
+            background: linear-gradient(90deg, var(--text), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hero-subtitle {
+            font-size: var(--fs-lg);
+            color: var(--text-secondary);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: var(--space-md);
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: var(--fs-base);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--text);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            color: var(--text);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(127, 90, 240, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text);
+            border: 2px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .section {
+            padding: var(--space-xl) 0;
+        }
+        
+        .section-title {
+            font-size: var(--fs-xl);
+            font-weight: 700;
+            margin-bottom: var(--space-lg);
+            color: var(--text);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background-color: var(--primary);
+            border-radius: var(--radius-full);
+        }
+        
+        .card {
+            background-color: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: var(--primary);
+        }
+        
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: var(--space-sm);
+            color: var(--primary);
+        }
+        
+        .card-title {
+            font-size: var(--fs-lg);
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+            color: var(--text);
+        }
+        
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius-full);
+            font-size: var(--fs-xs);
+            font-weight: 600;
+            background-color: rgba(127, 90, 240, 0.1);
+            color: var(--primary);
+            margin-right: var(--space-xs);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .timeline {
+            margin-top: var(--space-xl);
+        }
+        
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: var(--space-md);
+            padding-bottom: var(--space-lg);
+            position: relative;
+        }
+        
+        .timeline-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 40px;
+            width: 2px;
+            height: 100%;
+            background-color: var(--border);
+            z-index: -1;
+        }
+        
+        .timeline-year {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            background-color: var(--primary);
+            color: var(--text);
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            font-size: var(--fs-md);
+            z-index: 1;
+        }
+        
+        .timeline-content {
+            background-color: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md);
+            border: 1px solid var(--border);
+        }
+        
+        .timeline-title {
+            font-size: var(--fs-md);
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+        
+        .gallery-item {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 4/3;
+        }
+        
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: var(--space-md);
+            background: linear-gradient(to top, rgba(22, 22, 26, 0.9), transparent);
+            color: var(--text);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-lg);
+            margin-top: var(--space-xl);
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: var(--fs-xxl);
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: var(--space-xs);
+            line-height: 1;
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: var(--fs-sm);
+        }
+        
+        .accordion {
+            margin-top: var(--space-lg);
+        }
+        
+        .accordion-item {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-sm);
+            overflow: hidden;
+        }
+        
+        .accordion-header {
+            padding: var(--space-md);
+            background-color: var(--surface);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+        
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .accordion-content {
+            padding: 0 var(--space-md);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        
+        .accordion-item.active .accordion-content {
+            padding: var(--space-md);
+            max-height: 500px;
+        }
+        
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+        
+        .footer {
+            background-color: var(--surface);
+            padding: var(--space-xl) 0;
+            border-top: 1px solid var(--border);
+            margin-top: var(--space-xxl);
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-xl);
+        }
+        
+        .footer-heading {
+            font-size: var(--fs-md);
+            font-weight: 600;
+            margin-bottom: var(--space-md);
+        }
+        
+        .footer-list {
+            list-style: none;
+        }
+        
+        .footer-list li:not(:last-child) {
+            margin-bottom: var(--space-sm);
+        }
+        
+        .footer-link {
+            color: var(--text-secondary);
+            transition: color 0.2s ease;
+        }
+        
+        .footer-link:hover {
+            color: var(--primary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: var(--space-sm);
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            background-color: var(--background);
+            color: var(--text);
+            transition: all 0.2s ease;
+        }
+        
+        .social-link:hover {
+            background-color: var(--primary);
+            color: var(--text);
+            transform: translateY(-3px);
+        }
+        
+        .divider {
+            margin: var(--space-lg) 0;
+            height: 1px;
+            background-color: var(--border);
+        }
+        
+        .copyright {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: var(--fs-sm);
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav-list {
+                position: fixed;
+                top: 70px;
+                right: -100%;
+                width: 70%;
+                height: calc(100vh - 70px);
+                background-color: var(--surface);
+                flex-direction: column;
+                padding: var(--space-lg);
+                transition: right 0.3s ease;
+                border-left: 1px solid var(--border);
+            }
+            
+            .nav-list.active {
+                right: 0;
+            }
+            
+            .timeline-item {
+                grid-template-columns: 60px 1fr;
+            }
+            
+            .timeline-year {
+                width: 60px;
+                height: 60px;
+                font-size: var(--fs-sm);
+            }
+            
+            .timeline-item:not(:last-child)::after {
+                left: 30px;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Sticky Navigation -->
+    <header class="header">
+        <div class="container">
+            <nav class="flex justify-between align-center">
+                <a href="#" class="logo">2020s Capsule</a>
+                
+                <button class="menu-toggle" aria-label="Toggle navigation">
+                    <i class="bi bi-list"></i>
+                </button>
+                
+                <ul class="nav-list">
+                    <li><a href="#home" class="nav-link">Home</a></li>
+                    <li><a href="#timeline" class="nav-link">Timeline</a></li>
+                    <li><a href="#trends" class="nav-link">Trends</a></li>
+                    <li><a href="#tech" class="nav-link">Technology</a></li>
+                    <li><a href="#culture" class="nav-link">Culture</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Welcome to the 2020s</h1>
+                <p class="hero-subtitle">Exploring a decade defined by digital transformation, social change, and unprecedented global challenges.</p>
+                
+                <div class="cta-buttons">
+                    <a href="#timeline" class="btn btn-primary">
+                        <i class="bi bi-clock-history"></i>
+                        Explore Timeline
+                    </a>
+                    <a href="#trends" class="btn btn-secondary">
+                        <i class="bi bi-graph-up-arrow"></i>
+                        Discover Trends
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Timeline Section -->
+    <section id="timeline" class="section">
+        <div class="container">
+            <h2 class="section-title">Early 2020s Timeline</h2>
+            <p>The beginning of the 2020s has been marked by transformative events that have reshaped society, technology, and our daily lives.</p>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">2020</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">COVID-19 Pandemic</h3>
+                        <p>The global COVID-19 pandemic fundamentally changed how we live, work, and interact. Remote work became the norm for many, while digital solutions for education, healthcare, and shopping accelerated.</p>
+                        <div class="tags" style="margin-top: var(--space-sm);">
+                            <span class="tag">Remote Work</span>
+                            <span class="tag">Digital Acceleration</span>
+                            <span class="tag">Global Crisis</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">2021</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Metaverse Emergence</h3>
+                        <p>Facebook rebranded as Meta, signaling a major shift toward developing the "metaverse" - an immersive digital world. NFTs and blockchain technology gained mainstream attention with digital art selling for millions.</p>
+                        <div class="tags" style="margin-top: var(--space-sm);">
+                            <span class="tag">Metaverse</span>
+                            <span class="tag">NFTs</span>
+                            <span class="tag">Web3</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">2022</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">AI Revolution</h3>
+                        <p>Generative AI tools like DALL-E, Midjourney, and ChatGPT became accessible to the public, sparking conversations about the future of creative work, education, and employment. These tools demonstrated remarkable capabilities in generating images, text, and code.</p>
+                        <div class="tags" style="margin-top: var(--space-sm);">
+                            <span class="tag">Generative AI</span>
+                            <span class="tag">ChatGPT</span>
+                            <span class="tag">DALL-E</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">2023</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">AI Integration</h3>
+                        <p>AI integration accelerated across industries, with tools like Copilot, Bing AI, and Claude becoming embedded in productivity software. The line between human and AI-generated content began to blur significantly.</p>
+                        <div class="tags" style="margin-top: var(--space-sm);">
+                            <span class="tag">AI Assistants</span>
+                            <span class="tag">Productivity</span>
+                            <span class="tag">Content Creation</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">2024</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Extended Reality Advances</h3>
+                        <p>AR and VR technologies became more accessible and integrated into daily life, with lightweight mixed reality glasses and immersive experiences gaining popularity for both work and entertainment.</p>
+                        <div class="tags" style="margin-top: var(--space-sm);">
+                            <span class="tag">AR/VR</span>
+                            <span class="tag">Mixed Reality</span>
+                            <span class="tag">Spatial Computing</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">2025</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Climate Tech Breakthrough</h3>
+                        <p>Major advancements in renewable energy, carbon capture, and sustainable technologies gained momentum as climate concerns accelerated innovation and investment in green solutions.</p>
+                        <div class="tags" style="margin-top: var(--space-sm);">
+                            <span class="tag">Climate Tech</span>
+                            <span class="tag">Sustainability</span>
+                            <span class="tag">Green Energy</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Trends Section -->
+    <section id="trends" class="section">
+        <div class="container">
+            <h2 class="section-title">Defining Trends</h2>
+            <p>The 2020s have been shaped by several key trends that are transforming society, business, and technology.</p>
+            
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); margin-top: var(--space-xl);">
+                <div class="card">
+                    <i class="bi bi-robot card-icon"></i>
+                    <h3 class="card-title">AI Transformation</h3>
+                    <p>Artificial intelligence has evolved from specialized applications to becoming integrated into almost every aspect of daily life and work. Generative AI tools are reshaping creative industries, coding, and content creation.</p>
+                </div>
+                
+                <div class="card">
+                    <i class="bi bi-house-door card-icon"></i>
+                    <h3 class="card-title">Remote-First World</h3>
+                    <p>The pandemic accelerated a shift to remote and hybrid work models that have remained permanent for many companies. Digital nomadism, virtual collaboration tools, and flexible work arrangements have become mainstream.</p>
+                </div>
+                
+                <div class="card">
+                    <i class="bi bi-globe card-icon"></i>
+                    <h3 class="card-title">Climate Action</h3>
+                    <p>Climate consciousness has moved from the periphery to the center of business strategy, policy decisions, and consumer choices. Sustainable design, circular economy practices, and environmental metrics now influence many aspects of life.</p>
+                </div>
+                
+                <div class="card">
+                    <i class="bi bi-currency-bitcoin card-icon"></i>
+                    <h3 class="card-title">Digital Ownership</h3>
+                    <p>Blockchain technology, NFTs, and digital assets have created new paradigms of ownership and value. Digital collectibles, virtual real estate, and tokenized assets have established a new digital economy.</p>
+                </div>
+                
+                <div class="card">
+                    <i class="bi bi-headset-vr card-icon"></i>
+                    <h3 class="card-title">Immersive Experiences</h3>
+                    <p>AR, VR, and mixed reality technologies are blurring the lines between physical and digital worlds. Spatial computing is changing how we interact with digital information and each other.</p>
+                </div>
+                
+                <div class="card">
+                    <i class="bi bi-heart-pulse card-icon"></i>
+                    <h3 class="card-title">Digital Health</h3>
+                    <p>Healthcare has been transformed by telehealth, wearable technology, and AI diagnostics. Personal health tracking and personalized medicine have empowered individuals in managing their wellbeing.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Technology Section -->
+    <section id="tech" class="section">
+        <div class="container">
+            <h2 class="section-title">Technology Evolution</h2>
+            <p>The 2020s have seen exponential growth in technological capabilities, with several key innovations reshaping our world.</p>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">100M+</div>
+                    <div class="stat-label">Monthly ChatGPT Users</div>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-number">66%</div>
+                    <div class="stat-label">Companies Using AI</div>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-number">$800B</div>
+                    <div class="stat-label">AR/VR Market by 2025</div>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-number">25B+</div>
+                    <div class="stat-label">IoT Devices Connected</div>
+                </div>
+            </div>
+            
+            <div class="accordion" style="margin-top: var(--space-xl);">
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>Artificial Intelligence & Machine Learning</span>
+                        <i class="bi bi-chevron-down accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>AI has transitioned from specialized applications to general-purpose tools that can generate text, images, code, music, and videos. Foundation models like GPT-4 and Claude have transformed how we interact with technology, while AI integration has become standard in productivity tools, creative software, and business operations.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>Augmented & Virtual Reality</span>
+                        <i class="bi bi-chevron-down accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>AR and VR technologies have matured from novelty to practical applications in gaming, education, healthcare, and enterprise settings. Mixed reality glasses offer overlays of digital information onto the physical world, while VR headsets provide increasingly immersive experiences for entertainment and training.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>Quantum Computing</span>
+                        <i class="bi bi-chevron-down accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Quantum computers have progressed from theoretical to practical, with early commercial applications beginning to emerge. These systems promise to solve complex problems in materials science, cryptography, and optimization that are beyond the capabilities of classical computers.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>Blockchain & Web3</span>
+                        <i class="bi bi-chevron-down accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Blockchain technology has evolved beyond cryptocurrencies to support decentralized applications, smart contracts, and digital asset ownership. Web3 technologies aim to create a more user-centric internet where individuals have greater control over their data and digital identities.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Culture Section -->
+    <section id="culture" class="section">
+        <div class="container">
+            <h2 class="section-title">Cultural Shifts</h2>
+            <p>The 2020s have witnessed significant cultural transformations in how we communicate, consume media, and express ourselves.</p>
+            
+            <div class="gallery">
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/500x350?text=Creator+Economy" alt="Creator Economy" class="gallery-img">
+                    <div class="gallery-overlay">
+                        <h3>Creator Economy</h3>
+                        <p>Individual content creators building sustainable businesses</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/500x350?text=Digital+Fashion" alt="Digital Fashion" class="gallery-img">
+                    <div class="gallery-overlay">
+                        <h3>Digital Fashion</h3>
+                        <p>Virtual clothing and accessories for digital identities</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/500x350?text=Vertical+Video" alt="Vertical Video" class="gallery-img">
+                    <div class="gallery-overlay">
+                        <h3>Vertical Video</h3>
+                        <p>Short-form vertical content dominating media consumption</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/500x350?text=AI+Art" alt="AI Art" class="gallery-img">
+                    <div class="gallery-overlay">
+                        <h3>AI-Generated Art</h3>
+                        <p>New creative paradigms with AI collaboration</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); margin-top: var(--space-xl);">
+                <div class="card">
+                    <h3 class="card-title">Social Media Evolution</h3>
+                    <p>Social media has shifted from text-based platforms to immersive, visual-first experiences. Short-form video content on platforms like TikTok and Instagram Reels has reshaped how information and entertainment are consumed, while algorithmic feeds have personalized content discovery.</p>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title">Streaming Dominance</h3>
+                    <p>Streaming platforms have become the primary way people consume media, with personalized recommendations and on-demand access replacing traditional broadcast schedules. Interactive and social elements have been integrated into viewing experiences.</p>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title">Digital Communities</h3>
+                    <p>Online communities have evolved from broad social networks to niche interest groups and creator-centered spaces. Digital gathering places like Discord servers and online events have created new ways for people to connect around shared interests.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3 class="footer-heading">2020s Time Capsule</h3>
+                    <p>Documenting the rapid changes and cultural shifts of the early 2020s - a decade of transformation, challenges, and unprecedented technological advancement.</p>
+                    
+                    <div class="social-links" style="margin-top: var(--space-md);">
+                        <a href="#" class="social-link"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="social-link"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="bi bi-tiktok"></i></a>
+                        <a href="#" class="social-link"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">Navigation</h3>
+                    <ul class="footer-list">
+                        <li><a href="#home" class="footer-link">Home</a></li>
+                        <li><a href="#timeline" class="footer-link">Timeline</a></li>
+                        <li><a href="#trends" class="footer-link">Trends</a></li>
+                        <li><a href="#tech" class="footer-link">Technology</a></li>
+                        <li><a href="#culture" class="footer-link">Culture</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">Resources</h3>
+                    <ul class="footer-list">
+                        <li><a href="#" class="footer-link">About This Project</a></li>
+                        <li><a href="#" class="footer-link">References</a></li>
+                        <li><a href="#" class="footer-link">Image Credits</a></li>
+                        <li><a href="#" class="footer-link">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <p class="copyright">© 2025 Time Capsule Project. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Mobile navigation toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navList = document.querySelector('.nav-list');
+        
+        menuToggle.addEventListener('click', () => {
+            navList.classList.toggle('active');
+        });
+        
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                navList.classList.remove('active');
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoClick({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Accordion functionality
+        const accordionItems = document.querySelectorAll('.accordion-item');
+        
+        accordionItems.forEach(item => {
+            const header = item.querySelector('.accordion-header');
+            
+            header.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all accordion items
+                accordionItems.forEach(accItem => {
+                    accItem.classList.remove('active');
+                });
+                
+                // If the clicked item wasn't active, open it
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+        
+        // Fix scrollIntoClick typo with proper implementation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                navList.classList.remove('active');
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
