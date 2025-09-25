@@ -1993,8 +1993,8 @@
                                         if (foundFile && foundFile.exists) {
                                             window.location.href = foundFile.url;
                                         } else {
-                                            // Otherwise, redirect to the decade folder's index.html
-                                            window.location.href = `decades/${decadeFolderName}/index.html`;
+                                            // Redirect to the feed directory instead of decades
+                                            window.location.href = `feed/${decadeFolderName}s.html`;
                                         }
                                     }
                                 });
