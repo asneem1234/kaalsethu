@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1960s India - Time Capsule</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         :root {
             --background-dark: #2a2720; /* Slightly lighter background */
@@ -37,7 +38,7 @@
             line-height: 1.6;
         }
         
-        /* Film grain canvas - increased grain for 1960s */
+        /* Film grain canvas - HEAVY grain effect */
         #filmGrainCanvas {
             position: fixed;
             top: 0;
@@ -46,7 +47,7 @@
             height: 100%;
             z-index: 102;
             pointer-events: none;
-            opacity: 0.25; /* Less grain than 1950s */
+            opacity: 0.65; /* Much stronger grain effect */
             mix-blend-mode: overlay;
         }
         
@@ -132,11 +133,13 @@
         /* Header styles */
         header {
             position: relative;
-            height: 100vh;
+            height: 110vh; /* Increased height to accommodate larger TV */
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            padding-bottom: 20px;
         }
 
         .header-background {
@@ -160,6 +163,18 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(rgba(78, 65, 45, 0.05), rgba(42, 39, 32, 0.6)); /* Lighter gradient */
+        }
+        
+        /* 1950s TV Styles */
+        .tv-main {
+            position: relative;
+            width: 100%;
+            height: 450px; /* Increased height to accommodate larger TV */
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 20px;
         }
 
         .header-content {
@@ -560,22 +575,7 @@
             background: rgba(229, 211, 185, 0.1);
         }
         
-        .vintage-img {
-            width: 100%;
-            height: auto;
-            filter: sepia(0.1) contrast(1.25) brightness(1.15) saturate(1.5); /* More vibrant colors */
-            margin: 20px 0;
-            box-shadow: 8px 8px 0 rgba(255, 157, 74, 0.5); /* Brighter shadow */
-            transition: all 0.3s ease;
-            border: 3px solid rgba(255, 255, 255, 0.1); /* Subtle border */
-        }
-        
-        .vintage-img:hover {
-            filter: sepia(0) contrast(1.3) brightness(1.2) saturate(1.4); /* Even more vibrant on hover */
-            transform: translateY(-5px) scale(1.02); /* Slight zoom effect */
-            box-shadow: 12px 12px 0 rgba(255, 157, 74, 0.6); /* Enhanced shadow */
-            border: 3px solid rgba(255, 255, 255, 0.2); /* More visible border on hover */
-        }
+        /* Image styles removed */
 
         /* Fade in animation */
         .fade-in {
@@ -604,20 +604,11 @@
     
     <!-- Header Section -->
     <header>
-        <div class="header-background" style="background-image: url('https://images.unsplash.com/photo-1596994699267-3f926e0654c2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');"></div>
-        <div class="header-content">
-            <h1>1960s India</h1>
-            <div class="subtitle">DECADE OF TRANSITION</div>
-            <div class="decade-description">
-                The 1960s marked a decade of significant change for India. Just over a decade into independence, 
-                the nation was balancing tradition with modernity, facing challenges of wars and political shifts, 
-                while experiencing cultural, technological and social transformations.
-            </div>
-            <div class="header-buttons">
-                <button class="decade-btn" onclick="window.location.href='../decades/1960/index.html'">Explore 1960s</button>
-                <button class="decade-btn" onclick="window.location.href='../time-explorer.html'">Time Explorer</button>
-            </div>
+        <div class="header-background"></div>
+        <div id="tv-container" class="tv-main">
+            <!-- 1950s TV will be rendered here by Three.js -->
         </div>
+        
     </header>
 
     <!-- Navigation Tabs -->
@@ -641,7 +632,6 @@
                 <h3>The Changing Face of India</h3>
                 <div class="card-content">
                     <p>The 1960s marked a decade of significant transition for India. Just over a decade into independence, the nation was balancing its newfound identity with growing global connections. This period witnessed the strengthening of democratic institutions alongside major challenges from wars with China (1962) and Pakistan (1965), as well as internal political shifts including the rise of Indira Gandhi to power.</p>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/bc/Indira_Gandhi_1966.jpg" alt="Indira Gandhi becoming Prime Minister" class="vintage-img">
                     <p>As the world experienced cultural and social revolutions, India too was witnessing gradual transformations in its urban centers. The decade represented a fascinating blend of traditional values and emerging modernity, with cinema, music, and fashion reflecting these changing times. The Green Revolution began transforming agricultural practices, while new industries continued developing under the mixed economy model.</p>
                 </div>
                 <div class="meta">
@@ -717,7 +707,6 @@
                     <h3>Cinema's New Wave</h3>
                     <div class="card-content">
                         <p>While commercial cinema continued to thrive with stars like Raj Kapoor, Dilip Kumar, and Nargis, the 1960s also witnessed the emergence of parallel cinema led by directors like Satyajit Ray, Ritwik Ghatak, and Mrinal Sen.</p>
-                        <img src="https://upload.wikimedia.org/wikipedia/en/5/5a/Charulata_poster.jpg" alt="Charulata Film Poster" class="vintage-img">
                         <p>Films began exploring more complex social themes and artistic expressions, with Ray's "Charulata" (1964) and "Nayak" (1966) receiving international acclaim and establishing Indian cinema's presence on the global stage.</p>
                     </div>
                     <div class="meta">
@@ -785,7 +774,6 @@
                 <h3>Indo-Pakistan War (1965)</h3>
                 <div class="card-content">
                     <p>The second major conflict between India and Pakistan since independence began with Operation Gibraltar, Pakistan's infiltration attempt in Kashmir. The war expanded to multiple fronts before a ceasefire was arranged through Soviet mediation.</p>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/76/Indian_army_jawans_and_locals_celebrate_after_the_victory_in_the_1965_war.jpg" alt="Indo-Pakistan War 1965" class="vintage-img">
                     <p>The subsequent Tashkent Agreement, signed by Indian Prime Minister Lal Bahadur Shastri and Pakistani President Ayub Khan, restored pre-war positions. Tragically, Shastri died in Tashkent shortly after signing the agreement.</p>
                 </div>
                 <div class="meta">
@@ -824,7 +812,6 @@
                     <h3>Women's Fashion</h3>
                     <div class="card-content">
                         <p>The 1960s saw Indian women's fashion begin to incorporate more global influences. While sarees remained dominant, their styling evolved with more experimental blouse designs and bold patterns. The salwar kameez gained further popularity among young women.</p>
-                        <img src="https://i.pinimg.com/originals/5a/68/24/5a68242fa440a9c1962e7880028a994a.jpg" alt="1960s Indian Women's Fashion" class="vintage-img">
                         <p>Bollywood actresses like Sadhana popularized the "Sadhana cut" (fringe hairstyle), while Sharmila Tagore's bouffants became fashion statements. In metropolitan areas, some young women began experimenting with Western clothes including A-line dresses and high boots.</p>
                     </div>
                     <div class="meta">
@@ -943,7 +930,6 @@
                 <h3>Space Research Begins</h3>
                 <div class="card-content">
                     <p>The Indian National Committee for Space Research (INCOSPAR) was established in 1962 under the Department of Atomic Energy, with Dr. Vikram Sarabhai as its chairman. This later evolved into ISRO in 1969.</p>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Thumba_launching_station.jpg" alt="Thumba Launching Station" class="vintage-img">
                     <p>The first sounding rocket was launched from Thumba Equatorial Rocket Launching Station in Kerala in 1963, marking India's entry into space research despite being a developing nation with limited resources.</p>
                 </div>
                 <div class="meta">
@@ -1198,64 +1184,106 @@
                 resizeCanvases();
                 window.addEventListener('resize', resizeCanvases);
                 
-                // Create the film grain texture - less intense for 1960s
+                // Create the film grain texture - INTENSIFIED for vintage look
                 function createFilmGrainTexture() {
                     grainCtx.clearRect(0, 0, grainCanvas.width, grainCanvas.height);
                     
-                    // Fill with dark base
-                    grainCtx.fillStyle = '#2a1f1a';
+                    // Fill with darker, more pronounced base
+                    grainCtx.fillStyle = '#1f1a15';
                     grainCtx.fillRect(0, 0, grainCanvas.width, grainCanvas.height);
                     
-                    // Add noise - with subtle color variation to simulate early color film
+                    // Add heavy noise - with dramatic color variation to simulate degraded film
                     const imageData = grainCtx.getImageData(0, 0, grainCanvas.width, grainCanvas.height);
                     const data = imageData.data;
                     
                     for (let i = 0; i < data.length; i += 4) {
-                        // Random noise value with slight color variation for 60s color film look
+                        // Random noise value with stronger color variation for degraded film look
                         const baseValue = Math.floor(Math.random() * 255);
-                        const redVar = Math.random() * 30 - 15; // Red variation
+                        const redVar = Math.random() * 50 - 25; // Exaggerated red variation
                         
-                        // Apply colored noise with varying intensity for early color film look
-                        data[i] = Math.min(255, Math.max(0, baseValue + redVar)); // Red with variation
-                        data[i + 1] = Math.min(255, Math.max(0, baseValue - 5)); // Green slightly less
-                        data[i + 2] = Math.min(255, Math.max(0, baseValue - 10)); // Blue even less for warm tone
-                        // Alpha channel - less grain intensity than 1950s
-                        data[i + 3] = Math.random() > 0.97 ? 180 : Math.random() * 20;
+                        // Apply extreme film grain with high contrast
+                        data[i] = Math.min(255, Math.max(0, baseValue + redVar)); // Red with strong variation
+                        data[i + 1] = Math.min(255, Math.max(0, baseValue - 15)); // Green much less
+                        data[i + 2] = Math.min(255, Math.max(0, baseValue - 25)); // Blue even less for warmer tone
+                        // Alpha channel - extremely high grain intensity
+                        data[i + 3] = Math.random() > 0.80 ? 225 : Math.random() * 60;
                     }
                     
                     grainCtx.putImageData(imageData, 0, 0);
                     
-                    // Less scratches than 1950s
-                    grainCtx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
-                    grainCtx.lineWidth = 0.5;
+                    // Much more pronounced scratches for heavy vintage effect
+                    grainCtx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+                    grainCtx.lineWidth = 1;
                     
-                    // Fewer scratches
-                    for (let i = 0; i < 6; i++) {
+                    // Many more vertical scratches
+                    for (let i = 0; i < 25; i++) {
                         const x = Math.random() * grainCanvas.width;
                         grainCtx.beginPath();
                         grainCtx.moveTo(x, 0);
-                        grainCtx.lineTo(x, grainCanvas.height * (0.3 + Math.random() * 0.7));
+                        grainCtx.lineTo(x + (Math.random() * 20 - 10), grainCanvas.height * (0.3 + Math.random() * 0.7));
                         grainCtx.stroke();
                     }
                     
-                    // Add horizontal scratches occasionally
-                    for (let i = 0; i < 2; i++) {
+                    // Add more horizontal scratches
+                    for (let i = 0; i < 15; i++) {
                         const y = Math.random() * grainCanvas.height;
+                        const length = Math.random() * 0.8 + 0.2; // Length varies from 20% to 100% of width
                         grainCtx.beginPath();
                         grainCtx.moveTo(0, y);
-                        grainCtx.lineTo(grainCanvas.width * Math.random(), y);
+                        grainCtx.lineTo(grainCanvas.width * length, y + (Math.random() * 10 - 5));
                         grainCtx.stroke();
                     }
                     
-                    // Less dust specks than 1950s
-                    grainCtx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-                    for (let i = 0; i < 60; i++) {
+                    // Add heavy film burn effects - occasionally
+                    if (Math.random() > 0.7) {
                         const x = Math.random() * grainCanvas.width;
                         const y = Math.random() * grainCanvas.height;
-                        const size = Math.random() * 1.5 + 0.5;
+                        const size = Math.random() * 80 + 30;
+                        
+                        const burnGradient = grainCtx.createRadialGradient(
+                            x, y, 0,
+                            x, y, size
+                        );
+                        burnGradient.addColorStop(0, 'rgba(255, 200, 50, 0.4)');
+                        burnGradient.addColorStop(0.7, 'rgba(255, 100, 0, 0.1)');
+                        burnGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                        
+                        grainCtx.fillStyle = burnGradient;
+                        grainCtx.fillRect(x - size, y - size, size * 2, size * 2);
+                    }
+                    
+                    // Many more dust specks and hair-like artifacts
+                    grainCtx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                    for (let i = 0; i < 300; i++) {
+                        const x = Math.random() * grainCanvas.width;
+                        const y = Math.random() * grainCanvas.height;
+                        const size = Math.random() * 2.5 + 0.5;
                         grainCtx.beginPath();
                         grainCtx.arc(x, y, size, 0, Math.PI * 2);
                         grainCtx.fill();
+                    }
+                    
+                    // Add hair-like artifacts that were common in old film
+                    grainCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                    grainCtx.lineWidth = 0.5;
+                    for (let i = 0; i < 10; i++) {
+                        const x = Math.random() * grainCanvas.width;
+                        const y = Math.random() * grainCanvas.height;
+                        const length = Math.random() * 40 + 10;
+                        
+                        grainCtx.beginPath();
+                        grainCtx.moveTo(x, y);
+                        
+                        // Create curved path for hair-like artifact
+                        const cp1x = x + Math.random() * 20 - 10;
+                        const cp1y = y + Math.random() * 20 - 10;
+                        const cp2x = x + Math.random() * 40 - 20;
+                        const cp2y = y + Math.random() * 40 - 20;
+                        const endX = x + Math.random() * 60 - 30;
+                        const endY = y + Math.random() * 60 - 30;
+                        
+                        grainCtx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, endX, endY);
+                        grainCtx.stroke();
                     }
                 }
                 
@@ -1285,19 +1313,31 @@
                 createVignetteEffect();
                 animateFilmGrain();
                 
-                // Create film flickering effect - less frequent for 1960s
+                // Create aggressive film flickering effect - more frequent and intense
                 let lastFlicker = 0;
-                const flickerInterval = 3000;
+                const flickerInterval = 500; // Much more frequent flickering
                 
                 function createFilmFlicker() {
                     const now = Date.now();
                     
                     if (now - lastFlicker > flickerInterval) {
-                        if (Math.random() > 0.9) {
-                            document.body.style.opacity = Math.random() * 0.05 + 0.95;
+                        if (Math.random() > 0.6) { // Much more likely to flicker
+                            // Dramatic flicker effect
+                            document.body.style.opacity = Math.random() * 0.25 + 0.75;
                             setTimeout(() => {
                                 document.body.style.opacity = 1;
-                            }, 50 + Math.random() * 30);
+                            }, 30 + Math.random() * 50);
+                            
+                            // Sometimes create a double or triple flicker for dramatic effect
+                            if (Math.random() > 0.7) {
+                                setTimeout(() => {
+                                    document.body.style.opacity = Math.random() * 0.3 + 0.7;
+                                    setTimeout(() => {
+                                        document.body.style.opacity = 1;
+                                    }, 20 + Math.random() * 30);
+                                }, 80 + Math.random() * 40);
+                            }
+                            
                             lastFlicker = now;
                         }
                     }
@@ -1359,7 +1399,953 @@
             
             // Check on scroll
             window.addEventListener('scroll', checkFade);
+            
+            // Initialize the 3D vintage TV
+            initVintageTV();
         });
+        
+        // 3D vintage TV implementation
+        function initVintageTV() {
+            // Get header text content to display on TV
+            const headerTitle = "1960s India";
+            const headerSubtitle = "DECADE OF TRANSITION";
+            const headerDescription = "Experience the era of transition, as India balanced tradition with modernity while facing challenges and embracing cultural and technological changes.";
+            
+            const container = document.getElementById('tv-container');
+            
+            // Create scene, camera, and renderer
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setClearColor(0x000000, 0);
+            // Explicitly disable shadow mapping
+            renderer.shadowMap.enabled = false;
+            container.appendChild(renderer.domElement);
+            
+            // Add lighting with slightly warmer tones for 1960s aesthetic
+            const ambientLight = new THREE.AmbientLight(0xAA9988, 0.4);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xFFEEDD, 0.6);
+            directionalLight.position.set(1, 1, 2);
+            // Ensure no shadows are cast
+            directionalLight.castShadow = false;
+            scene.add(directionalLight);
+            
+            // Create a group for the entire TV set
+            const tvSet = new THREE.Group();
+            scene.add(tvSet);
+            
+            // Ensure there's no ground plane or grid visible
+            scene.children.forEach(child => {
+                // Remove any grid helpers or ground planes that might exist
+                if (child instanceof THREE.GridHelper || 
+                    (child instanceof THREE.Mesh && child.position.y < -4)) {
+                    scene.remove(child);
+                }
+            });
+            
+            // Create the TV cabinet - more boxy and authentic to 1960s Indian TV sets
+            const cabinetGeometry = new THREE.BoxGeometry(7.5, 5.5, 2.8, 8, 8, 8);
+            
+            // Add subtle modifications to make it look more like a 1960s TV
+            const cabinetPositions = cabinetGeometry.attributes.position;
+            for (let i = 0; i < cabinetPositions.count; i++) {
+                const x = cabinetPositions.getX(i);
+                const y = cabinetPositions.getY(i);
+                const z = cabinetPositions.getZ(i);
+                
+                // Create more refined curves on the front edges (characteristic of 1960s TVs)
+                const edgeX = Math.abs(x) / (7.5/2);
+                const edgeY = Math.abs(y) / (5.5/2);
+                
+                if (z > 0.9 && edgeX > 0.85 && edgeY > 0.85) {
+                    // Smoother rounding for front corners
+                    cabinetPositions.setX(i, x * (0.97 - 0.03 * Math.pow(edgeX, 2)));
+                    cabinetPositions.setY(i, y * (0.97 - 0.03 * Math.pow(edgeY, 2)));
+                }
+                
+                // Create a more refined curved front with authentic CRT bulge
+                if (z > 0.9 && Math.abs(x) < 3 && Math.abs(y) < 2.2) {
+                    const distFromCenter = Math.sqrt(Math.pow(x/3, 2) + Math.pow(y/2.2, 2));
+                    // More subtle, authentic curve shape
+                    const bulge = 0.3 * Math.pow(1 - distFromCenter, 2);
+                    cabinetPositions.setZ(i, z + bulge);
+                }
+                
+                // Add subtle curves to the side edges of the cabinet (typical of vintage TVs)
+                if (Math.abs(z) < 0.9 && edgeX > 0.92) {
+                    cabinetPositions.setX(i, x * 0.98);
+                }
+                
+                if (Math.abs(z) < 0.9 && edgeY > 0.92) {
+                    cabinetPositions.setY(i, y * 0.98);
+                }
+            }
+            cabinetGeometry.computeVertexNormals();
+            
+            // Create a richer wood texture with grain
+            const woodCanvas = document.createElement('canvas');
+            woodCanvas.width = 512;
+            woodCanvas.height = 512;
+            const woodContext = woodCanvas.getContext('2d');
+            
+            // Base color for EC brand TV (popular in India in 1960s)
+            woodContext.fillStyle = '#7D4A32';
+            woodContext.fillRect(0, 0, woodCanvas.width, woodCanvas.height);
+            
+            // Add wood grain effect
+            woodContext.strokeStyle = '#6A3A25';
+            woodContext.lineWidth = 1;
+            
+            for (let i = 0; i < 100; i++) {
+                woodContext.beginPath();
+                const y = Math.random() * woodCanvas.height;
+                woodContext.moveTo(0, y);
+                
+                // Create wavy wood grain lines
+                for (let x = 0; x < woodCanvas.width; x += 20) {
+                    const yOffset = y + Math.sin(x * 0.01) * 15;
+                    woodContext.lineTo(x, yOffset);
+                }
+                
+                woodContext.stroke();
+            }
+            
+            // Add some darker spots for texture variation
+            for (let i = 0; i < 200; i++) {
+                const x = Math.random() * woodCanvas.width;
+                const y = Math.random() * woodCanvas.height;
+                const size = Math.random() * 10 + 5;
+                woodContext.fillStyle = `rgba(60, 30, 15, ${Math.random() * 0.1})`;
+                woodContext.beginPath();
+                woodContext.arc(x, y, size, 0, Math.PI * 2);
+                woodContext.fill();
+            }
+            
+            const woodTexture = new THREE.CanvasTexture(woodCanvas);
+            
+            // Material for the TV cabinet - more matte finish typical of 60s TVs
+            const cabinetMaterial = new THREE.MeshStandardMaterial({
+                map: woodTexture,
+                roughness: 0.9,
+                metalness: 0.1,
+                bumpMap: woodTexture,
+                bumpScale: 0.05
+            });
+            
+            const cabinet = new THREE.Mesh(cabinetGeometry, cabinetMaterial);
+            tvSet.add(cabinet);
+            
+            // Add decorative trim/frame around the screen with authentic vintage detailing
+            function createVintageFrame() {
+                const frameGroup = new THREE.Group();
+                
+                // Main frame - create with extrusion for authentic period detailing
+                const outerFrame = new THREE.Shape();
+                outerFrame.moveTo(-3.4, -2.05);
+                outerFrame.lineTo(3.4, -2.05);
+                outerFrame.lineTo(3.4, 2.05);
+                outerFrame.lineTo(-3.4, 2.05);
+                outerFrame.lineTo(-3.4, -2.05);
+                
+                // Inner cutout
+                const innerCutout = new THREE.Path();
+                innerCutout.moveTo(-3.2, -1.85);
+                innerCutout.lineTo(3.2, -1.85);
+                innerCutout.lineTo(3.2, 1.85);
+                innerCutout.lineTo(-3.2, 1.85);
+                innerCutout.lineTo(-3.2, -1.85);
+                
+                outerFrame.holes.push(innerCutout);
+                
+                // Extrude the frame with beveled edges - typical of vintage TV frames
+                const frameExtrudeSettings = {
+                    steps: 2,
+                    depth: 0.2,
+                    bevelEnabled: true,
+                    bevelThickness: 0.05,
+                    bevelSize: 0.05,
+                    bevelOffset: 0,
+                    bevelSegments: 3
+                };
+                
+                const frameGeometry = new THREE.ExtrudeGeometry(outerFrame, frameExtrudeSettings);
+                
+                // Create a wood grain texture with vintage golden-brown finish
+                const frameCanvas = document.createElement('canvas');
+                frameCanvas.width = 512;
+                frameCanvas.height = 512;
+                const frameContext = frameCanvas.getContext('2d');
+                
+                // Base color - golden brown typical of 1960s TV frames
+                const frameGradient = frameContext.createLinearGradient(0, 0, 512, 512);
+                frameGradient.addColorStop(0, '#A67D53');
+                frameGradient.addColorStop(0.3, '#C69C6D');
+                frameGradient.addColorStop(0.7, '#C69C6D');
+                frameGradient.addColorStop(1, '#A67D53');
+                
+                frameContext.fillStyle = frameGradient;
+                frameContext.fillRect(0, 0, frameCanvas.width, frameCanvas.height);
+                
+                // Add wood grain pattern
+                frameContext.strokeStyle = 'rgba(100, 60, 30, 0.3)';
+                frameContext.lineWidth = 1;
+                
+                for (let i = 0; i < 100; i++) {
+                    frameContext.beginPath();
+                    const y = Math.random() * frameCanvas.height;
+                    frameContext.moveTo(0, y);
+                    
+                    // Create subtle wavy wood grain lines
+                    for (let x = 0; x < frameCanvas.width; x += 20) {
+                        const yOffset = y + Math.sin(x * 0.01) * 10;
+                        frameContext.lineTo(x, yOffset);
+                    }
+                    
+                    frameContext.stroke();
+                }
+                
+                // Add some darker wood details
+                for (let i = 0; i < 30; i++) {
+                    const x = Math.random() * frameCanvas.width;
+                    const y = Math.random() * frameCanvas.height;
+                    const size = Math.random() * 5 + 2;
+                    frameContext.fillStyle = 'rgba(80, 40, 10, 0.2)';
+                    frameContext.beginPath();
+                    frameContext.arc(x, y, size, 0, Math.PI * 2);
+                    frameContext.fill();
+                }
+                
+                // Add subtle gold highlights - characteristic of vintage TV frames
+                for (let i = 0; i < 50; i++) {
+                    const x = Math.random() * frameCanvas.width;
+                    const y = Math.random() * frameCanvas.height;
+                    const size = Math.random() * 3 + 1;
+                    frameContext.fillStyle = 'rgba(255, 215, 0, 0.1)';
+                    frameContext.beginPath();
+                    frameContext.arc(x, y, size, 0, Math.PI * 2);
+                    frameContext.fill();
+                }
+                
+                const frameTexture = new THREE.CanvasTexture(frameCanvas);
+                
+                const frameMaterial = new THREE.MeshStandardMaterial({
+                    map: frameTexture,
+                    roughness: 0.6,
+                    metalness: 0.3,
+                    bumpMap: frameTexture,
+                    bumpScale: 0.02
+                });
+                
+                const frame = new THREE.Mesh(frameGeometry, frameMaterial);
+                frameGroup.add(frame);
+                
+                // Add subtle decorative trim
+                const trimGeometry = new THREE.BoxGeometry(6.85, 0.1, 0.05);
+                const trimMaterial = new THREE.MeshStandardMaterial({
+                    color: 0xB5A642, // Brass color
+                    roughness: 0.3,
+                    metalness: 0.8
+                });
+                
+                // Top trim
+                const topTrim = new THREE.Mesh(trimGeometry, trimMaterial);
+                topTrim.position.set(0, 2.1, 0.1);
+                frameGroup.add(topTrim);
+                
+                // Bottom trim
+                const bottomTrim = new THREE.Mesh(trimGeometry, trimMaterial);
+                bottomTrim.position.set(0, -2.1, 0.1);
+                frameGroup.add(bottomTrim);
+                
+                // Left trim
+                const leftTrimGeometry = new THREE.BoxGeometry(0.1, 4.3, 0.05);
+                const leftTrim = new THREE.Mesh(leftTrimGeometry, trimMaterial);
+                leftTrim.position.set(-3.45, 0, 0.1);
+                frameGroup.add(leftTrim);
+                
+                // Right trim
+                const rightTrim = new THREE.Mesh(leftTrimGeometry, trimMaterial);
+                rightTrim.position.set(3.45, 0, 0.1);
+                frameGroup.add(rightTrim);
+                
+                return frameGroup;
+            }
+            
+            // Add the vintage frame
+            const screenFrame = createVintageFrame();
+            screenFrame.position.set(0, 0.2, 1.5); // Align with the screen
+            cabinet.add(screenFrame);
+            
+            // Add screen bezel (the inner frame)
+            const bezelGeometry = new THREE.BoxGeometry(6.4, 3.7, 0.05);
+            const bezelMaterial = new THREE.MeshStandardMaterial({
+                color: 0x111111, // Dark color
+                roughness: 0.7,
+                metalness: 0.3
+            });
+            
+            const bezel = new THREE.Mesh(bezelGeometry, bezelMaterial);
+            bezel.position.set(0, 0.2, 1.62);
+            cabinet.add(bezel);
+            
+            // Add the screen (CRT tube) - wider aspect ratio
+            const screenGeometry = new THREE.PlaneGeometry(6.2, 3.5, 32, 32);
+            
+            // Create more authentic curved CRT screen effect
+            const screenPositions = screenGeometry.attributes.position;
+            for (let i = 0; i < screenPositions.count; i++) {
+                const x = screenPositions.getX(i);
+                const y = screenPositions.getY(i);
+                
+                // Create authentic CRT screen curvature - more pronounced at edges
+                // 1960s CRTs had a distinctive bubble-like curve
+                const normalizedX = x / 3.1;
+                const normalizedY = y / 1.75;
+                
+                // Create a more authentic spherical CRT curve with subtle edge distortion
+                const distSq = Math.pow(normalizedX, 2) + Math.pow(normalizedY, 2);
+                
+                // Sophisticated curve calculation for authentic vintage CRT look
+                const sphericalBulge = 0.2 * distSq;
+                const edgeDistortion = 0.05 * Math.pow(distSq, 2);
+                
+                // Add subtle edge distortion that was characteristic of 1960s TVs
+                const bulge = sphericalBulge + edgeDistortion;
+                
+                screenPositions.setZ(i, bulge);
+                
+                // Add subtle warping at the edges (common in vintage CRTs)
+                if (distSq > 0.8) {
+                    const warpFactor = 1.0 - (Math.pow(distSq - 0.8, 2) * 0.05);
+                    screenPositions.setX(i, x * warpFactor);
+                    screenPositions.setY(i, y * warpFactor);
+                }
+            }
+            screenGeometry.computeVertexNormals();
+            
+            // Create canvas for screen content
+            const canvas = document.createElement('canvas');
+            canvas.width = 1024;
+            canvas.height = 768;
+            const context = canvas.getContext('2d');
+            
+            // Slightly green-tinted background for authentic 60s TV color
+            context.fillStyle = '#080A08';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Add color tint overlay
+            context.fillStyle = 'rgba(100, 255, 100, 0.05)';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Add HEAVY TV static/noise effect
+            for (let i = 0; i < 35000; i++) { // Much more static points
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const size = Math.random() * 4 + 1; // Larger static particles
+                const opacity = Math.random() * 0.2; // Much higher opacity for more visible static
+                context.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+                context.fillRect(x, y, size, size);
+            }
+            
+            // Add very visible scan lines (extremely prominent)
+            context.fillStyle = 'rgba(255, 255, 255, 0.1)'; // Much more visible
+            for (let y = 0; y < canvas.height; y += 2) {
+                context.fillRect(0, y, canvas.width, 1);
+            }
+            
+            // Add rolling bar effect (common in vintage TVs with poor vertical hold)
+            const rollBarHeight = 8;
+            const rollBarY = (Date.now() % (canvas.height * 3)) / 3; // Slowly scrolling bar
+            context.fillStyle = 'rgba(255, 255, 255, 0.15)';
+            context.fillRect(0, rollBarY, canvas.width, rollBarHeight);
+            
+            // Add strong color bleeding/chromatic aberration effect typical of early color TVs
+            context.fillStyle = 'rgba(255, 0, 0, 0.08)'; // Stronger red bleed
+            context.fillRect(4, 0, canvas.width, canvas.height);
+            context.fillStyle = 'rgba(0, 0, 255, 0.08)'; // Stronger blue bleed
+            context.fillRect(-4, 0, canvas.width, canvas.height);
+            
+            // Add occasional RF interference patterns (static bands)
+            if (Math.random() > 0.7) {
+                context.fillStyle = 'rgba(255, 255, 255, 0.15)';
+                const bandCount = Math.floor(Math.random() * 5) + 3;
+                const bandHeight = canvas.height / bandCount;
+                
+                for (let i = 0; i < bandCount; i++) {
+                    if (i % 2 === 0) {
+                        context.fillRect(0, i * bandHeight, canvas.width, bandHeight);
+                    }
+                }
+            }
+            
+            // Add content to the screen - with Doordarshan-inspired text style
+            // Create Doordarshan logo (simplified)
+            context.fillStyle = '#FFFFFF';
+            context.beginPath();
+            context.arc(canvas.width/2, 100, 30, 0, Math.PI*2);
+            context.fill();
+            context.fillStyle = '#000000';
+            context.beginPath();
+            context.arc(canvas.width/2, 100, 15, 0, Math.PI*2);
+            context.fill();
+            
+            // Add Doordarshan text
+            context.fillStyle = '#FFFFFF';
+            context.font = 'bold 24px sans-serif';
+            context.textAlign = 'center';
+            context.fillText("DOORDARSHAN", canvas.width/2, 160);
+            
+            // Title with slight RGB shift for authentic 60s color TV effect
+            context.fillStyle = '#FF8888'; // Red channel
+            context.font = 'bold 70px Playfair Display, serif';
+            context.fillText(headerTitle, canvas.width/2-1, 230);
+            
+            context.fillStyle = '#88FF88'; // Green channel
+            context.font = 'bold 70px Playfair Display, serif';
+            context.fillText(headerTitle, canvas.width/2, 230);
+            
+            context.fillStyle = '#8888FF'; // Blue channel
+            context.font = 'bold 70px Playfair Display, serif';
+            context.fillText(headerTitle, canvas.width/2+1, 230);
+            
+            // Subtitle
+            context.fillStyle = '#FFFFFF';
+            context.font = 'bold 36px sans-serif';
+            context.fillText(headerSubtitle, canvas.width/2, 290);
+            
+            // Description text - multiple lines
+            context.font = '24px sans-serif';
+            const maxWidth = 800;
+            const lineHeight = 36;
+            const words = headerDescription.split(' ');
+            let line = '';
+            let y = 360;
+            
+            for (let i = 0; i < words.length; i++) {
+                const testLine = line + words[i] + ' ';
+                const metrics = context.measureText(testLine);
+                const testWidth = metrics.width;
+                
+                if (testWidth > maxWidth && i > 0) {
+                    context.fillText(line, canvas.width/2, y);
+                    line = words[i] + ' ';
+                    y += lineHeight;
+                } else {
+                    line = testLine;
+                }
+            }
+            context.fillText(line, canvas.width/2, y);
+            
+            // Add "NATIONAL PROGRAMME" at bottom - common for 1960s Doordarshan
+            context.font = 'bold 26px sans-serif';
+            context.fillText("NATIONAL PROGRAMME", canvas.width/2, y + 80);
+            
+            // Create texture from canvas
+            const screenTexture = new THREE.CanvasTexture(canvas);
+            
+            const screenMaterial = new THREE.MeshStandardMaterial({ 
+                map: screenTexture,
+                roughness: 0.3,
+                metalness: 0.1,
+                emissive: 0xffffff,
+                emissiveMap: screenTexture,
+                emissiveIntensity: 0.6 // Brighter glow for CRT effect
+            });
+            
+            const screen = new THREE.Mesh(screenGeometry, screenMaterial);
+            screen.position.set(0, 0.2, 1.65); // Align with bezel
+            cabinet.add(screen);
+            
+            // Add control panel area at bottom of TV (typical of 1960s TVs)
+            const controlPanelGeometry = new THREE.BoxGeometry(7, 1, 0.5);
+            const controlPanelMaterial = new THREE.MeshStandardMaterial({
+                color: 0x3A2213,
+                roughness: 0.9,
+                metalness: 0.1
+            });
+            
+            const controlPanel = new THREE.Mesh(controlPanelGeometry, controlPanelMaterial);
+            controlPanel.position.set(0, -2.5, 1.3);
+            cabinet.add(controlPanel);
+            
+            // Add brand name "EC" (popular Indian TV brand in 1960s)
+            const brandPlateGeometry = new THREE.PlaneGeometry(1.5, 0.5);
+            const brandPlateMaterial = new THREE.MeshStandardMaterial({
+                color: 0xD4B786,
+                roughness: 0.5,
+                metalness: 0.5
+            });
+            
+            const brandPlate = new THREE.Mesh(brandPlateGeometry, brandPlateMaterial);
+            brandPlate.position.set(0, -2.5, 1.6);
+            cabinet.add(brandPlate);
+            
+            // Create brand text canvas
+            const brandCanvas = document.createElement('canvas');
+            brandCanvas.width = 256;
+            brandCanvas.height = 128;
+            const brandContext = brandCanvas.getContext('2d');
+            
+            // Gold metallic background
+            const brandGradient = brandContext.createLinearGradient(0, 0, 0, 128);
+            brandGradient.addColorStop(0, '#D4B786');
+            brandGradient.addColorStop(0.5, '#FFF0D0');
+            brandGradient.addColorStop(1, '#D4B786');
+            
+            brandContext.fillStyle = brandGradient;
+            brandContext.fillRect(0, 0, 256, 128);
+            
+            // Add EC text (typical Indian TV brand of the 60s)
+            brandContext.fillStyle = '#5A2D1C';
+            brandContext.font = 'bold 80px serif';
+            brandContext.textAlign = 'center';
+            brandContext.textBaseline = 'middle';
+            brandContext.fillText("EC", 128, 64);
+            
+            const brandTexture = new THREE.CanvasTexture(brandCanvas);
+            brandPlate.material.map = brandTexture;
+            
+            // Create control knobs - more authentic 60s style (larger, metallic finish)
+            function createKnob(radius, height) {
+                const knobGroup = new THREE.Group();
+                
+                // Main knob body
+                const knobGeometry = new THREE.CylinderGeometry(radius, radius * 0.9, height, 16);
+                const knobMaterial = new THREE.MeshStandardMaterial({
+                    color: 0xC0C0C0, // Silver color
+                    roughness: 0.3,
+                    metalness: 0.8
+                });
+                const knob = new THREE.Mesh(knobGeometry, knobMaterial);
+                knobGroup.add(knob);
+                
+                // Add knob indicator line
+                const indicatorGeometry = new THREE.BoxGeometry(radius * 0.8, 0.05, 0.05);
+                const indicatorMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x111111
+                });
+                const indicator = new THREE.Mesh(indicatorGeometry, indicatorMaterial);
+                indicator.position.set(0, height/2 + 0.025, 0);
+                knobGroup.add(indicator);
+                
+                return knobGroup;
+            }
+            
+            // Create labels for knobs
+            function createKnobLabel(text, width, height) {
+                const labelCanvas = document.createElement('canvas');
+                labelCanvas.width = 128;
+                labelCanvas.height = 64;
+                const labelContext = labelCanvas.getContext('2d');
+                
+                // Background
+                labelContext.fillStyle = '#D4C6B6';
+                labelContext.fillRect(0, 0, 128, 64);
+                
+                // Text
+                labelContext.fillStyle = '#111111';
+                labelContext.font = 'bold 18px serif';
+                labelContext.textAlign = 'center';
+                labelContext.textBaseline = 'middle';
+                labelContext.fillText(text, 64, 32);
+                
+                const labelTexture = new THREE.CanvasTexture(labelCanvas);
+                
+                const labelGeometry = new THREE.PlaneGeometry(width, height);
+                const labelMaterial = new THREE.MeshBasicMaterial({
+                    map: labelTexture,
+                    transparent: true
+                });
+                
+                return new THREE.Mesh(labelGeometry, labelMaterial);
+            }
+            
+            // Create and position knobs with labels
+            const knobSize = 0.25;
+            const knobSpacing = 1.2;
+            
+            const knobLabels = ["VOLUME", "CONTRAST", "BRIGHTNESS", "CHANNEL"];
+            
+            for (let i = 0; i < 4; i++) {
+                const xPos = -3 + (i * knobSpacing) + 1.2;
+                
+                // Create knob
+                const knob = createKnob(knobSize, 0.2);
+                knob.rotation.x = Math.PI / 2;
+                knob.position.set(xPos, -2.5, 1.55);
+                knob.rotation.z = Math.random() * Math.PI; // Random rotation
+                cabinet.add(knob);
+                
+                // Create label
+                const label = createKnobLabel(knobLabels[i], 0.6, 0.2);
+                label.position.set(xPos, -2.5, 1.8);
+                label.rotation.x = -0.2; // Slight tilt for better visibility
+                cabinet.add(label);
+            }
+            
+            // Add speaker grills (typical of 1960s TVs)
+            function createSpeakerGrill(width, height) {
+                const grillGroup = new THREE.Group();
+                
+                // Grill background
+                const grillBackGeometry = new THREE.PlaneGeometry(width, height);
+                const grillBackMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x111111,
+                    roughness: 0.8,
+                    metalness: 0.2
+                });
+                const grillBack = new THREE.Mesh(grillBackGeometry, grillBackMaterial);
+                grillGroup.add(grillBack);
+                
+                // Add grill pattern
+                const lineSpacing = 0.05;
+                const lineWidth = 0.02;
+                const numLinesX = Math.floor(width / (lineSpacing * 2));
+                const numLinesY = Math.floor(height / (lineSpacing * 2));
+                
+                const lineGeometry = new THREE.BoxGeometry(lineWidth, height, 0.01);
+                const lineMaterial = new THREE.MeshStandardMaterial({
+                    color: 0xC0C0C0,
+                    roughness: 0.5,
+                    metalness: 0.3
+                });
+                
+                // Vertical lines
+                for (let i = 0; i < numLinesX; i++) {
+                    const line = new THREE.Mesh(lineGeometry, lineMaterial);
+                    line.position.set(-width/2 + i * lineSpacing * 2, 0, 0.01);
+                    grillGroup.add(line);
+                }
+                
+                // Horizontal lines
+                const hLineGeometry = new THREE.BoxGeometry(width, lineWidth, 0.01);
+                for (let i = 0; i < numLinesY; i++) {
+                    const line = new THREE.Mesh(hLineGeometry, lineMaterial);
+                    line.position.set(0, -height/2 + i * lineSpacing * 2, 0.02);
+                    grillGroup.add(line);
+                }
+                
+                return grillGroup;
+            }
+            
+            // Add speaker grills on both sides of the TV
+            const leftGrill = createSpeakerGrill(1.5, 2);
+            leftGrill.position.set(-2.5, 0, 1.5);
+            cabinet.add(leftGrill);
+            
+            const rightGrill = createSpeakerGrill(1.5, 2);
+            rightGrill.position.set(2.5, 0, 1.5);
+            cabinet.add(rightGrill);
+            
+            // Add TV legs/stand - refined vintage style for 1960s Indian TV furniture
+            function createVintageLeg() {
+                // Create a group to hold the leg parts
+                const legGroup = new THREE.Group();
+                
+                // Main leg part - tapered and slightly curved
+                const mainLegPath = new THREE.Shape();
+                mainLegPath.moveTo(0, 0);
+                mainLegPath.lineTo(0.3, 0);
+                mainLegPath.lineTo(0.2, -1.4);
+                mainLegPath.lineTo(0, -1.4);
+                mainLegPath.lineTo(0, 0);
+                
+                const extrudeSettings = {
+                    steps: 2,
+                    depth: 0.3,
+                    bevelEnabled: true,
+                    bevelThickness: 0.05,
+                    bevelSize: 0.05,
+                    bevelOffset: 0,
+                    bevelSegments: 3
+                };
+                
+                const legGeometry = new THREE.ExtrudeGeometry(mainLegPath, extrudeSettings);
+                
+                // Create a richer dark wood texture for the legs
+                const legCanvas = document.createElement('canvas');
+                legCanvas.width = 256;
+                legCanvas.height = 256;
+                const legContext = legCanvas.getContext('2d');
+                
+                // Base color - darker than the cabinet
+                legContext.fillStyle = '#5A2D1C';
+                legContext.fillRect(0, 0, legCanvas.width, legCanvas.height);
+                
+                // Add wood grain
+                legContext.strokeStyle = '#3A1D10';
+                legContext.lineWidth = 1;
+                
+                for (let i = 0; i < 40; i++) {
+                    legContext.beginPath();
+                    const y = Math.random() * legCanvas.height;
+                    legContext.moveTo(0, y);
+                    
+                    // Create wavy wood grain lines
+                    for (let x = 0; x < legCanvas.width; x += 10) {
+                        const yOffset = y + Math.sin(x * 0.05) * 5;
+                        legContext.lineTo(x, yOffset);
+                    }
+                    
+                    legContext.stroke();
+                }
+                
+                // Add some darker spots and knots for authentic wood texture
+                for (let i = 0; i < 10; i++) {
+                    const x = Math.random() * legCanvas.width;
+                    const y = Math.random() * legCanvas.height;
+                    const size = Math.random() * 15 + 5;
+                    
+                    // Create wood knot
+                    const gradient = legContext.createRadialGradient(
+                        x, y, 0,
+                        x, y, size
+                    );
+                    gradient.addColorStop(0, '#2A1208');
+                    gradient.addColorStop(0.7, '#3A1D10');
+                    gradient.addColorStop(1, '#5A2D1C');
+                    
+                    legContext.fillStyle = gradient;
+                    legContext.beginPath();
+                    legContext.arc(x, y, size, 0, Math.PI * 2);
+                    legContext.fill();
+                }
+                
+                const legTexture = new THREE.CanvasTexture(legCanvas);
+                
+                const legMaterial = new THREE.MeshStandardMaterial({
+                    map: legTexture,
+                    roughness: 0.9,
+                    metalness: 0.1,
+                    bumpMap: legTexture,
+                    bumpScale: 0.05
+                });
+                
+                const leg = new THREE.Mesh(legGeometry, legMaterial);
+                leg.rotation.y = Math.PI/2; // Rotate to correct orientation
+                legGroup.add(leg);
+                
+                // Add decorative brass foot - common in vintage furniture
+                const footGeometry = new THREE.CylinderGeometry(0.12, 0.15, 0.1, 8);
+                const footMaterial = new THREE.MeshStandardMaterial({
+                    color: 0xB5A642, // Brass color
+                    roughness: 0.3,
+                    metalness: 0.8
+                });
+                
+                const foot = new THREE.Mesh(footGeometry, footMaterial);
+                foot.position.set(0.1, -1.45, 0.15);
+                legGroup.add(foot);
+                
+                return legGroup;
+            }
+            
+            // Create and position four legs with authentic vintage positioning
+            const legPositions = [
+                {x: -3, y: -3.3, z: 1, rotY: Math.PI/4},    // Front left
+                {x: 3, y: -3.3, z: 1, rotY: -Math.PI/4},    // Front right
+                {x: -3, y: -3.3, z: -1, rotY: -Math.PI/4},  // Back left
+                {x: 3, y: -3.3, z: -1, rotY: Math.PI/4}     // Back right
+            ];
+            
+            for (const pos of legPositions) {
+                const leg = createVintageLeg();
+                leg.position.set(pos.x, pos.y, pos.z);
+                leg.rotation.y = pos.rotY;
+                // Slight outward angle for authentic vintage look
+                leg.rotation.z = (pos.x < 0) ? 0.15 : -0.15;
+                // Disable any shadows cast by the legs
+                leg.castShadow = false;
+                leg.receiveShadow = false;
+                tvSet.add(leg);
+            }
+            
+            // Ensure no ground plane or grid is visible
+            renderer.shadowMap.enabled = false;
+            
+            // Add a decorative bottom trim bar (common in vintage TVs)
+            const trimGeometry = new THREE.BoxGeometry(7.2, 0.2, 0.5);
+            const trimMaterial = new THREE.MeshStandardMaterial({
+                color: 0xB5A642, // Brass color
+                roughness: 0.4,
+                metalness: 0.7
+            });
+            
+            const bottomTrim = new THREE.Mesh(trimGeometry, trimMaterial);
+            bottomTrim.position.set(0, -3.0, 0.8);
+            cabinet.add(bottomTrim);
+            
+            // Add antenna (common on 1960s TVs)
+            function createAntenna() {
+                const antennaGroup = new THREE.Group();
+                
+                // Base
+                const baseGeometry = new THREE.CylinderGeometry(0.2, 0.3, 0.2, 8);
+                const baseMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x111111,
+                    roughness: 0.7,
+                    metalness: 0.3
+                });
+                const base = new THREE.Mesh(baseGeometry, baseMaterial);
+                antennaGroup.add(base);
+                
+                // Main pole
+                const poleGeometry = new THREE.CylinderGeometry(0.05, 0.05, 2, 8);
+                const poleMaterial = new THREE.MeshStandardMaterial({
+                    color: 0xC0C0C0,
+                    roughness: 0.3,
+                    metalness: 0.8
+                });
+                const pole = new THREE.Mesh(poleGeometry, poleMaterial);
+                pole.position.set(0, 1, 0);
+                antennaGroup.add(pole);
+                
+                // V-shaped antenna elements
+                const elementGeometry = new THREE.CylinderGeometry(0.02, 0.02, 1.5, 8);
+                
+                const leftElement = new THREE.Mesh(elementGeometry, poleMaterial);
+                leftElement.position.set(0, 2, 0);
+                leftElement.rotation.z = Math.PI/4;
+                antennaGroup.add(leftElement);
+                
+                const rightElement = new THREE.Mesh(elementGeometry, poleMaterial);
+                rightElement.position.set(0, 2, 0);
+                rightElement.rotation.z = -Math.PI/4;
+                antennaGroup.add(rightElement);
+                
+                return antennaGroup;
+            }
+            
+            // Add antennas to the TV
+            const leftAntenna = createAntenna();
+            leftAntenna.position.set(-2, 3, 0);
+            cabinet.add(leftAntenna);
+            
+            const rightAntenna = createAntenna();
+            rightAntenna.position.set(2, 3, 0);
+            cabinet.add(rightAntenna);
+            
+            // Position the TV
+            tvSet.position.set(0, 0.5, 0);
+            tvSet.rotation.x = -0.1; // Slight tilt
+            
+            // Setup camera position
+            camera.position.z = 10;
+            camera.position.y = 0.8;
+            
+            // Add animations
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                // Add very subtle floating movement
+                tvSet.position.y = Math.sin(Date.now() * 0.0005) * 0.05;
+                
+                // Add subtle flicker to the screen's emissive intensity to simulate CRT
+                if (Math.random() > 0.97) {
+                    screenMaterial.emissiveIntensity = 0.5 + Math.random() * 0.3;
+                    setTimeout(() => {
+                        screenMaterial.emissiveIntensity = 0.6;
+                    }, 50 + Math.random() * 150);
+                }
+                
+                // Static noise effect - update the screen texture occasionally
+                if (Math.random() > 0.95) {
+                    // Reset parts of the screen with static
+                    context.fillStyle = 'rgba(8, 10, 8, 0.1)';
+                    context.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    // Add random static noise
+                    for (let i = 0; i < 2000; i++) {
+                        const x = Math.random() * canvas.width;
+                        const y = Math.random() * canvas.height;
+                        const size = Math.random() * 3 + 1;
+                        const opacity = Math.random() * 0.15;
+                        context.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+                        context.fillRect(x, y, size, size);
+                    }
+                    
+                    // Add green tint noise (typical of early color TVs)
+                    for (let i = 0; i < 500; i++) {
+                        const x = Math.random() * canvas.width;
+                        const y = Math.random() * canvas.height;
+                        const size = Math.random() * 4 + 1;
+                        context.fillStyle = `rgba(100, 255, 100, ${Math.random() * 0.05})`;
+                        context.fillRect(x, y, size, size);
+                    }
+                    
+                    // Occasionally add horizontal distortion bands
+                    if (Math.random() > 0.7) {
+                        const bandY = Math.random() * canvas.height;
+                        const bandHeight = Math.random() * 20 + 5;
+                        context.fillStyle = 'rgba(255, 255, 255, 0.1)';
+                        context.fillRect(0, bandY, canvas.width, bandHeight);
+                    }
+                    
+                    // Add color shift glitches occasionally
+                    if (Math.random() > 0.9) {
+                        const glitchX = Math.random() * canvas.width;
+                        const glitchY = Math.random() * canvas.height;
+                        const glitchW = Math.random() * 100 + 50;
+                        const glitchH = Math.random() * 30 + 10;
+                        
+                        context.fillStyle = 'rgba(255, 0, 0, 0.1)';
+                        context.fillRect(glitchX + 3, glitchY, glitchW, glitchH);
+                        context.fillStyle = 'rgba(0, 255, 0, 0.1)';
+                        context.fillRect(glitchX, glitchY, glitchW, glitchH);
+                        context.fillStyle = 'rgba(0, 0, 255, 0.1)';
+                        context.fillRect(glitchX - 3, glitchY, glitchW, glitchH);
+                    }
+                    
+                    screenTexture.needsUpdate = true;
+                }
+                
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+            
+            // Handle window resize
+            function handleResize() {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                
+                // Adjust TV size based on screen width - increased scale values for bigger TV
+                if (window.innerWidth < 768) {
+                    tvSet.scale.set(0.85, 0.85, 0.85);
+                    tvSet.position.set(0, -1, 0);
+                    camera.position.z = 10;
+                } else if (window.innerWidth < 1200) {
+                    tvSet.scale.set(1.1, 1.1, 1.1);
+                    tvSet.position.set(0, -0.5, 0);
+                    camera.position.z = 11;
+                } else {
+                    tvSet.scale.set(1.3, 1.3, 1.3);
+                    tvSet.position.set(0, 0, 0);
+                    camera.position.z = 12;
+                }
+            }
+            
+            // Add resize listener
+            window.addEventListener('resize', handleResize);
+            
+            // Initial size check
+            handleResize();
+            
+            // Clean up on page unload
+            window.addEventListener('unload', () => {
+                // Remove event listeners
+                window.removeEventListener('resize', handleResize);
+                
+                // Dispose of Three.js resources
+                renderer.dispose();
+                scene.dispose();
+            });
+        }
     </script>
 </body>
 </html>
