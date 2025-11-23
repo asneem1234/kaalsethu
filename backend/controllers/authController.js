@@ -1,15 +1,14 @@
-import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv';
+import UserSupabase from '../models/UserSupabase.js';
+
+dotenv.config();
+
+const User = UserSupabase;
 
 // Update the token generation function to handle missing secret
 const generateToken = (id) => {
-  const secret = process.env.JWT_SECRET;
-  
-  if (!secret) {
-    console.error('JWT_SECRET is not defined in environment variables');
-    throw new Error('Token generation failed: Server configuration error');
-  }
+  const secret = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
   
   return jwt.sign({ id }, secret, {
     expiresIn: process.env.JWT_EXPIRES_IN || '7d'
@@ -21,43 +20,50 @@ export const signup = async (req, res) => {
   try {
     const { email, password, name } = req.body;
     
+    // Validate input
+    if (!email || !password || !name) {
+      return res.status(400).json({ 
+        success: false,
+        error: 'Please provide name, email and password' 
+      });
+    }
+
     // Check if user already exists
-    const userExists = await User.findOne({ email });
+    const userExists = await User.findByEmail(email);
+      
     if (userExists) {
-      return res.status(400).json({ error: 'Email already registered' });
+      return res.status(400).json({ 
+        success: false,
+        error: 'Email already registered' 
+      });
     }
     
     // Create new user
-    const user = await User.create({
-      email,
-      password,
-      name
-    });
+    const user = await User.create({ name, email, password });
     
     // Generate token
-    const token = generateToken(user._id);
+    const token = generateToken(user.id);
     
     res.status(201).json({
       success: true,
       token,
       user: {
-        id: user._id,
+        id: user.id,
         email: user.email,
         name: user.name
       }
     });
   } catch (error) {
-    if (error.name === 'ValidationError') {
-      const messages = Object.values(error.errors).map(err => err.message);
-      return res.status(400).json({ error: messages });
-    }
     console.error('Signup error:', error);
-    res.status(500).json({ error: 'Server error during signup process' });
+    res.status(500).json({ 
+      success: false,
+      error: error.message || 'Server error during signup process' 
+    });
   }
 };
 
 // Login user
-export const login = async (req, res, next) => {
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     
@@ -70,7 +76,7 @@ export const login = async (req, res, next) => {
     }
     
     // Find user by email
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.findByEmail(email);
     
     // Check if user exists
     if (!user) {
@@ -80,8 +86,8 @@ export const login = async (req, res, next) => {
       });
     }
     
-    // Check password using the comparePassword method
-    const isPasswordValid = await user.comparePassword(password);
+    // Check password
+    const isPasswordValid = await User.verifyPassword(password, user.password);
     
     if (!isPasswordValid) {
       return res.status(401).json({ 
@@ -91,14 +97,14 @@ export const login = async (req, res, next) => {
     }
     
     // Generate token for successful login
-    const token = generateToken(user._id);
+    const token = generateToken(user.id);
     
     // Return success response
     res.status(200).json({
       success: true,
       token,
       user: {
-        id: user._id,
+        id: user.id,
         email: user.email,
         name: user.name
       }
@@ -116,10 +122,27 @@ export const login = async (req, res, next) => {
 // Get current user profile
 export const getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
-    res.json(user);
+    const user = await User.findById(req.user.id);
+    
+    if (!user) {
+      return res.status(404).json({ 
+        success: false,
+        error: 'User not found' 
+      });
+    }
+
+    // Remove password from response
+    const { password, ...userWithoutPassword } = user;
+    
+    res.json({
+      success: true,
+      user: userWithoutPassword
+    });
   } catch (error) {
     console.error('Get profile error:', error);
-    res.status(500).json({ error: 'Server error fetching user profile' });
+    res.status(500).json({ 
+      success: false,
+      error: 'Server error fetching user profile' 
+    });
   }
 };

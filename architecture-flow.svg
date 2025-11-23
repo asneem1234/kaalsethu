@@ -1,0 +1,293 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1800">
+  <defs>
+    <style>
+      .box { fill: #2d3748; stroke: #4299e1; stroke-width: 2; rx: 8; }
+      .frontend { fill: #4299e1; }
+      .backend { fill: #48bb78; }
+      .database { fill: #ed8936; }
+      .ai { fill: #9f7aea; }
+      .storage { fill: #f56565; }
+      .text { fill: white; font-family: Arial, sans-serif; font-size: 14px; text-anchor: middle; }
+      .title { font-size: 16px; font-weight: bold; }
+      .arrow { stroke: #cbd5e0; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { fill: #cbd5e0; font-size: 12px; font-style: italic; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#cbd5e0" />
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="700" y="30" class="text title" style="font-size: 24px;">Time Capsule Architecture Flow</text>
+
+  <!-- Layer 1: User Interface -->
+  <text x="700" y="70" class="text" style="font-size: 18px; fill: #4299e1;">Frontend Layer</text>
+  
+  <!-- Index.html -->
+  <rect x="50" y="90" width="180" height="80" class="box frontend"/>
+  <text x="140" y="120" class="text title">index.html</text>
+  <text x="140" y="140" class="text" style="font-size: 12px;">Landing Page</text>
+  <text x="140" y="155" class="text" style="font-size: 12px;">Hero Animation</text>
+
+  <!-- Second.html -->
+  <rect x="270" y="90" width="180" height="80" class="box frontend"/>
+  <text x="360" y="120" class="text title">second.html</text>
+  <text x="360" y="140" class="text" style="font-size: 12px;">3D Galaxy (Three.js)</text>
+  <text x="360" y="155" class="text" style="font-size: 12px;">Year Selection</text>
+
+  <!-- Feed Templates -->
+  <rect x="490" y="90" width="180" height="80" class="box frontend"/>
+  <text x="580" y="115" class="text title">Feed Templates</text>
+  <text x="580" y="135" class="text" style="font-size: 12px;">1950s-2020s.html</text>
+  <text x="580" y="150" class="text" style="font-size: 12px;">Dynamic Content</text>
+  <text x="580" y="165" class="text" style="font-size: 12px;">8 Sections</text>
+
+  <!-- Profile/Auth -->
+  <rect x="710" y="90" width="180" height="80" class="box frontend"/>
+  <text x="800" y="120" class="text title">Auth Pages</text>
+  <text x="800" y="140" class="text" style="font-size: 12px;">profile.html</text>
+  <text x="800" y="155" class="text" style="font-size: 12px;">Login/Signup</text>
+
+  <!-- Time Explorer -->
+  <rect x="930" y="90" width="180" height="80" class="box frontend"/>
+  <text x="1020" y="120" class="text title">time-explorer.html</text>
+  <text x="1020" y="140" class="text" style="font-size: 12px;">Time Capsule</text>
+  <text x="1020" y="155" class="text" style="font-size: 12px;">Creation</text>
+
+  <!-- Arrows from Frontend to year-content-loader -->
+  <path d="M 140 170 L 140 240" class="arrow"/>
+  <path d="M 360 170 L 360 240" class="arrow"/>
+  <path d="M 580 170 L 580 240" class="arrow"/>
+  <path d="M 800 170 L 800 240" class="arrow"/>
+  <path d="M 1020 170 L 1020 240" class="arrow"/>
+
+  <!-- Layer 2: Client-side JavaScript -->
+  <text x="700" y="230" class="text" style="font-size: 18px; fill: #4299e1;">Client-side JavaScript</text>
+
+  <!-- year-content-loader.js -->
+  <rect x="380" y="250" width="220" height="80" class="box frontend"/>
+  <text x="490" y="275" class="text title">year-content-loader.js</text>
+  <text x="490" y="295" class="text" style="font-size: 12px;">Detects ?year param</text>
+  <text x="490" y="310" class="text" style="font-size: 12px;">Fetches AI content</text>
+  <text x="490" y="325" class="text" style="font-size: 12px;">Updates DOM</text>
+
+  <!-- auth.js -->
+  <rect x="640" y="250" width="180" height="80" class="box frontend"/>
+  <text x="730" y="280" class="text title">auth.js</text>
+  <text x="730" y="300" class="text" style="font-size: 12px;">JWT Handling</text>
+  <text x="730" y="315" class="text" style="font-size: 12px;">Auth State</text>
+
+  <!-- Arrow to server -->
+  <path d="M 490 330 L 490 400" class="arrow"/>
+  <text x="510" y="370" class="label">API Requests</text>
+  
+  <path d="M 730 330 L 730 400" class="arrow"/>
+  <text x="750" y="370" class="label">Auth Requests</text>
+
+  <!-- Layer 3: Server -->
+  <text x="700" y="390" class="text" style="font-size: 18px; fill: #48bb78;">Backend Layer (Node.js + Express)</text>
+
+  <!-- server.js -->
+  <rect x="500" y="410" width="400" height="80" class="box backend"/>
+  <text x="700" y="435" class="text title">server.js</text>
+  <text x="700" y="455" class="text" style="font-size: 12px;">Express Server (Port 3000)</text>
+  <text x="700" y="470" class="text" style="font-size: 12px;">Routes Registration | Middleware | CORS</text>
+  <text x="700" y="485" class="text" style="font-size: 12px;">Static File Serving</text>
+
+  <!-- Arrow to routes -->
+  <path d="M 550 490 L 350 560" class="arrow"/>
+  <path d="M 650 490 L 650 560" class="arrow"/>
+  <path d="M 750 490 L 750 560" class="arrow"/>
+  <path d="M 850 490 L 950 560" class="arrow"/>
+
+  <!-- Layer 4: Routes -->
+  <text x="700" y="550" class="text" style="font-size: 18px; fill: #48bb78;">API Routes</text>
+
+  <!-- auth.js route -->
+  <rect x="50" y="570" width="180" height="80" class="box backend"/>
+  <text x="140" y="595" class="text title">authRoutes.js</text>
+  <text x="140" y="615" class="text" style="font-size: 12px;">POST /register</text>
+  <text x="140" y="630" class="text" style="font-size: 12px;">POST /login</text>
+  <text x="140" y="645" class="text" style="font-size: 12px;">GET /profile</text>
+
+  <!-- decades.js route -->
+  <rect x="260" y="570" width="200" height="80" class="box backend"/>
+  <text x="360" y="595" class="text title">decades.js</text>
+  <text x="360" y="615" class="text" style="font-size: 12px;">POST /api/generate-</text>
+  <text x="360" y="630" class="text" style="font-size: 12px;">year-content</text>
+  <text x="360" y="645" class="text" style="font-size: 12px;">Year: 1950-2025</text>
+
+  <!-- chatbot.js route -->
+  <rect x="490" y="570" width="180" height="80" class="box backend"/>
+  <text x="580" y="595" class="text title">chatbot.js</text>
+  <text x="580" y="615" class="text" style="font-size: 12px;">POST /api/chatbot</text>
+  <text x="580" y="630" class="text" style="font-size: 12px;">Historical Q&A</text>
+  <text x="580" y="645" class="text" style="font-size: 12px;">Context-aware</text>
+
+  <!-- time capsule routes -->
+  <rect x="700" y="570" width="180" height="80" class="box backend"/>
+  <text x="790" y="595" class="text title">Time Capsule</text>
+  <text x="790" y="615" class="text" style="font-size: 12px;">POST /create</text>
+  <text x="790" y="630" class="text" style="font-size: 12px;">GET /user/:id</text>
+  <text x="790" y="645" class="text" style="font-size: 12px;">File Upload</text>
+
+  <!-- community routes -->
+  <rect x="910" y="570" width="180" height="80" class="box backend"/>
+  <text x="1000" y="595" class="text title">Community</text>
+  <text x="1000" y="615" class="text" style="font-size: 12px;">POST /posts</text>
+  <text x="1000" y="630" class="text" style="font-size: 12px;">GET /posts/:year</text>
+
+  <!-- Arrows to controllers/utils -->
+  <path d="M 140 650 L 140 720" class="arrow"/>
+  <path d="M 360 650 L 360 720" class="arrow"/>
+  <path d="M 580 650 L 580 720" class="arrow"/>
+  <path d="M 790 650 L 790 750" class="arrow"/>
+  <path d="M 1000 650 L 1000 750" class="arrow"/>
+
+  <!-- Layer 5: Business Logic -->
+  <text x="700" y="710" class="text" style="font-size: 18px; fill: #48bb78;">Business Logic Layer</text>
+
+  <!-- authController -->
+  <rect x="50" y="730" width="180" height="70" class="box backend"/>
+  <text x="140" y="755" class="text title">authController.js</text>
+  <text x="140" y="775" class="text" style="font-size: 12px;">JWT Generation</text>
+  <text x="140" y="790" class="text" style="font-size: 12px;">Password Hashing</text>
+
+  <!-- llmClient -->
+  <rect x="260" y="730" width="240" height="70" class="box ai"/>
+  <text x="380" y="755" class="text title">llmClient.js</text>
+  <text x="380" y="775" class="text" style="font-size: 12px;">generateYearContent()</text>
+  <text x="380" y="790" class="text" style="font-size: 12px;">generateChatResponse()</text>
+
+  <!-- ragHelper -->
+  <rect x="530" y="730" width="180" height="70" class="box ai"/>
+  <text x="620" y="755" class="text title">ragHelper.js</text>
+  <text x="620" y="775" class="text" style="font-size: 12px;">Context Retrieval</text>
+  <text x="620" y="790" class="text" style="font-size: 12px;">JSON Data Loader</text>
+
+  <!-- Middleware -->
+  <rect x="740" y="730" width="180" height="70" class="box backend"/>
+  <text x="830" y="755" class="text title">authMiddleware.js</text>
+  <text x="830" y="775" class="text" style="font-size: 12px;">JWT Verification</text>
+  <text x="830" y="790" class="text" style="font-size: 12px;">Protected Routes</text>
+
+  <!-- Azure Storage -->
+  <rect x="950" y="730" width="180" height="70" class="box storage"/>
+  <text x="1040" y="755" class="text title">Azure Blob</text>
+  <text x="1040" y="775" class="text" style="font-size: 12px;">File Upload</text>
+  <text x="1040" y="790" class="text" style="font-size: 12px;">Media Storage</text>
+
+  <!-- Arrow to external AI -->
+  <path d="M 380 800 L 380 900" class="arrow"/>
+  <text x="400" y="855" class="label">API Call</text>
+
+  <!-- Layer 6: External Services -->
+  <text x="700" y="890" class="text" style="font-size: 18px; fill: #9f7aea;">External Services</text>
+
+  <!-- Google Gemini -->
+  <rect x="260" y="910" width="240" height="100" class="box ai"/>
+  <text x="380" y="940" class="text title">Google Gemini 2.0 Flash</text>
+  <text x="380" y="960" class="text" style="font-size: 12px;">Year-specific content</text>
+  <text x="380" y="975" class="text" style="font-size: 12px;">8 sections: Music, Events,</text>
+  <text x="380" y="990" class="text" style="font-size: 12px;">Fashion, Tech, Daily Life...</text>
+  <text x="380" y="1005" class="text" style="font-size: 12px;">Fallback: Generic content</text>
+
+  <!-- Azure Blob detailed -->
+  <rect x="950" y="910" width="180" height="80" class="box storage"/>
+  <text x="1040" y="935" class="text title">Azure Blob Storage</text>
+  <text x="1040" y="955" class="text" style="font-size: 12px;">Audio files</text>
+  <text x="1040" y="970" class="text" style="font-size: 12px;">Video files</text>
+  <text x="1040" y="985" class="text" style="font-size: 12px;">Images</text>
+
+  <!-- Arrows to models -->
+  <path d="M 140 800 L 140 1100" class="arrow"/>
+  <path d="M 830 800 L 830 1100" class="arrow"/>
+  <path d="M 1040 800 L 1040 990" class="arrow"/>
+
+  <!-- Layer 7: Database Layer -->
+  <text x="700" y="1090" class="text" style="font-size: 18px; fill: #ed8936;">Data Layer</text>
+
+  <!-- Database config -->
+  <rect x="350" y="1110" width="180" height="70" class="box database"/>
+  <text x="440" y="1135" class="text title">database.js</text>
+  <text x="440" y="1155" class="text" style="font-size: 12px;">SQLite Connection</text>
+  <text x="440" y="1170" class="text" style="font-size: 12px;">Table Initialization</text>
+
+  <!-- MongoDB note -->
+  <rect x="560" y="1110" width="180" height="70" class="box database"/>
+  <text x="650" y="1135" class="text title">MongoDB Atlas</text>
+  <text x="650" y="1155" class="text" style="font-size: 12px;">(For Vercel Deploy)</text>
+  <text x="650" y="1170" class="text" style="font-size: 12px;">Cloud Database</text>
+
+  <!-- Models -->
+  <rect x="770" y="1110" width="180" height="70" class="box database"/>
+  <text x="860" y="1135" class="text title">Models</text>
+  <text x="860" y="1155" class="text" style="font-size: 12px;">User.js</text>
+  <text x="860" y="1170" class="text" style="font-size: 12px;">TimeCapsule.js</text>
+
+  <!-- Arrows to actual database -->
+  <path d="M 440 1180 L 440 1250" class="arrow"/>
+  <path d="M 650 1180 L 650 1250" class="arrow"/>
+  <path d="M 860 1180 L 860 1250" class="arrow"/>
+
+  <!-- Layer 8: Physical Database -->
+  <text x="700" y="1240" class="text" style="font-size: 18px; fill: #ed8936;">Database Storage</text>
+
+  <!-- SQLite DB -->
+  <rect x="300" y="1260" width="280" height="100" class="box database"/>
+  <text x="440" y="1290" class="text title">SQLite Database</text>
+  <text x="440" y="1310" class="text" style="font-size: 12px;">backend/timecapsule.db</text>
+  <text x="440" y="1325" class="text" style="font-size: 12px;">Tables: users, time_capsules,</text>
+  <text x="440" y="1340" class="text" style="font-size: 12px;">community_posts</text>
+  <text x="440" y="1355" class="text" style="font-size: 12px;">⚠️ Local Development Only</text>
+
+  <!-- MongoDB cloud -->
+  <rect x="620" y="1260" width="280" height="100" class="box database"/>
+  <text x="760" y="1290" class="text title">MongoDB Atlas (Cloud)</text>
+  <text x="760" y="1310" class="text" style="font-size: 12px;">Cluster: Cluster0</text>
+  <text x="760" y="1325" class="text" style="font-size: 12px;">Collections: users, capsules</text>
+  <text x="760" y="1340" class="text" style="font-size: 12px;">✅ Production Ready</text>
+  <text x="760" y="1355" class="text" style="font-size: 12px;">✅ Vercel Compatible</text>
+
+  <!-- Layer 9: Data Sources -->
+  <text x="700" y="1400" class="text" style="font-size: 18px; fill: #4299e1;">Static Data Sources</text>
+
+  <!-- JSON files -->
+  <rect x="400" y="1420" width="200" height="80" class="box frontend"/>
+  <text x="500" y="1445" class="text title">data/culture/*.json</text>
+  <text x="500" y="1465" class="text" style="font-size: 12px;">Historical Context</text>
+  <text x="500" y="1480" class="text" style="font-size: 12px;">1950-2020 Data</text>
+  <text x="500" y="1495" class="text" style="font-size: 12px;">RAG Context</text>
+
+  <!-- Arrow back to ragHelper -->
+  <path d="M 500 1420 L 620 800" class="arrow" style="stroke-dasharray: 5,5;"/>
+  <text x="560" y="1100" class="label">Loads Context</text>
+
+  <!-- User Flow Example -->
+  <text x="700" y="1560" class="text" style="font-size: 18px; fill: #f56565;">Example User Flow</text>
+  
+  <rect x="50" y="1580" width="1300" height="190" style="fill: none; stroke: #f56565; stroke-width: 2; stroke-dasharray: 5,5; rx: 10;"/>
+  
+  <text x="70" y="1610" class="text" style="text-anchor: start; fill: #cbd5e0; font-size: 13px;">
+    1. User visits index.html → Clicks "Time Travel" → second.html loads with 3D galaxy
+  </text>
+  <text x="70" y="1635" class="text" style="text-anchor: start; fill: #cbd5e0; font-size: 13px;">
+    2. User clicks year sphere (1973) → Redirects to feed/1970s.html?year=1973
+  </text>
+  <text x="70" y="1660" class="text" style="text-anchor: start; fill: #cbd5e0; font-size: 13px;">
+    3. year-content-loader.js detects ?year=1973 → Shows loading overlay
+  </text>
+  <text x="70" y="1685" class="text" style="text-anchor: start; fill: #cbd5e0; font-size: 13px;">
+    4. POST /api/generate-year-content {year: 1973} → llmClient.js calls Gemini 2.0 Flash
+  </text>
+  <text x="70" y="1710" class="text" style="text-anchor: start; fill: #cbd5e0; font-size: 13px;">
+    5. AI generates JSON with 8 sections → Returns to frontend → year-content-loader.js updates DOM
+  </text>
+  <text x="70" y="1735" class="text" style="text-anchor: start; fill: #cbd5e0; font-size: 13px;">
+    6. User sees 1973-specific content: Music hits, Events, Fashion trends, Technology, Daily life, Memories
+  </text>
+  <text x="70" y="1760" class="text" style="text-anchor: start; fill: #cbd5e0; font-size: 13px;">
+    7. User can chat with historical bot, create time capsule, or explore other years
+  </text>
+
+</svg>

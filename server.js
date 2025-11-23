@@ -1,22 +1,33 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import mongoose from 'mongoose';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs/promises';
 import multer from 'multer';
 import { BlobServiceClient } from '@azure/storage-blob';
 
-// Import routes - Fix path to point to backend/routes
+// Load environment variables first
+dotenv.config();
+
+// Import Supabase configuration and test connection
+import { testSupabaseConnection } from './backend/config/supabase.js';
+await testSupabaseConnection();
+
+// Import Supabase models
+import TimeCapsuleSupabase from './backend/models/TimeCapsuleSupabase.js';
+import UserSupabase from './backend/models/UserSupabase.js';
+
+const TimeCapsule = TimeCapsuleSupabase;
+const User = UserSupabase;
+
+// Import routes
 import authRoutes from './backend/routes/authRoutes.js';
 import chatbotRoutes from './backend/routes/chatbot.js';
-
-// Load environment variables
-dotenv.config({ path: './backend/.env' });
+import decadesRoutes from './backend/routes/decades.js';
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 // Get __dirname equivalent for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -49,34 +60,16 @@ if (process.env.AZURE_STORAGE_CONNECTION_STRING && process.env.AZURE_CONTAINER_N
         containerClient = blobServiceClient.getContainerClient(process.env.AZURE_CONTAINER_NAME);
         console.log('✅ Azure Blob Storage configured');
     } catch (error) {
-        console.error('❌ Azure Blob Storage configuration failed:', error.message);
+        console.log('⚠️  Azure Blob Storage not configured:', error.message);
     }
 }
 
-// Database connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('✅ Connected to MongoDB'))
-  .catch((err) => console.error('❌ MongoDB connection error:', err));
-
-// Time Capsule Schema
-const timeCapsuleSchema = new mongoose.Schema({
-    message: { type: String, required: true },
-    recipientType: { type: String, required: true },
-    recipientEmail: { type: String },
-    openDate: { type: Date, required: true },
-    audioFileUrl: { type: String },
-    videoFileUrl: { type: String },
-    imageFileUrl: { type: String },
-    createdAt: { type: Date, default: Date.now },
-    isSent: { type: Boolean, default: false }
-});
-
-// Create the model
-const TimeCapsule = mongoose.model('TimeCapsule', timeCapsuleSchema);
+console.log('✅ SQLite database initialized and ready');
 
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/', chatbotRoutes);
+app.use('/', decadesRoutes);
 
 // Define the root route FIRST to ensure it takes priority
 app.get('/', async (req, res) => {
@@ -380,9 +373,8 @@ app.post('/api/time-capsule', upload.fields([
             timeCapsuleData.imageFileUrl = await uploadToAzure(imageFile, imageFileName);
         }
 
-        // Save to MongoDB
-        const timeCapsule = new TimeCapsule(timeCapsuleData);
-        await timeCapsule.save();
+        // Save to SQLite
+        const timeCapsule = TimeCapsule.create(timeCapsuleData);
         
         console.log('✅ Time capsule saved to database');
 
@@ -391,7 +383,7 @@ app.post('/api/time-capsule', upload.fields([
             success: true,
             message: 'Time capsule created successfully!',
             data: {
-                id: timeCapsule._id,
+                id: timeCapsule.id,
                 openDate: openDate.toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
@@ -417,20 +409,7 @@ app.get('/api/my-received-capsules', async (req, res) => {
             return res.status(401).json({ success: false, message: 'Not authenticated' });
         }
 
-        const now = new Date();
-        const query = { 
-            recipientEmail: userEmail, 
-            openDate: { $lte: now } 
-        };
-
-        // If model has isSent, require it to be true
-        const hasIsSent = !!TimeCapsule.schema.path('isSent');
-        if (hasIsSent) query.isSent = true;
-
-        const capsules = await TimeCapsule.find(query)
-            .select('message recipientEmail audioFileUrl videoFileUrl imageFileUrl openDate createdAt')
-            .sort({ openDate: -1 })
-            .lean();
+        const capsules = TimeCapsule.findReadyForRecipient(userEmail);
 
         return res.json({ success: true, capsules });
     } catch (err) {
@@ -442,7 +421,7 @@ app.get('/api/my-received-capsules', async (req, res) => {
 // Route to get all time capsules (for testing)
 app.get('/api/time-capsules', async (req, res) => {
     try {
-        const timeCapsules = await TimeCapsule.find().sort({ createdAt: -1 });
+        const timeCapsules = TimeCapsule.findAll();
         res.json({ success: true, data: timeCapsules });
     } catch (error) {
         console.error('Error fetching time capsules:', error);
