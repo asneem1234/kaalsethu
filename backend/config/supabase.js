@@ -9,10 +9,19 @@ const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
 if (!supabaseUrl || !supabaseAnonKey) {
     console.error('❌ Supabase credentials missing in .env file');
     console.error('Required: SUPABASE_URL and SUPABASE_ANON_KEY');
+    console.log('Current SUPABASE_URL:', supabaseUrl);
+    console.log('Current SUPABASE_ANON_KEY:', supabaseAnonKey ? 'Set (length: ' + supabaseAnonKey.length + ')' : 'Not set');
     process.exit(1);
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// For publishable keys (sb_publishable_*), we need to use it directly
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: false
+    }
+});
 
 // Test connection
 export async function testSupabaseConnection() {

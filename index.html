@@ -727,6 +727,24 @@
             box-shadow: 0 0 10px #b19cd9;
             z-index: 1;
         }
+
+        @keyframes shootingStar {
+            0% { 
+                transform: translate(0, 0) rotate(-35deg) scale(0.5); 
+                opacity: 0; 
+            }
+            15% { 
+                opacity: 1; 
+            }
+            60% { 
+                transform: translate(-100vw, 100vh) rotate(-35deg) scale(0.5); 
+                opacity: 0; 
+            }
+            100% { 
+                transform: translate(-100vw, 100vh) rotate(-35deg) scale(0.5); 
+                opacity: 0; 
+            }
+        }
     </style>
 </head>
 <body>
@@ -1095,6 +1113,45 @@
             }
 
             animate();
+
+            // Function to create shooting stars
+            function createShootingStar() {
+                const shootingStar = document.createElement('div');
+                
+                // Random position at top-right area
+                const startX = 70 + Math.random() * 30; // 70-100% of screen width
+                const startY = Math.random() * 30; // 0-30% of screen height
+                
+                shootingStar.style.cssText = `
+                    position: fixed;
+                    top: ${startY}vh;
+                    right: ${100 - startX}vw;
+                    width: 100px;
+                    height: 2px;
+                    background: linear-gradient(to right, transparent, #fff, transparent);
+                    border-radius: 50%;
+                    filter: drop-shadow(0 0 6px rgba(255,255,255,0.8));
+                    animation: shootingStar 3s ease-in-out forwards;
+                    z-index: 5;
+                    pointer-events: none;
+                `;
+                
+                document.body.appendChild(shootingStar);
+                
+                // Remove the shooting star element after animation completes
+                setTimeout(() => {
+                    if (document.body.contains(shootingStar)) {
+                        document.body.removeChild(shootingStar);
+                    }
+                }, 3000);
+            }
+
+            // Add shooting stars that appear occasionally
+            setInterval(() => {
+                if (Math.random() > 0.7) { // 30% chance of shooting star appearing
+                    createShootingStar();
+                }
+            }, 8000);
 
             // Handle window resize
             window.addEventListener('resize', () => {
