@@ -1148,10 +1148,10 @@
 
             // Add shooting stars that appear occasionally
             setInterval(() => {
-                if (Math.random() > 0.7) { // 30% chance of shooting star appearing
+                if (Math.random() > 0.5) { // 50% chance of shooting star appearing
                     createShootingStar();
                 }
-            }, 8000);
+            }, 5000);
 
             // Handle window resize
             window.addEventListener('resize', () => {
