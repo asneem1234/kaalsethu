@@ -1,0 +1,240 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+  <defs>
+    <style>
+      .box { fill: rgba(26, 11, 46, 0.95); stroke-width: 3; rx: 15; }
+      .step { stroke: #b19cd9; filter: drop-shadow(0 0 12px rgba(177, 156, 217, 0.6)); }
+      .action { stroke: #9b59b6; filter: drop-shadow(0 0 10px rgba(155, 89, 182, 0.5)); }
+      .result { stroke: #d8b2ff; filter: drop-shadow(0 0 10px rgba(216, 178, 255, 0.5)); }
+      .ai { stroke: #e6e6fa; filter: drop-shadow(0 0 12px rgba(230, 230, 250, 0.7)); }
+      .text { fill: #e1d4ff; font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; text-anchor: middle; }
+      .title { font-size: 16px; font-weight: 700; fill: #ffffff; }
+      .subtitle { font-size: 12px; fill: #b19cd9; }
+      .arrow { stroke: #b19cd9; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+      .arrow-glow { stroke: #d8b2ff; stroke-width: 3; fill: none; marker-end: url(#arrowhead-glow); filter: drop-shadow(0 0 8px rgba(216, 178, 255, 0.6)); }
+      .step-number { fill: #1a0b2e; font-size: 18px; font-weight: 800; }
+      .glow { filter: drop-shadow(0 0 20px rgba(177, 156, 217, 0.9)); }
+      .star { fill: #ffffff; }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#b19cd9" />
+    </marker>
+    <marker id="arrowhead-glow" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#d8b2ff" />
+    </marker>
+    <linearGradient id="spaceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a0b2e;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#2d1b4e;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#1a0b2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2d1b4e;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="orbGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#d8b2ff;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#b19cd9;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="url(#spaceGradient)"/>
+  
+  <!-- Decorative Stars -->
+  <circle cx="50" cy="50" r="2" class="star" opacity="0.9"/>
+  <circle cx="150" cy="30" r="1.5" class="star" opacity="0.6"/>
+  <circle cx="1100" cy="60" r="2" class="star" opacity="0.8"/>
+  <circle cx="1150" cy="120" r="1" class="star" opacity="0.5"/>
+  <circle cx="80" cy="200" r="1.5" class="star" opacity="0.7"/>
+  <circle cx="1120" cy="250" r="2" class="star" opacity="0.6"/>
+  <circle cx="40" cy="400" r="1" class="star" opacity="0.8"/>
+  <circle cx="1160" cy="450" r="1.5" class="star" opacity="0.7"/>
+  <circle cx="60" cy="600" r="2" class="star" opacity="0.6"/>
+  <circle cx="1140" cy="650" r="1" class="star" opacity="0.9"/>
+  <circle cx="100" cy="800" r="1.5" class="star" opacity="0.5"/>
+  <circle cx="1100" cy="850" r="2" class="star" opacity="0.7"/>
+  <circle cx="300" cy="80" r="1" class="star" opacity="0.6"/>
+  <circle cx="600" cy="40" r="1.5" class="star" opacity="0.8"/>
+  <circle cx="900" cy="70" r="1" class="star" opacity="0.5"/>
+  <circle cx="400" cy="860" r="1.5" class="star" opacity="0.7"/>
+  <circle cx="700" cy="880" r="2" class="star" opacity="0.6"/>
+
+  <!-- Main Title -->
+  <text x="600" y="45" class="text glow" style="font-size: 32px; font-weight: 800; fill: #d8b2ff; letter-spacing: 5px;">🚀 KAAL SETHU</text>
+  <text x="600" y="75" class="text" style="font-size: 18px; fill: #b19cd9; letter-spacing: 3px;">User Journey Flow</text>
+
+  <!-- Step 1: Landing Page -->
+  <circle cx="150" cy="180" r="25" fill="url(#orbGlow)"/>
+  <circle cx="150" cy="180" r="20" fill="#b19cd9"/>
+  <text x="150" y="187" class="step-number">1</text>
+  
+  <rect x="80" y="220" width="140" height="100" class="box step"/>
+  <text x="150" y="250" class="text title">🌟 Landing</text>
+  <text x="150" y="275" class="text subtitle">index.html</text>
+  <text x="150" y="295" class="text" style="font-size: 11px;">Hero Animation</text>
+  <text x="150" y="310" class="text" style="font-size: 11px;">Shooting Stars ✨</text>
+
+  <!-- Arrow 1 to 2 -->
+  <path d="M 220 270 C 280 270, 280 270, 330 270" class="arrow-glow"/>
+  <text x="275" y="255" class="text" style="font-size: 10px; fill: #d8b2ff;">Login/Signup</text>
+
+  <!-- Step 2: Authentication -->
+  <circle cx="400" cy="180" r="25" fill="url(#orbGlow)"/>
+  <circle cx="400" cy="180" r="20" fill="#9b59b6"/>
+  <text x="400" y="187" class="step-number">2</text>
+  
+  <rect x="330" y="220" width="140" height="100" class="box action"/>
+  <text x="400" y="250" class="text title">🔐 Auth</text>
+  <text x="400" y="275" class="text subtitle">Secure Access</text>
+  <text x="400" y="295" class="text" style="font-size: 11px;">JWT Token</text>
+  <text x="400" y="310" class="text" style="font-size: 11px;">Supabase Auth</text>
+
+  <!-- Arrow 2 to 3 -->
+  <path d="M 470 270 C 530 270, 530 270, 580 270" class="arrow-glow"/>
+  <text x="525" y="255" class="text" style="font-size: 10px; fill: #d8b2ff;">Success</text>
+
+  <!-- Step 3: 3D Galaxy -->
+  <circle cx="650" cy="180" r="25" fill="url(#orbGlow)"/>
+  <circle cx="650" cy="180" r="20" fill="#d8b2ff"/>
+  <text x="650" y="187" class="step-number">3</text>
+  
+  <rect x="580" y="220" width="140" height="100" class="box result"/>
+  <text x="650" y="250" class="text title">🌌 Galaxy</text>
+  <text x="650" y="275" class="text subtitle">second.html</text>
+  <text x="650" y="295" class="text" style="font-size: 11px;">3D Three.js</text>
+  <text x="650" y="310" class="text" style="font-size: 11px;">Year Spheres 🪐</text>
+
+  <!-- Arrow 3 to 4 -->
+  <path d="M 720 270 C 780 270, 780 270, 830 270" class="arrow-glow"/>
+  <text x="775" y="255" class="text" style="font-size: 10px; fill: #d8b2ff;">Select Year</text>
+
+  <!-- Step 4: Year Selection -->
+  <circle cx="900" cy="180" r="25" fill="url(#orbGlow)"/>
+  <circle cx="900" cy="180" r="20" fill="#b19cd9"/>
+  <text x="900" y="187" class="step-number">4</text>
+  
+  <rect x="830" y="220" width="140" height="100" class="box step"/>
+  <text x="900" y="250" class="text title">📅 Year Pick</text>
+  <text x="900" y="275" class="text subtitle">1950 - 2025</text>
+  <text x="900" y="295" class="text" style="font-size: 11px;">Click Sphere</text>
+  <text x="900" y="310" class="text" style="font-size: 11px;">e.g., 1973</text>
+
+  <!-- Arrow 4 to 5 (going down) -->
+  <path d="M 900 320 L 900 380" class="arrow-glow"/>
+  <text x="920" y="355" class="text" style="font-size: 10px; fill: #d8b2ff;">Navigate</text>
+
+  <!-- Step 5: Feed Page -->
+  <circle cx="900" cy="430" r="25" fill="url(#orbGlow)"/>
+  <circle cx="900" cy="430" r="20" fill="#9b59b6"/>
+  <text x="900" y="437" class="step-number">5</text>
+  
+  <rect x="830" y="470" width="140" height="100" class="box action"/>
+  <text x="900" y="500" class="text title">📰 Feed Page</text>
+  <text x="900" y="525" class="text subtitle">1970s.html?year=1973</text>
+  <text x="900" y="545" class="text" style="font-size: 11px;">Loading Overlay</text>
+  <text x="900" y="560" class="text" style="font-size: 11px;">⏳ Fetching...</text>
+
+  <!-- Arrow 5 to 6 (going left) -->
+  <path d="M 830 520 C 770 520, 770 520, 720 520" class="arrow-glow"/>
+  <text x="775" y="505" class="text" style="font-size: 10px; fill: #d8b2ff;">API Call</text>
+
+  <!-- Step 6: AI Generation -->
+  <circle cx="650" cy="430" r="25" fill="url(#orbGlow)"/>
+  <circle cx="650" cy="430" r="20" fill="#e6e6fa"/>
+  <text x="650" y="437" class="step-number">6</text>
+  
+  <rect x="580" y="470" width="140" height="100" class="box ai"/>
+  <text x="650" y="500" class="text title">🤖 Gemini AI</text>
+  <text x="650" y="525" class="text subtitle">Content Generation</text>
+  <text x="650" y="545" class="text" style="font-size: 11px;">8 Sections</text>
+  <text x="650" y="560" class="text" style="font-size: 11px;">✨ Historical Data</text>
+
+  <!-- Arrow 6 to 7 (going left) -->
+  <path d="M 580 520 C 520 520, 520 520, 470 520" class="arrow-glow"/>
+  <text x="525" y="505" class="text" style="font-size: 10px; fill: #d8b2ff;">JSON Response</text>
+
+  <!-- Step 7: Content Display -->
+  <circle cx="400" cy="430" r="25" fill="url(#orbGlow)"/>
+  <circle cx="400" cy="430" r="20" fill="#d8b2ff"/>
+  <text x="400" y="437" class="step-number">7</text>
+  
+  <rect x="330" y="470" width="140" height="100" class="box result"/>
+  <text x="400" y="500" class="text title">🎨 Content</text>
+  <text x="400" y="525" class="text subtitle">Year 1973 View</text>
+  <text x="400" y="545" class="text" style="font-size: 11px;">Music • Events</text>
+  <text x="400" y="560" class="text" style="font-size: 11px;">Fashion • Tech</text>
+
+  <!-- Arrow 7 to 8 (going left) -->
+  <path d="M 330 520 C 270 520, 270 520, 220 520" class="arrow-glow"/>
+  <text x="275" y="505" class="text" style="font-size: 10px; fill: #d8b2ff;">Interact</text>
+
+  <!-- Step 8: User Actions -->
+  <circle cx="150" cy="430" r="25" fill="url(#orbGlow)"/>
+  <circle cx="150" cy="430" r="20" fill="#b19cd9"/>
+  <text x="150" y="437" class="step-number">8</text>
+  
+  <rect x="80" y="470" width="140" height="100" class="box step"/>
+  <text x="150" y="500" class="text title">💬 Actions</text>
+  <text x="150" y="525" class="text subtitle">User Choices</text>
+  <text x="150" y="545" class="text" style="font-size: 11px;">Chat with Bot</text>
+  <text x="150" y="560" class="text" style="font-size: 11px;">Create Capsule</text>
+
+  <!-- Branching arrows from Step 8 -->
+  <!-- To Chatbot -->
+  <path d="M 150 570 L 150 630" class="arrow"/>
+  
+  <!-- To Time Capsule -->
+  <path d="M 220 520 C 280 520, 280 620, 400 650" class="arrow"/>
+
+  <!-- Step 9a: Chatbot -->
+  <circle cx="150" cy="680" r="22" fill="url(#orbGlow)"/>
+  <circle cx="150" cy="680" r="18" fill="#e6e6fa"/>
+  <text x="150" y="686" class="step-number" style="font-size: 14px;">9a</text>
+  
+  <rect x="80" y="720" width="140" height="90" class="box ai"/>
+  <text x="150" y="748" class="text title">🤖 Chatbot</text>
+  <text x="150" y="770" class="text" style="font-size: 11px;">Historical Q&A</text>
+  <text x="150" y="788" class="text" style="font-size: 11px;">Ask about 1973</text>
+  <text x="150" y="803" class="text" style="font-size: 11px;">Context-aware 🧠</text>
+
+  <!-- Step 9b: Time Capsule -->
+  <circle cx="400" cy="680" r="22" fill="url(#orbGlow)"/>
+  <circle cx="400" cy="680" r="18" fill="#da70d6"/>
+  <text x="400" y="686" class="step-number" style="font-size: 14px;">9b</text>
+  
+  <rect x="330" y="720" width="140" height="90" class="box storage"/>
+  <text x="400" y="748" class="text title">💫 Capsule</text>
+  <text x="400" y="770" class="text" style="font-size: 11px;">Create Message</text>
+  <text x="400" y="788" class="text" style="font-size: 11px;">Add Media 📎</text>
+  <text x="400" y="803" class="text" style="font-size: 11px;">Set Open Date</text>
+
+  <!-- Step 9c: Community -->
+  <circle cx="650" cy="680" r="22" fill="url(#orbGlow)"/>
+  <circle cx="650" cy="680" r="18" fill="#9b59b6"/>
+  <text x="650" y="686" class="step-number" style="font-size: 14px;">9c</text>
+  
+  <rect x="580" y="720" width="140" height="90" class="box action"/>
+  <text x="650" y="748" class="text title">👥 Community</text>
+  <text x="650" y="770" class="text" style="font-size: 11px;">Share Stories</text>
+  <text x="650" y="788" class="text" style="font-size: 11px;">Read Others</text>
+  <text x="650" y="803" class="text" style="font-size: 11px;">Connect 🌍</text>
+
+  <!-- Arrow from Content to Community -->
+  <path d="M 470 520 C 530 520, 530 620, 650 650" class="arrow"/>
+
+  <!-- Legend Box -->
+  <rect x="830" y="650" width="160" height="160" class="box step" style="stroke: #b19cd9;"/>
+  <text x="910" y="680" class="text title">📋 Legend</text>
+  
+  <circle cx="855" cy="705" r="8" fill="#b19cd9"/>
+  <text x="920" y="710" class="text" style="font-size: 11px; text-anchor: start;">User Action</text>
+  
+  <circle cx="855" cy="730" r="8" fill="#9b59b6"/>
+  <text x="920" y="735" class="text" style="font-size: 11px; text-anchor: start;">System Process</text>
+  
+  <circle cx="855" cy="755" r="8" fill="#d8b2ff"/>
+  <text x="920" y="760" class="text" style="font-size: 11px; text-anchor: start;">UI Display</text>
+  
+  <circle cx="855" cy="780" r="8" fill="#e6e6fa"/>
+  <text x="920" y="785" class="text" style="font-size: 11px; text-anchor: start;">AI Service</text>
+
+  <!-- Footer -->
+  <text x="600" y="870" class="text" style="font-size: 12px; fill: #b19cd9; letter-spacing: 2px;">✨ Connecting Past to Future ✨</text>
+
+</svg>

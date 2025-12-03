@@ -1,0 +1,429 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 2400">
+  <defs>
+    <style>
+      .box { fill: rgba(26, 11, 46, 0.95); stroke-width: 2; rx: 12; }
+      .frontend { stroke: #b19cd9; filter: drop-shadow(0 0 10px rgba(177, 156, 217, 0.5)); }
+      .backend { stroke: #9b59b6; filter: drop-shadow(0 0 10px rgba(155, 89, 182, 0.5)); }
+      .database { stroke: #d8b2ff; filter: drop-shadow(0 0 10px rgba(216, 178, 255, 0.5)); }
+      .ai { stroke: #e6e6fa; filter: drop-shadow(0 0 12px rgba(230, 230, 250, 0.6)); }
+      .storage { stroke: #da70d6; filter: drop-shadow(0 0 10px rgba(218, 112, 214, 0.5)); }
+      .code-box { fill: rgba(13, 6, 23, 0.98); stroke: #4a3a6e; stroke-width: 1; rx: 8; }
+      .text { fill: #e1d4ff; font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; text-anchor: middle; }
+      .title { font-size: 16px; font-weight: 700; fill: #ffffff; }
+      .code { font-family: 'Consolas', 'Monaco', monospace; font-size: 11px; fill: #a0e0a0; text-anchor: start; }
+      .code-comment { fill: #6a9955; }
+      .code-keyword { fill: #569cd6; }
+      .code-string { fill: #ce9178; }
+      .code-function { fill: #dcdcaa; }
+      .code-variable { fill: #9cdcfe; }
+      .why-box { fill: rgba(155, 89, 182, 0.15); stroke: #9b59b6; stroke-width: 1; stroke-dasharray: 5,3; rx: 8; }
+      .why-text { fill: #d8b2ff; font-size: 11px; font-style: italic; }
+      .arrow { stroke: #b19cd9; stroke-width: 2; fill: none; marker-end: url(#arrowhead); opacity: 0.8; }
+      .section-title { font-size: 20px; font-weight: 700; fill: #d8b2ff; letter-spacing: 3px; }
+      .glow { filter: drop-shadow(0 0 15px rgba(177, 156, 217, 0.8)); }
+      .star { fill: #ffffff; }
+      .tech-badge { fill: rgba(177, 156, 217, 0.3); stroke: #b19cd9; stroke-width: 1; rx: 10; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#b19cd9" />
+    </marker>
+    <linearGradient id="spaceGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a0b2e;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#2d1b4e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a0b2e;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="url(#spaceGradient)"/>
+  
+  <!-- Decorative Stars -->
+  <circle cx="50" cy="80" r="2" class="star" opacity="0.8"/>
+  <circle cx="1550" cy="120" r="2" class="star" opacity="0.7"/>
+  <circle cx="100" cy="400" r="1.5" class="star" opacity="0.6"/>
+  <circle cx="1500" cy="500" r="1.5" class="star" opacity="0.8"/>
+  <circle cx="80" cy="800" r="2" class="star" opacity="0.7"/>
+  <circle cx="1520" cy="900" r="1" class="star" opacity="0.6"/>
+  <circle cx="60" cy="1200" r="1.5" class="star" opacity="0.8"/>
+  <circle cx="1540" cy="1400" r="2" class="star" opacity="0.7"/>
+  <circle cx="90" cy="1800" r="1" class="star" opacity="0.6"/>
+  <circle cx="1510" cy="2000" r="1.5" class="star" opacity="0.8"/>
+
+  <!-- Main Title -->
+  <text x="800" y="50" class="text glow" style="font-size: 36px; font-weight: 800; fill: #d8b2ff; letter-spacing: 6px;">⭐ KAAL SETHU ⭐</text>
+  <text x="800" y="85" class="text" style="font-size: 20px; fill: #b19cd9; letter-spacing: 4px;">System Design &amp; Code Architecture</text>
+
+  <!-- ==================== SECTION 1: FRONTEND ==================== -->
+  <text x="800" y="140" class="section-title">🌌 FRONTEND LAYER</text>
+  <line x1="200" y1="150" x2="1400" y2="150" stroke="#b19cd9" stroke-width="1" opacity="0.5"/>
+
+  <!-- Tech Badges -->
+  <rect x="550" y="160" width="80" height="25" class="tech-badge"/>
+  <text x="590" y="178" class="text" style="font-size: 12px;">HTML5</text>
+  <rect x="640" y="160" width="80" height="25" class="tech-badge"/>
+  <text x="680" y="178" class="text" style="font-size: 12px;">CSS3</text>
+  <rect x="730" y="160" width="80" height="25" class="tech-badge"/>
+  <text x="770" y="178" class="text" style="font-size: 12px;">Three.js</text>
+  <rect x="820" y="160" width="80" height="25" class="tech-badge"/>
+  <text x="860" y="178" class="text" style="font-size: 12px;">GSAP</text>
+  <rect x="910" y="160" width="100" height="25" class="tech-badge"/>
+  <text x="960" y="178" class="text" style="font-size: 12px;">JavaScript</text>
+
+  <!-- Component 1: Three.js Galaxy -->
+  <rect x="50" y="200" width="480" height="200" class="box frontend"/>
+  <text x="290" y="225" class="text title">🪐 Three.js 3D Galaxy Visualization</text>
+  
+  <rect x="60" y="235" width="460" height="120" class="code-box"/>
+  <text x="75" y="255" class="code code-comment">// Three.js scene setup for immersive space experience</text>
+  <text x="75" y="272" class="code"><tspan class="code-keyword">const</tspan> scene = <tspan class="code-keyword">new</tspan> THREE.<tspan class="code-function">Scene</tspan>();</text>
+  <text x="75" y="289" class="code"><tspan class="code-keyword">const</tspan> camera = <tspan class="code-keyword">new</tspan> THREE.<tspan class="code-function">PerspectiveCamera</tspan>(75, ratio, 0.1, 3000);</text>
+  <text x="75" y="306" class="code"><tspan class="code-keyword">const</tspan> starsCount = 20000; <tspan class="code-comment">// Dense star field</tspan></text>
+  <text x="75" y="323" class="code"><tspan class="code-keyword">const</tspan> starsGeometry = <tspan class="code-keyword">new</tspan> THREE.<tspan class="code-function">BufferGeometry</tspan>();</text>
+  <text x="75" y="340" class="code">starsMaterial.blending = THREE.AdditiveBlending;</text>
+
+  <rect x="60" y="360" width="460" height="35" class="why-box"/>
+  <text x="75" y="382" class="why-text">💡 WHY: Three.js enables WebGL-powered 3D graphics without low-level code.</text>
+
+  <!-- Component 2: Shooting Stars Animation -->
+  <rect x="560" y="200" width="480" height="200" class="box frontend"/>
+  <text x="800" y="225" class="text title">✨ Shooting Stars Animation</text>
+  
+  <rect x="570" y="235" width="460" height="120" class="code-box"/>
+  <text x="585" y="255" class="code code-comment">// Dynamic shooting star effect</text>
+  <text x="585" y="272" class="code"><tspan class="code-keyword">function</tspan> <tspan class="code-function">createShootingStar</tspan>() {</text>
+  <text x="585" y="289" class="code">  <tspan class="code-keyword">const</tspan> star = document.<tspan class="code-function">createElement</tspan>(<tspan class="code-string">'div'</tspan>);</text>
+  <text x="585" y="306" class="code">  star.style.animation = <tspan class="code-string">'shootingStar 3s forwards'</tspan>;</text>
+  <text x="585" y="323" class="code">}</text>
+  <text x="585" y="340" class="code"><tspan class="code-function">setInterval</tspan>(() =&gt; createShootingStar(), 5000);</text>
+
+  <rect x="570" y="360" width="460" height="35" class="why-box"/>
+  <text x="585" y="382" class="why-text">💡 WHY: CSS animations are GPU-accelerated for smooth 60fps effects.</text>
+
+  <!-- Component 3: GSAP Animations -->
+  <rect x="1070" y="200" width="480" height="200" class="box frontend"/>
+  <text x="1310" y="225" class="text title">🎬 GSAP Animation Library</text>
+  
+  <rect x="1080" y="235" width="460" height="120" class="code-box"/>
+  <text x="1095" y="255" class="code code-comment">// Smooth transitions and timeline control</text>
+  <text x="1095" y="272" class="code">gsap.<tspan class="code-function">to</tspan>(camera.position, {</text>
+  <text x="1095" y="289" class="code">  z: 5, <tspan class="code-comment">// Zoom into galaxy</tspan></text>
+  <text x="1095" y="306" class="code">  duration: 10,</text>
+  <text x="1095" y="323" class="code">  ease: <tspan class="code-string">"power1.in"</tspan>,</text>
+  <text x="1095" y="340" class="code">  onComplete: () =&gt; navigateToDecade()</text>
+
+  <rect x="1080" y="360" width="460" height="35" class="why-box"/>
+  <text x="1095" y="382" class="why-text">💡 WHY: GSAP provides professional-grade animations with easing functions.</text>
+
+  <!-- ==================== SECTION 2: BACKEND ==================== -->
+  <text x="800" y="450" class="section-title">🚀 BACKEND LAYER</text>
+  <line x1="200" y1="460" x2="1400" y2="460" stroke="#9b59b6" stroke-width="1" opacity="0.5"/>
+
+  <!-- Tech Badges -->
+  <rect x="520" y="470" width="90" height="25" class="tech-badge"/>
+  <text x="565" y="488" class="text" style="font-size: 12px;">Node.js</text>
+  <rect x="620" y="470" width="90" height="25" class="tech-badge"/>
+  <text x="665" y="488" class="text" style="font-size: 12px;">Express</text>
+  <rect x="720" y="470" width="70" height="25" class="tech-badge"/>
+  <text x="755" y="488" class="text" style="font-size: 12px;">JWT</text>
+  <rect x="800" y="470" width="80" height="25" class="tech-badge"/>
+  <text x="840" y="488" class="text" style="font-size: 12px;">bcrypt</text>
+  <rect x="890" y="470" width="100" height="25" class="tech-badge"/>
+  <text x="940" y="488" class="text" style="font-size: 12px;">ES Modules</text>
+
+  <!-- Component 4: Express Server -->
+  <rect x="50" y="510" width="480" height="220" class="box backend"/>
+  <text x="290" y="535" class="text title">🌐 Express Server Setup</text>
+  
+  <rect x="60" y="545" width="460" height="140" class="code-box"/>
+  <text x="75" y="565" class="code code-comment">// server.js - Main entry point</text>
+  <text x="75" y="582" class="code"><tspan class="code-keyword">import</tspan> express <tspan class="code-keyword">from</tspan> <tspan class="code-string">'express'</tspan>;</text>
+  <text x="75" y="599" class="code"><tspan class="code-keyword">import</tspan> cors <tspan class="code-keyword">from</tspan> <tspan class="code-string">'cors'</tspan>;</text>
+  <text x="75" y="616" class="code"><tspan class="code-keyword">const</tspan> app = <tspan class="code-function">express</tspan>();</text>
+  <text x="75" y="633" class="code">app.<tspan class="code-function">use</tspan>(cors()); <tspan class="code-comment">// Enable CORS</tspan></text>
+  <text x="75" y="650" class="code">app.<tspan class="code-function">use</tspan>(express.<tspan class="code-function">json</tspan>()); <tspan class="code-comment">// Parse JSON</tspan></text>
+  <text x="75" y="667" class="code">app.<tspan class="code-function">use</tspan>(<tspan class="code-string">'/api/auth'</tspan>, authRoutes);</text>
+
+  <rect x="60" y="690" width="460" height="35" class="why-box"/>
+  <text x="75" y="712" class="why-text">💡 WHY: Express is lightweight, flexible, and has massive ecosystem support.</text>
+
+  <!-- Component 5: Authentication -->
+  <rect x="560" y="510" width="480" height="220" class="box backend"/>
+  <text x="800" y="535" class="text title">🔐 JWT Authentication</text>
+  
+  <rect x="570" y="545" width="460" height="140" class="code-box"/>
+  <text x="585" y="565" class="code code-comment">// authController.js - Secure token generation</text>
+  <text x="585" y="582" class="code"><tspan class="code-keyword">import</tspan> jwt <tspan class="code-keyword">from</tspan> <tspan class="code-string">'jsonwebtoken'</tspan>;</text>
+  <text x="585" y="599" class="code"><tspan class="code-keyword">import</tspan> bcrypt <tspan class="code-keyword">from</tspan> <tspan class="code-string">'bcrypt'</tspan>;</text>
+  <text x="585" y="616" class="code"><tspan class="code-keyword">const</tspan> hashedPwd = <tspan class="code-keyword">await</tspan> bcrypt.<tspan class="code-function">hash</tspan>(password, 10);</text>
+  <text x="585" y="633" class="code"><tspan class="code-keyword">const</tspan> token = jwt.<tspan class="code-function">sign</tspan>(</text>
+  <text x="585" y="650" class="code">  { id: user.id }, process.env.JWT_SECRET,</text>
+  <text x="585" y="667" class="code">  { expiresIn: <tspan class="code-string">'7d'</tspan> });</text>
+
+  <rect x="570" y="690" width="460" height="35" class="why-box"/>
+  <text x="585" y="712" class="why-text">💡 WHY: JWT is stateless, scalable, and bcrypt provides secure hashing.</text>
+
+  <!-- Component 6: Route Protection -->
+  <rect x="1070" y="510" width="480" height="220" class="box backend"/>
+  <text x="1310" y="535" class="text title">🛡️ Middleware Protection</text>
+  
+  <rect x="1080" y="545" width="460" height="140" class="code-box"/>
+  <text x="1095" y="565" class="code code-comment">// authMiddleware.js - Route protection</text>
+  <text x="1095" y="582" class="code"><tspan class="code-keyword">export const</tspan> protect = <tspan class="code-keyword">async</tspan> (req, res, next) =&gt; {</text>
+  <text x="1095" y="599" class="code">  <tspan class="code-keyword">const</tspan> token = req.headers.authorization</text>
+  <text x="1095" y="616" class="code">    ?.<tspan class="code-function">split</tspan>(<tspan class="code-string">' '</tspan>)[1];</text>
+  <text x="1095" y="633" class="code">  <tspan class="code-keyword">const</tspan> decoded = jwt.<tspan class="code-function">verify</tspan>(token, secret);</text>
+  <text x="1095" y="650" class="code">  req.user = <tspan class="code-keyword">await</tspan> User.<tspan class="code-function">findById</tspan>(decoded.id);</text>
+  <text x="1095" y="667" class="code">  <tspan class="code-function">next</tspan>();</text>
+
+  <rect x="1080" y="690" width="460" height="35" class="why-box"/>
+  <text x="1095" y="712" class="why-text">💡 WHY: Middleware pattern enables clean separation of auth logic.</text>
+
+  <!-- ==================== SECTION 3: AI INTEGRATION ==================== -->
+  <text x="800" y="780" class="section-title">🤖 AI INTEGRATION LAYER</text>
+  <line x1="200" y1="790" x2="1400" y2="790" stroke="#e6e6fa" stroke-width="1" opacity="0.5"/>
+
+  <!-- Tech Badges -->
+  <rect x="580" y="800" width="120" height="25" class="tech-badge"/>
+  <text x="640" y="818" class="text" style="font-size: 12px;">Gemini 2.0</text>
+  <rect x="710" y="800" width="80" height="25" class="tech-badge"/>
+  <text x="750" y="818" class="text" style="font-size: 12px;">RAG</text>
+  <rect x="800" y="800" width="120" height="25" class="tech-badge"/>
+  <text x="860" y="818" class="text" style="font-size: 12px;">JSON Context</text>
+
+  <!-- Component 7: LLM Client -->
+  <rect x="50" y="840" width="740" height="250" class="box ai"/>
+  <text x="420" y="865" class="text title">🧠 Google Gemini AI Integration - llmClient.js</text>
+  
+  <rect x="60" y="875" width="720" height="170" class="code-box"/>
+  <text x="75" y="895" class="code code-comment">// Dynamic year-specific content generation</text>
+  <text x="75" y="912" class="code"><tspan class="code-keyword">import</tspan> { GoogleGenerativeAI } <tspan class="code-keyword">from</tspan> <tspan class="code-string">'@google/generative-ai'</tspan>;</text>
+  <text x="75" y="929" class="code"><tspan class="code-keyword">const</tspan> genAI = <tspan class="code-keyword">new</tspan> <tspan class="code-function">GoogleGenerativeAI</tspan>(process.env.GEMINI_API_KEY);</text>
+  <text x="75" y="946" class="code"><tspan class="code-keyword">const</tspan> model = genAI.<tspan class="code-function">getGenerativeModel</tspan>({ model: <tspan class="code-string">'gemini-2.0-flash'</tspan> });</text>
+  <text x="75" y="963" class="code"></text>
+  <text x="75" y="980" class="code"><tspan class="code-keyword">const</tspan> prompt = <tspan class="code-string">`Generate historical content for year ${year}:</tspan></text>
+  <text x="75" y="997" class="code"><tspan class="code-string">  Music, Events, Fashion, Technology, Daily Life...`</tspan>;</text>
+  <text x="75" y="1014" class="code"><tspan class="code-keyword">const</tspan> result = <tspan class="code-keyword">await</tspan> model.<tspan class="code-function">generateContent</tspan>(prompt);</text>
+  <text x="75" y="1031" class="code"><tspan class="code-keyword">return</tspan> JSON.<tspan class="code-function">parse</tspan>(result.response.<tspan class="code-function">text</tspan>());</text>
+
+  <rect x="60" y="1050" width="720" height="35" class="why-box"/>
+  <text x="75" y="1072" class="why-text">💡 WHY: Gemini 2.0 Flash offers fast, accurate responses with large context window for historical data generation.</text>
+
+  <!-- Component 8: RAG Helper -->
+  <rect x="810" y="840" width="740" height="250" class="box ai"/>
+  <text x="1180" y="865" class="text title">📚 RAG Context Retrieval - ragHelper.js</text>
+  
+  <rect x="820" y="875" width="720" height="170" class="code-box"/>
+  <text x="835" y="895" class="code code-comment">// Load historical context from JSON data</text>
+  <text x="835" y="912" class="code"><tspan class="code-keyword">export async function</tspan> <tspan class="code-function">getHistoricalContext</tspan>(year) {</text>
+  <text x="835" y="929" class="code">  <tspan class="code-keyword">const</tspan> decade = Math.<tspan class="code-function">floor</tspan>(year / 10) * 10;</text>
+  <text x="835" y="946" class="code">  <tspan class="code-keyword">const</tspan> filePath = <tspan class="code-string">`./data/culture/${decade}.json`</tspan>;</text>
+  <text x="835" y="963" class="code">  <tspan class="code-keyword">const</tspan> data = <tspan class="code-keyword">await</tspan> fs.<tspan class="code-function">readFile</tspan>(filePath, <tspan class="code-string">'utf-8'</tspan>);</text>
+  <text x="835" y="980" class="code">  <tspan class="code-keyword">return</tspan> JSON.<tspan class="code-function">parse</tspan>(data);</text>
+  <text x="835" y="997" class="code">}</text>
+  <text x="835" y="1014" class="code code-comment">// Used to augment AI prompts with factual context</text>
+  <text x="835" y="1031" class="code"><tspan class="code-keyword">const</tspan> enrichedPrompt = context + userQuery;</text>
+
+  <rect x="820" y="1050" width="720" height="35" class="why-box"/>
+  <text x="835" y="1072" class="why-text">💡 WHY: RAG improves AI accuracy by grounding responses in verified historical data.</text>
+
+  <!-- ==================== SECTION 4: DATABASE ==================== -->
+  <text x="800" y="1140" class="section-title">💾 DATABASE LAYER</text>
+  <line x1="200" y1="1150" x2="1400" y2="1150" stroke="#d8b2ff" stroke-width="1" opacity="0.5"/>
+
+  <!-- Tech Badges -->
+  <rect x="550" y="1160" width="100" height="25" class="tech-badge"/>
+  <text x="600" y="1178" class="text" style="font-size: 12px;">Supabase</text>
+  <rect x="660" y="1160" width="110" height="25" class="tech-badge"/>
+  <text x="715" y="1178" class="text" style="font-size: 12px;">PostgreSQL</text>
+  <rect x="780" y="1160" width="70" height="25" class="tech-badge"/>
+  <text x="815" y="1178" class="text" style="font-size: 12px;">RLS</text>
+  <rect x="860" y="1160" width="100" height="25" class="tech-badge"/>
+  <text x="910" y="1178" class="text" style="font-size: 12px;">Real-time</text>
+
+  <!-- Component 9: Supabase Config -->
+  <rect x="50" y="1200" width="480" height="240" class="box database"/>
+  <text x="290" y="1225" class="text title">🔥 Supabase Configuration</text>
+  
+  <rect x="60" y="1235" width="460" height="160" class="code-box"/>
+  <text x="75" y="1255" class="code code-comment">// supabase.js - Database connection</text>
+  <text x="75" y="1272" class="code"><tspan class="code-keyword">import</tspan> { createClient } <tspan class="code-keyword">from</tspan> <tspan class="code-string">'@supabase/supabase-js'</tspan>;</text>
+  <text x="75" y="1289" class="code"></text>
+  <text x="75" y="1306" class="code"><tspan class="code-keyword">const</tspan> supabaseUrl = process.env.SUPABASE_URL;</text>
+  <text x="75" y="1323" class="code"><tspan class="code-keyword">const</tspan> supabaseKey = process.env.SUPABASE_ANON_KEY;</text>
+  <text x="75" y="1340" class="code"></text>
+  <text x="75" y="1357" class="code"><tspan class="code-keyword">export const</tspan> supabase = <tspan class="code-function">createClient</tspan>(</text>
+  <text x="75" y="1374" class="code">  supabaseUrl, supabaseKey</text>
+  <text x="75" y="1391" class="code">);</text>
+
+  <rect x="60" y="1400" width="460" height="35" class="why-box"/>
+  <text x="75" y="1422" class="why-text">💡 WHY: Supabase offers PostgreSQL + Auth + Real-time + Storage in one.</text>
+
+  <!-- Component 10: User Model -->
+  <rect x="560" y="1200" width="480" height="240" class="box database"/>
+  <text x="800" y="1225" class="text title">👤 User Model - UserSupabase.js</text>
+  
+  <rect x="570" y="1235" width="460" height="160" class="code-box"/>
+  <text x="585" y="1255" class="code code-comment">// User CRUD operations with Supabase</text>
+  <text x="585" y="1272" class="code"><tspan class="code-keyword">static async</tspan> <tspan class="code-function">create</tspan>({ name, email, password }) {</text>
+  <text x="585" y="1289" class="code">  <tspan class="code-keyword">const</tspan> hashedPwd = <tspan class="code-keyword">await</tspan> bcrypt.<tspan class="code-function">hash</tspan>(password, 10);</text>
+  <text x="585" y="1306" class="code">  <tspan class="code-keyword">const</tspan> { data, error } = <tspan class="code-keyword">await</tspan> supabase</text>
+  <text x="585" y="1323" class="code">    .<tspan class="code-function">from</tspan>(<tspan class="code-string">'users'</tspan>)</text>
+  <text x="585" y="1340" class="code">    .<tspan class="code-function">insert</tspan>([{ name, email, password: hashedPwd }])</text>
+  <text x="585" y="1357" class="code">    .<tspan class="code-function">select</tspan>()</text>
+  <text x="585" y="1374" class="code">    .<tspan class="code-function">single</tspan>();</text>
+  <text x="585" y="1391" class="code">  <tspan class="code-keyword">return</tspan> data;</text>
+
+  <rect x="570" y="1400" width="460" height="35" class="why-box"/>
+  <text x="585" y="1422" class="why-text">💡 WHY: Fluent API makes queries readable; RLS handles authorization.</text>
+
+  <!-- Component 11: Database Schema -->
+  <rect x="1070" y="1200" width="480" height="240" class="box database"/>
+  <text x="1310" y="1225" class="text title">📋 Database Schema (SQL)</text>
+  
+  <rect x="1080" y="1235" width="460" height="160" class="code-box"/>
+  <text x="1095" y="1255" class="code code-comment">-- supabase-schema.sql</text>
+  <text x="1095" y="1272" class="code"><tspan class="code-keyword">CREATE TABLE</tspan> users (</text>
+  <text x="1095" y="1289" class="code">  id <tspan class="code-variable">UUID PRIMARY KEY DEFAULT</tspan> uuid_generate_v4(),</text>
+  <text x="1095" y="1306" class="code">  name <tspan class="code-variable">TEXT NOT NULL</tspan>,</text>
+  <text x="1095" y="1323" class="code">  email <tspan class="code-variable">TEXT UNIQUE NOT NULL</tspan>,</text>
+  <text x="1095" y="1340" class="code">  password <tspan class="code-variable">TEXT NOT NULL</tspan>,</text>
+  <text x="1095" y="1357" class="code">  created_at <tspan class="code-variable">TIMESTAMPTZ DEFAULT NOW()</tspan></text>
+  <text x="1095" y="1374" class="code">);</text>
+  <text x="1095" y="1391" class="code"><tspan class="code-keyword">ALTER TABLE</tspan> users <tspan class="code-keyword">ENABLE ROW LEVEL SECURITY</tspan>;</text>
+
+  <rect x="1080" y="1400" width="460" height="35" class="why-box"/>
+  <text x="1095" y="1422" class="why-text">💡 WHY: UUID prevents ID guessing; RLS enforces security at DB level.</text>
+
+  <!-- ==================== SECTION 5: STORAGE ==================== -->
+  <text x="800" y="1490" class="section-title">☁️ CLOUD STORAGE LAYER</text>
+  <line x1="200" y1="1500" x2="1400" y2="1500" stroke="#da70d6" stroke-width="1" opacity="0.5"/>
+
+  <!-- Tech Badges -->
+  <rect x="600" y="1510" width="120" height="25" class="tech-badge"/>
+  <text x="660" y="1528" class="text" style="font-size: 12px;">Azure Blob</text>
+  <rect x="730" y="1510" width="80" height="25" class="tech-badge"/>
+  <text x="770" y="1528" class="text" style="font-size: 12px;">Multer</text>
+  <rect x="820" y="1510" width="100" height="25" class="tech-badge"/>
+  <text x="870" y="1528" class="text" style="font-size: 12px;">Streaming</text>
+
+  <!-- Component 12: Azure Blob Storage -->
+  <rect x="300" y="1550" width="1000" height="220" class="box storage"/>
+  <text x="800" y="1575" class="text title">📦 Azure Blob Storage Integration</text>
+  
+  <rect x="310" y="1585" width="980" height="140" class="code-box"/>
+  <text x="325" y="1605" class="code code-comment">// File upload handling with Azure Blob Storage</text>
+  <text x="325" y="1622" class="code"><tspan class="code-keyword">import</tspan> { BlobServiceClient } <tspan class="code-keyword">from</tspan> <tspan class="code-string">'@azure/storage-blob'</tspan>;</text>
+  <text x="325" y="1639" class="code"><tspan class="code-keyword">import</tspan> multer <tspan class="code-keyword">from</tspan> <tspan class="code-string">'multer'</tspan>;</text>
+  <text x="325" y="1656" class="code"></text>
+  <text x="325" y="1673" class="code"><tspan class="code-keyword">const</tspan> blobClient = BlobServiceClient.<tspan class="code-function">fromConnectionString</tspan>(process.env.AZURE_CONN);</text>
+  <text x="325" y="1690" class="code"><tspan class="code-keyword">const</tspan> containerClient = blobClient.<tspan class="code-function">getContainerClient</tspan>(<tspan class="code-string">'files'</tspan>);</text>
+  <text x="325" y="1707" class="code"><tspan class="code-keyword">const</tspan> blockBlob = containerClient.<tspan class="code-function">getBlockBlobClient</tspan>(filename);</text>
+  <text x="325" y="1724" class="code"><tspan class="code-keyword">await</tspan> blockBlob.<tspan class="code-function">uploadData</tspan>(buffer, { blobHTTPHeaders: { blobContentType: mimetype } });</text>
+
+  <rect x="310" y="1730" width="980" height="35" class="why-box"/>
+  <text x="325" y="1752" class="why-text">💡 WHY: Azure Blob provides scalable, secure, CDN-backed storage for audio/video/images. Multer handles multipart uploads efficiently.</text>
+
+  <!-- ==================== SECTION 6: ARCHITECTURE FLOW ==================== -->
+  <text x="800" y="1820" class="section-title">🔄 REQUEST FLOW ARCHITECTURE</text>
+  <line x1="200" y1="1830" x2="1400" y2="1830" stroke="#b19cd9" stroke-width="1" opacity="0.5"/>
+
+  <!-- Flow Diagram -->
+  <rect x="100" y="1860" width="150" height="60" class="box frontend"/>
+  <text x="175" y="895" class="text title">Client</text>
+  <text x="175" y="1895" class="text" style="font-size: 13px;">🌐 Browser</text>
+  <text x="175" y="1912" class="text" style="font-size: 11px;">index.html</text>
+
+  <path d="M 250 1890 L 330 1890" class="arrow"/>
+  <text x="290" y="1880" class="text" style="font-size: 10px;">HTTPS</text>
+
+  <rect x="330" y="1860" width="180" height="60" class="box backend"/>
+  <text x="420" y="1895" class="text" style="font-size: 13px;">🚀 Express Server</text>
+  <text x="420" y="1912" class="text" style="font-size: 11px;">server.js:3000</text>
+
+  <path d="M 510 1890 L 590 1890" class="arrow"/>
+  <text x="550" y="1880" class="text" style="font-size: 10px;">Route</text>
+
+  <rect x="590" y="1860" width="180" height="60" class="box backend"/>
+  <text x="680" y="1895" class="text" style="font-size: 13px;">🛡️ Middleware</text>
+  <text x="680" y="1912" class="text" style="font-size: 11px;">Auth + Validation</text>
+
+  <path d="M 770 1890 L 850 1890" class="arrow"/>
+  <text x="810" y="1880" class="text" style="font-size: 10px;">Process</text>
+
+  <rect x="850" y="1860" width="180" height="60" class="box backend"/>
+  <text x="940" y="1895" class="text" style="font-size: 13px;">⚙️ Controller</text>
+  <text x="940" y="1912" class="text" style="font-size: 11px;">Business Logic</text>
+
+  <path d="M 1030 1890 L 1110 1890" class="arrow"/>
+
+  <rect x="1110" y="1860" width="180" height="60" class="box ai"/>
+  <text x="1200" y="1895" class="text" style="font-size: 13px;">🤖 AI / DB</text>
+  <text x="1200" y="1912" class="text" style="font-size: 11px;">Gemini + Supabase</text>
+
+  <path d="M 1300 1890 L 1380 1890" class="arrow"/>
+
+  <rect x="1380" y="1860" width="150" height="60" class="box storage"/>
+  <text x="1455" y="1895" class="text" style="font-size: 13px;">☁️ Storage</text>
+  <text x="1455" y="1912" class="text" style="font-size: 11px;">Azure Blob</text>
+
+  <!-- Return flow -->
+  <path d="M 1380 1920 L 100 1920 L 100 1920" stroke="#d8b2ff" stroke-width="2" stroke-dasharray="8,4" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="740" y="1940" class="text" style="font-size: 11px; fill: #d8b2ff;">← JSON Response / HTML / Media Files</text>
+
+  <!-- ==================== SECTION 7: KEY DESIGN DECISIONS ==================== -->
+  <text x="800" y="2000" class="section-title">🎯 KEY DESIGN DECISIONS</text>
+  <line x1="200" y1="2010" x2="1400" y2="2010" stroke="#b19cd9" stroke-width="1" opacity="0.5"/>
+
+  <!-- Decision boxes -->
+  <rect x="50" y="2030" width="360" height="150" class="box frontend"/>
+  <text x="230" y="2055" class="text title">🏗️ Monolithic Architecture</text>
+  <text x="230" y="2080" class="text" style="font-size: 12px;">Single Express server handles all routes</text>
+  <text x="230" y="2100" class="text" style="font-size: 12px;">Static files served directly</text>
+  <rect x="60" y="2115" width="340" height="60" class="why-box"/>
+  <text x="230" y="2138" class="why-text">✅ Simple deployment to Vercel</text>
+  <text x="230" y="2155" class="why-text">✅ Easy debugging and development</text>
+  <text x="230" y="2172" class="why-text">✅ Lower operational complexity</text>
+
+  <rect x="430" y="2030" width="360" height="150" class="box ai"/>
+  <text x="610" y="2055" class="text title">🧠 AI-First Content</text>
+  <text x="610" y="2080" class="text" style="font-size: 12px;">Dynamic content via Gemini API</text>
+  <text x="610" y="2100" class="text" style="font-size: 12px;">RAG for historical accuracy</text>
+  <rect x="440" y="2115" width="340" height="60" class="why-box"/>
+  <text x="610" y="2138" class="why-text">✅ No need to pre-generate all years</text>
+  <text x="610" y="2155" class="why-text">✅ Fresh, contextual responses</text>
+  <text x="610" y="2172" class="why-text">✅ Scales to any historical period</text>
+
+  <rect x="810" y="2030" width="360" height="150" class="box database"/>
+  <text x="990" y="2055" class="text title">🔒 Security-First Database</text>
+  <text x="990" y="2080" class="text" style="font-size: 12px;">Supabase with Row Level Security</text>
+  <text x="990" y="2100" class="text" style="font-size: 12px;">JWT + bcrypt authentication</text>
+  <rect x="820" y="2115" width="340" height="60" class="why-box"/>
+  <text x="990" y="2138" class="why-text">✅ Data isolation per user</text>
+  <text x="990" y="2155" class="why-text">✅ SQL injection prevention</text>
+  <text x="990" y="2172" class="why-text">✅ Secure password storage</text>
+
+  <rect x="1190" y="2030" width="360" height="150" class="box storage"/>
+  <text x="1370" y="2055" class="text title">📁 Scalable Media Storage</text>
+  <text x="1370" y="2080" class="text" style="font-size: 12px;">Azure Blob for large files</text>
+  <text x="1370" y="2100" class="text" style="font-size: 12px;">CDN-backed delivery</text>
+  <rect x="1200" y="2115" width="340" height="60" class="why-box"/>
+  <text x="1370" y="2138" class="why-text">✅ No file size limits on server</text>
+  <text x="1370" y="2155" class="why-text">✅ Global edge caching</text>
+  <text x="1370" y="2172" class="why-text">✅ Cost-effective storage</text>
+
+  <!-- ==================== SECTION 8: ENVIRONMENT VARIABLES ==================== -->
+  <text x="800" y="2230" class="section-title">🔐 ENVIRONMENT CONFIGURATION</text>
+  <line x1="200" y1="2240" x2="1400" y2="2240" stroke="#b19cd9" stroke-width="1" opacity="0.5"/>
+
+  <rect x="300" y="2260" width="1000" height="120" class="code-box"/>
+  <text x="315" y="2285" class="code code-comment"># .env - Required environment variables</text>
+  <text x="315" y="2305" class="code"><tspan class="code-variable">SUPABASE_URL</tspan>=https://xxx.supabase.co        <tspan class="code-comment"># Database URL</tspan></text>
+  <text x="315" y="2325" class="code"><tspan class="code-variable">SUPABASE_ANON_KEY</tspan>=sb_publishable_xxx       <tspan class="code-comment"># Public API key</tspan></text>
+  <text x="315" y="2345" class="code"><tspan class="code-variable">JWT_SECRET</tspan>=your-secret-key                  <tspan class="code-comment"># Token signing</tspan></text>
+  <text x="315" y="2365" class="code"><tspan class="code-variable">GEMINI_API_KEY</tspan>=AIzaSyxxx                     <tspan class="code-comment"># AI API access</tspan></text>
+  <text x="800" y="2365" class="code"><tspan class="code-variable">AZURE_STORAGE_CONNECTION_STRING</tspan>=xxx  <tspan class="code-comment"># Blob storage</tspan></text>
+
+  <!-- Footer -->
+  <text x="800" y="2395" class="text glow" style="font-size: 14px; fill: #b19cd9; letter-spacing: 3px;">✨ KAAL SETHU - Connecting Past to Future ✨</text>
+
+</svg>
