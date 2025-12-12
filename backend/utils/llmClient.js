@@ -5,9 +5,9 @@ dotenv.config();
 // Initialize Gemini client
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// Define valid models - Using Gemini 2.0 Flash only
+// Define valid models - Using Gemini 2.5 Flash Lite only
 const MODELS = [
-  "gemini-2.0-flash" // Latest Gemini 2.0 Flash model
+  "gemini-2.5-flash-lite" // Latest Gemini 2.5 Flash Lite model
 ];
 
 export async function generateChatResponse(context, userQuestion, decade) {

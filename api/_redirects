@@ -1,8 +1,0 @@
-{
-  "name": "time-capsule-vercel-redirect",
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/second.html", "dest": "/index.html" },
-    { "src": "/", "dest": "/index.html" }
-  ]
-}
